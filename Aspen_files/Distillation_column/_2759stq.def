@@ -1,0 +1,10 @@
+SLAVE:
+INPUT: _2759stq.inm
+MODNAME: apmain
+RUNID: _2759stq
+NEW_RUNID: _2759stq
+OLD_RUNID: _2759stq
+PDF: _2759stq.appdf
+USERNAME: braan
+XMOD: C:\Program Files\AspenTech\Aspen Plus V14.0\Engine\xeq\apmain
+SPONLY:

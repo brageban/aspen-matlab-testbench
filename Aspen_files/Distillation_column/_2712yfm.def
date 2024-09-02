@@ -1,0 +1,10 @@
+SLAVE:
+INPUT: _2712yfm.inm
+MODNAME: apmain
+RUNID: _2712yfm
+NEW_RUNID: _2712yfm
+OLD_RUNID: _2712yfm
+PDF: _2712yfm.appdf
+USERNAME: braan
+XMOD: C:\Program Files\AspenTech\Aspen Plus V14.0\Engine\xeq\apmain
+SPONLY:

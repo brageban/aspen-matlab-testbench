@@ -1,0 +1,10 @@
+INPUT: test_sim_matlab_1.inm
+MODNAME: apmain
+RUNID: test_sim_matlab_1
+NEW_RUNID: test_sim_matlab_1
+OLD_RUNID: test_sim_matlab_1
+PDF: test_sim_matlab_1.appdf
+USERNAME: konto
+XMOD: C:\Program Files\AspenTech\Aspen Plus V14.0\Engine\xeq\apmain
+SPONLY:
+DBCONN: _2354nah.ads

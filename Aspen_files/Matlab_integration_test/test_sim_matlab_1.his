@@ -1,0 +1,191 @@
+
+ + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+ + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+ + +                                                                         + +
+ + +                      ASPEN PLUS CALCULATION HISTORY                     + +
+ + +                                                                         + +
+ + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+ + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+
+ ASPEN PLUS IS A TRADEMARK OF           HOTLINE:
+ ASPEN TECHNOLOGY, INC.                 U.S.A. 888/996-7100
+ 781/221-6400                           EUROPE (44) 1189-226555
+
+ PLATFORM: WIN-X64                                       JUNE 12, 2024       
+ VERSION: 40.0   Build 359                               WEDNESDAY   
+ INSTALLATION:                                           3:24:03 A.M.        
+
+ THIS COPY OF ASPEN PLUS LICENSED TO NORWEGIAN UNIVERSITY OF         
+
+
+      ASPEN PLUS (R) IS A PROPRIETARY PRODUCT OF ASPEN TECHNOLOGY, INC.
+      (ASPENTECH), AND MAY BE USED ONLY UNDER AGREEMENT WITH ASPENTECH.
+      RESTRICTED RIGHTS LEGEND:  USE, REPRODUCTION, OR DISCLOSURE BY THE
+      U.S. GOVERNMENT IS SUBJECT TO RESTRICTIONS SET FORTH IN 
+      (i) FAR 52.227-14, Alt. III, (ii) FAR 52.227-19, (iii) DFARS 
+      252.227-7013(c)(1)(ii), or (iv) THE ACCOMPANYING LICENSE AGREEMENT,
+      AS APPLICABLE. FOR PURPOSES OF THE FAR, THIS SOFTWARE SHALL BE DEEMED
+      TO BE "UNPUBLISHED" AND LICENSED WITH DISCLOSURE PROHIBITIONS.
+      CONTRACTOR/SUBCONTRACTOR: ASPEN TECHNOLOGY, INC. 20 CROSBY DRIVE,
+      BEDFORD, MA 01730.
+ *** INPUT SUMMARY ***
+
+ >>CURRENT RUN
+
+   ORIGINAL RUN                           JUNE 12, 2024       
+   3:24:03 A.M.                           WEDNESDAY   
+   INPUT FILE: _2354nah.inm
+   RUN ID : _2354nah
+          1    ;
+          2    ;Input file created by Aspen Plus Rel. 40.0 at 03:24:03 Wed Jun 12, 2024
+          3    ;Directory C:\Users\konto\Documents\AspenTech\Aspen Plus V14.0\Matlab_integration_test  Runid TEST_SIM_MATLAB_1
+          4    ;
+          5
+          6
+          7    DYNAMICS
+          8        DYNAMICS RESULTS=ON
+          9
+         10    IN-UNITS MET PRESSURE=bar TEMPERATURE=C DELTA-T=C PDROP=bar  &
+         11            INVERSE-PRES='1/bar' SHORT-LENGTH=mm
+         12
+         13    DEF-STREAMS CONVEN ALL
+         14
+         15    MODEL-OPTION
+         16
+         17    DATABANKS 'APV140 PURE40' / 'APV140 AQUEOUS' / 'APV140 SOLIDS' &
+         18             / 'APV140 INORGANIC' / 'APESV140 AP-EOS' /  &
+         19            'NISTV140 NIST-TRC' / NOASPENPCD
+         20
+         21    PROP-SOURCES 'APV140 PURE40' / 'APV140 AQUEOUS' /  &
+         22            'APV140 SOLIDS' / 'APV140 INORGANIC' / 'APESV140 AP-EOS' &
+         23             / 'NISTV140 NIST-TRC'
+         24
+         25    COMPONENTS
+         26        C2 C2H6 /
+         27        C3 C3H8 /
+         28        C4-1 C4H10-1 /
+         29        C4-2 C4H10-2 /
+         30        C1 CH4
+         31
+         32    SOLVE
+         33        RUN-MODE MODE=SIM
+         34
+         35    FLOWSHEET
+         36        BLOCK B1 IN=F OUT=V L
+         37
+         38    PROPERTIES PENG-ROB
+         39
+         40    PROP-DATA PRKBV-1
+         41        IN-UNITS MET PRESSURE=bar TEMPERATURE=C DELTA-T=C PDROP=bar  &
+         42            INVERSE-PRES='1/bar' SHORT-LENGTH=mm
+         43        PROP-LIST PRKBV
+         44        BPVAL C2 C3 1.10000000E-3 0.0 0.0 -273.1500000 726.8500000
+         45        BPVAL C3 C2 1.10000000E-3 0.0 0.0 -273.1500000 726.8500000
+         46        BPVAL C2 C4-1 9.60000000E-3 0.0 0.0 -273.1500000  &
+         47            726.8500000
+         48        BPVAL C4-1 C2 9.60000000E-3 0.0 0.0 -273.1500000  &
+         49            726.8500000
+         50        BPVAL C2 C4-2 -6.7000000E-3 0.0 0.0 -273.1500000  &
+         51            726.8500000
+         52        BPVAL C4-2 C2 -6.7000000E-3 0.0 0.0 -273.1500000  &
+         53            726.8500000
+         54        BPVAL C3 C4-1 3.30000000E-3 0.0 0.0 -273.1500000  &
+         55            726.8500000
+         56        BPVAL C4-1 C3 3.30000000E-3 0.0 0.0 -273.1500000  &
+         57            726.8500000
+         58        BPVAL C3 C4-2 -7.8000000E-3 0.0 0.0 -273.1500000  &
+         59            726.8500000
+         60        BPVAL C4-2 C3 -7.8000000E-3 0.0 0.0 -273.1500000  &
+         61            726.8500000
+         62        BPVAL C4-1 C4-2 -4.0000000E-4 0.0 0.0 -273.1500000  &
+         63            726.8500000
+         64        BPVAL C4-2 C4-1 -4.0000000E-4 0.0 0.0 -273.1500000  &
+         65            726.8500000
+         66        BPVAL C2 C1 -2.6000000E-3 0.0 0.0 -273.1500000 726.8500000
+         67        BPVAL C1 C2 -2.6000000E-3 0.0 0.0 -273.1500000 726.8500000
+         68        BPVAL C3 C1 .0140000000 0.0 0.0 -273.1500000 726.8500000
+         69        BPVAL C1 C3 .0140000000 0.0 0.0 -273.1500000 726.8500000
+         70        BPVAL C4-1 C1 .0133000000 0.0 0.0 -273.1500000 726.8500000
+         71        BPVAL C1 C4-1 .0133000000 0.0 0.0 -273.1500000 726.8500000
+         72        BPVAL C4-2 C1 .0256000000 0.0 0.0 -273.1500000 726.8500000
+         73        BPVAL C1 C4-2 .0256000000 0.0 0.0 -273.1500000 726.8500000
+         74
+         75    STREAM F
+         76        SUBSTREAM MIXED TEMP=20. PRES=40. MOLE-FLOW=100.
+         77        MOLE-FLOW C2 0.4 / C3 0.3 / C4-1 0.2 / C4-2 0.1
+         78
+         79    BLOCK B1 FLASH2
+         80        PARAM TEMP=20. PRES=30.
+         81
+         82    EO-CONV-OPTI
+         83
+         84    STREAM-REPOR MOLEFLOW
+         85    ;
+         86    ;
+         87    ;
+         88    ;
+         89    ;
+ *** INPUT TRANSLATOR MESSAGES ***
+
+  *** THIS RUN USES THE PROPERTIES ENTERPRISE DATABASE ***
+      SQLLOCALDB.APESV140 : (DATAVERSION - 40.0.0.13)                         
+      SQLLOCALDB.APV140 : (DATAVERSION - 40.0.0.13)                           
+      SQLLOCALDB.FACTV140 : (DATAVERSION - 40.0.0.12)                         
+      SQLLOCALDB.NISTV140 : (DATAVERSION - 40.0.0.12)                         
+
+  *   WARNING IN THE "STREAM" PARAGRAPH WHICH BEGINS ON LINE 75                 
+      STREAM NAME: F                                           (STSTRM.29)      
+      COMPONENT MOLE FLOWS OF SUBSTREAM: "MIXED"                                
+      ARE NORMALIZED TO THE TOTAL MOLE FLOW VALUE.                              
+ 
+ 
+
+ PDF updated                                                                      TIME =      0.99
+
+ *** CALCULATION TRACE ***
+
+
+ *** FLOWSHEET ANALYSIS MESSAGES ***
+
+ FLOWSHEET CONNECTIVITY BY STREAMS       
+
+   STREAM     SOURCE     DEST           STREAM     SOURCE     DEST
+   F          ----       B1             V          B1         ----    
+   L          B1         ----                                         
+
+ FLOWSHEET CONNECTIVITY BY BLOCKS        
+
+   BLOCK        INLETS                         OUTLETS
+   B1           F                              V L                         
+
+      COMPUTATION ORDER FOR THE FLOWSHEET IS:
+      B1 
+
+Calculations begin                                                              time      0.26
+
+
+ SIMULATION CALCULATIONS BEGIN                                                    TIME =      0.26
+
+      ENTHALPY CALCULATION FOR INLET STREAM F OF BLOCK B1                         TIME =      0.26
+      KODE = 2  NTRIAL =   4  T = 293.1500  P = 4.000000E+06  V =  0.00000      Q =  0.00000    
+
+      UOS BLOCK B1       MODEL: FLASH2                                            TIME =      0.26
+      KODE = 2  NTRIAL =   4  T = 293.1500  P = 3.000000E+06  V =  0.00000      Q =  359.338    
+
+RUN SAVED
+
+
+
+ NO ERRORS OR WARNINGS GENERATED
+
+RUN SAVED
+
+
+
+ NO ERRORS OR WARNINGS GENERATED
+
+RUN SAVED
+
+
+
+ NO ERRORS OR WARNINGS GENERATED

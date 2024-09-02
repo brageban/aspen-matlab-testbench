@@ -1,0 +1,10 @@
+INPUT: ethanol_water_distillation.inm
+MODNAME: apmain
+RUNID: ethanol_water_distillation
+NEW_RUNID: ethanol_water_distillation
+OLD_RUNID: ethanol_water_distillation
+PDF: ethanol_water_distillation.appdf
+USERNAME: konto
+XMOD: C:\Program Files\AspenTech\Aspen Plus V14.0\Engine\xeq\apmain
+SPONLY:
+DBCONN: _1453mur.ads

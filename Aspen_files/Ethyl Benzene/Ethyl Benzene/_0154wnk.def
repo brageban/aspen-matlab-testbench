@@ -1,0 +1,10 @@
+SLAVE:
+INPUT: _0154wnk.inm
+MODNAME: apmain
+RUNID: _0154wnk
+NEW_RUNID: _0154wnk
+OLD_RUNID: _0154wnk
+PDF: _0154wnk.appdf
+USERNAME: braan
+XMOD: C:\Program Files\AspenTech\Aspen Plus V14.0\Engine\xeq\apmain
+SPONLY:
