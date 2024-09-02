@@ -1,0 +1,77 @@
+classdef AspenHandler
+    properties
+        version = 'Apwn.Document.40.0'; % Aspen version
+        file_dir                         % Directory of the Aspen file
+        Aspen                           % COM server object
+    end
+    
+    methods
+        % Constructor to invoke Aspen
+        function obj = AspenHandler(file_path)
+            obj.file_dir = file_path;
+            try
+                obj.Aspen = actxserver(obj.version);
+            catch ME
+                error('Error creating Aspen COM server object: %s', ME.message);
+            end
+            
+            if isfile(file_path)
+                disp(file_path)
+                try
+                    obj.Aspen.InitFromArchive2(file_path);
+                catch ME    
+                    error('Error initializing Aspen: %s', ME.message);
+                end
+            else
+                error('Aspen file not found: %s', file_path);
+            end
+
+            obj.Aspen.Visible = 1;
+            obj.Aspen.SuppressDialogs = 1;
+        end
+
+        % Method to get steady-state output from Aspen
+        function y = SS_output(obj, y_node)
+            if isempty(obj.Aspen)
+                error('Aspen is not initialized');
+            end
+            try
+                node = obj.Aspen.Application.Tree.FindNode(y_node);
+                y = node.Value;
+            catch ME
+                error('Error getting steady-state output: %s', ME.message);
+            end
+        end
+
+        % Method to set steady-state input to Aspen
+        function SS_input(obj, u_node, u_value)
+            if isempty(obj.Aspen)
+                error('Aspen is not initialized');
+            end
+            try
+                node = obj.Aspen.Application.Tree.FindNode(u_node);
+                disp(node.value)
+                node.Value = u_value;
+                obj.Aspen.Reinit;
+                obj.Aspen.Engine.Run2;
+                while obj.Aspen.Engine.IsRunning == 1
+                    pause(0.5);
+                end
+            catch ME
+                error('Error setting steady-state input: %s', ME.message);
+            end
+        end
+        
+        % Destructor to release the Aspen COM object
+        function delete(obj)
+            if ~isempty(obj.Aspen)
+                try
+                    obj.Aspen.Close;
+                    obj.Aspen.Quit;
+                catch ME
+                    disp(['Error closing Aspen: ', ME.message]);
+                end
+            end
+        end
+    end
+end
