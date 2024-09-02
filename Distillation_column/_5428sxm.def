@@ -1,0 +1,10 @@
+SLAVE:
+INPUT: _5428sxm.inm
+MODNAME: apmain
+RUNID: _5428sxm
+NEW_RUNID: _5428sxm
+OLD_RUNID: _5428sxm
+PDF: _5428sxm.appdf
+USERNAME: braan
+XMOD: C:\Program Files\AspenTech\Aspen Plus V14.0\Engine\xeq\apmain
+DBCONN: _5428sxm.ads

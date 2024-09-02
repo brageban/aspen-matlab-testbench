@@ -1,0 +1,10 @@
+SLAVE:
+INPUT: _2637orm.inm
+MODNAME: apmain
+RUNID: _2637orm
+NEW_RUNID: _2637orm
+OLD_RUNID: _2637orm
+PDF: _2637orm.appdf
+USERNAME: braan
+XMOD: C:\Program Files\AspenTech\Aspen Plus V14.0\Engine\xeq\apmain
+SPONLY:

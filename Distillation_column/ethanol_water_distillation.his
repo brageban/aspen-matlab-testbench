@@ -1,0 +1,2150 @@
+
+ + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+ + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+ + +                                                                         + +
+ + +                      ASPEN PLUS CALCULATION HISTORY                     + +
+ + +                                                                         + +
+ + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+ + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+
+ ASPEN PLUS IS A TRADEMARK OF           HOTLINE:
+ ASPEN TECHNOLOGY, INC.                 U.S.A. 888/996-7100
+ 781/221-6400                           EUROPE (44) 1189-226555
+
+ PLATFORM: WIN-X64                                       JUNE 13, 2024       
+ VERSION: 40.0   Build 359                               THURSDAY    
+ INSTALLATION:                                           10:33:24 P.M.       
+
+ THIS COPY OF ASPEN PLUS LICENSED TO NORWEGIAN UNIVERSITY OF         
+
+
+      ASPEN PLUS (R) IS A PROPRIETARY PRODUCT OF ASPEN TECHNOLOGY, INC.
+      (ASPENTECH), AND MAY BE USED ONLY UNDER AGREEMENT WITH ASPENTECH.
+      RESTRICTED RIGHTS LEGEND:  USE, REPRODUCTION, OR DISCLOSURE BY THE
+      U.S. GOVERNMENT IS SUBJECT TO RESTRICTIONS SET FORTH IN 
+      (i) FAR 52.227-14, Alt. III, (ii) FAR 52.227-19, (iii) DFARS 
+      252.227-7013(c)(1)(ii), or (iv) THE ACCOMPANYING LICENSE AGREEMENT,
+      AS APPLICABLE. FOR PURPOSES OF THE FAR, THIS SOFTWARE SHALL BE DEEMED
+      TO BE "UNPUBLISHED" AND LICENSED WITH DISCLOSURE PROHIBITIONS.
+      CONTRACTOR/SUBCONTRACTOR: ASPEN TECHNOLOGY, INC. 20 CROSBY DRIVE,
+      BEDFORD, MA 01730.
+ *** INPUT SUMMARY ***
+
+ >>CURRENT RUN
+
+   ORIGINAL RUN                           JUNE 13, 2024       
+   10:33:24 P.M.                          THURSDAY    
+   INPUT FILE: _1453mur.inm
+   RUN ID : _1453mur
+          1    ;
+          2    ;Input file created by Aspen Plus Rel. 40.0 at 22:33:23 Thu Jun 13, 2024
+          3    ;Directory C:\Users\konto\Documents\AspenTech\Aspen Plus V14.0  Runid ETHANOL_WATER_DISTILLATION
+          4    ;
+          5
+          6
+          7    DYNAMICS
+          8        DYNAMICS RESULTS=ON
+          9
+         10    IN-UNITS MET PRESSURE=bar TEMPERATURE=C DELTA-T=C PDROP=bar  &
+         11            INVERSE-PRES='1/bar' SHORT-LENGTH=mm
+         12
+         13    DEF-STREAMS CONVEN ALL
+         14
+         15    MODEL-OPTION
+         16
+         17    DATABANKS 'APV140 PURE40' / 'APV140 AQUEOUS' / 'APV140 SOLIDS' &
+         18             / 'APV140 INORGANIC' / 'APESV140 AP-EOS' /  &
+         19            'NISTV140 NIST-TRC' / NOASPENPCD
+         20
+         21    PROP-SOURCES 'APV140 PURE40' / 'APV140 AQUEOUS' /  &
+         22            'APV140 SOLIDS' / 'APV140 INORGANIC' / 'APESV140 AP-EOS' &
+         23             / 'NISTV140 NIST-TRC'
+         24
+         25    COMPONENTS
+         26        ETHANOL C2H6O-2 /
+         27        WATER H2O
+         28
+         29    SOLVE
+         30        RUN-MODE MODE=SIM
+         31
+         32    FLOWSHEET
+         33        BLOCK COLUMN IN=F OUT=D1 B1
+         34        BLOCK D-PUMP IN=D1 OUT=D2
+         35        BLOCK B-PUMP IN=B1 OUT=B2
+         36        BLOCK B6 IN=D2 OUT=D
+         37        BLOCK B7 IN=B2 OUT=B
+         38
+         39    PROPERTIES NRTL
+         40
+         41    PROP-DATA NRTL-1
+         42        IN-UNITS MET PRESSURE=bar TEMPERATURE=C DELTA-T=C PDROP=bar  &
+         43            INVERSE-PRES='1/bar' SHORT-LENGTH=mm
+         44        PROP-LIST NRTL
+         45        BPVAL ETHANOL WATER -.8009000000 246.1800000 .3000000000  &
+         46            0.0 0.0 0.0 24.99000000 100.0000000
+         47        BPVAL WATER ETHANOL 3.457800000 -586.0809000 .3000000000  &
+         48            0.0 0.0 0.0 24.99000000 100.0000000
+         49
+         50    STREAM F
+         51        SUBSTREAM MIXED TEMP=25. PRES=10. MOLE-FLOW=100.
+         52        MOLE-FLOW ETHANOL 0.3 / WATER 0.7
+         53
+         54    BLOCK COLUMN RADFRAC
+         55        PARAM NSTAGE=30 ALGORITHM=STANDARD MAXOL=25 DAMPING=NONE
+         56        COL-CONFIG CONDENSER=TOTAL
+         57        FEEDS F 20
+         58        PRODUCTS D1 1 L / B1 30 L
+         59        P-SPEC 1 5.
+         60        COL-SPECS DP-COL=1. MOLE-D=25. MOLE-RR=1.
+         61        SPEC 1 MOLE-FRAC 0.93 COMPS=ETHANOL BASE-COMPS=ETHANOL  &
+         62            WATER STREAMS=D1 SPEC-DESCRIP="xDL"
+         63        SPEC 2 MOLE-FRAC 0.93 COMPS=WATER BASE-COMPS=ETHANOL WATER  &
+         64            STREAMS=B1 SPEC-DESCRIP="xBH"
+         65        VARY 1 MOLE-RR 0.5 40. 0.01
+         66        VARY 2 MOLE-D 20. 40. 0.01
+         67
+         68    BLOCK B-PUMP PUMP
+         69        PARAM DELP=3.
+         70
+         71    BLOCK D-PUMP PUMP
+         72        PARAM DELP=3.
+         73
+         74    BLOCK B6 VALVE
+         75        PARAM P-OUT=4.
+         76
+         77    BLOCK B7 VALVE
+         78        PARAM P-OUT=4.
+         79
+         80    EO-CONV-OPTI
+         81
+         82    STREAM-REPOR MOLEFLOW
+         83    ;
+         84    ;
+         85    ;
+         86    ;
+         87    ;
+ *** INPUT TRANSLATOR MESSAGES ***
+
+  *** THIS RUN USES THE PROPERTIES ENTERPRISE DATABASE ***
+      SQLLOCALDB.APESV140 : (DATAVERSION - 40.0.0.13)                         
+      SQLLOCALDB.APV140 : (DATAVERSION - 40.0.0.13)                           
+      SQLLOCALDB.FACTV140 : (DATAVERSION - 40.0.0.12)                         
+      SQLLOCALDB.NISTV140 : (DATAVERSION - 40.0.0.12)                         
+
+  *   WARNING IN THE "STREAM" PARAGRAPH WHICH BEGINS ON LINE 50                 
+      STREAM NAME: F                                           (STSTRM.29)      
+      COMPONENT MOLE FLOWS OF SUBSTREAM: "MIXED"                                
+      ARE NORMALIZED TO THE TOTAL MOLE FLOW VALUE.                              
+ 
+ 
+
+ PDF updated                                                                      TIME =      0.54
+
+ *** CALCULATION TRACE ***
+
+
+ *** FLOWSHEET ANALYSIS MESSAGES ***
+
+ FLOWSHEET CONNECTIVITY BY STREAMS       
+
+   STREAM     SOURCE     DEST           STREAM     SOURCE     DEST
+   F          ----       COLUMN         D1         COLUMN     D-PUMP  
+   B1         COLUMN     B-PUMP         D2         D-PUMP     B6      
+   B2         B-PUMP     B7             D          B6         ----    
+   B          B7         ----                                         
+
+ FLOWSHEET CONNECTIVITY BY BLOCKS        
+
+   BLOCK        INLETS                         OUTLETS
+   COLUMN       F                              D1 B1                       
+   D-PUMP       D1                             D2                          
+   B-PUMP       B1                             B2                          
+   B6           D2                             D                           
+   B7           B2                             B                           
+
+      COMPUTATION ORDER FOR THE FLOWSHEET IS:
+      COLUMN D-PUMP B6 B-PUMP B7 
+
+Calculations begin                                                              time      0.04
+
+
+ SIMULATION CALCULATIONS BEGIN                                                    TIME =      0.04
+
+      ENTHALPY CALCULATION FOR INLET STREAM F OF BLOCK COLUMN                     TIME =      0.04
+      KODE = 2  NTRIAL =   2  T = 298.1500  P = 1.000000E+06  V =  0.00000      Q =  0.00000    
+
+      UOS BLOCK COLUMN   MODEL: RADFRAC                                           TIME =      0.04
+
+       Convergence iterations:
+         OL   ML   IL     Err/Tol
+          1    1    4      766.46    
+          2    7   17      469.99    
+          3    7   18      218.65    
+          4    7   16      123.62    
+          5    7   15      110.98    
+          6    7   15      95.658    
+          7    7   15      84.436    
+          8    7   15      82.219    
+          9    7   15      89.539    
+         10    7   15      102.82    
+         11    7   15      117.72    
+         12    7   15      130.19    
+         13    7   15      136.42    
+         14    7   15      132.98    
+         15    7   15      119.89    
+         16    7   15      100.84    
+         17    7   15      80.607    
+         18    7   15      61.451    
+         19    7   14      46.588    
+         20    7   14      36.442    
+         21    7   14      30.451    
+         22    7   14      26.756    
+         23    7   13      23.818    
+         24    7   13      20.599    
+         25    7   13      16.742    
+
+  **  ERROR WHILE EXECUTING UNIT OPERATIONS BLOCK: "COLUMN" (MODEL: "RADFRAC")  
+                                                               (UDL03.1)        
+      RADFRAC NOT CONVERGED IN  25 OUTSIDE LOOP ITERATIONS.                     
+
+      RESULTS FOR MANIPULATED VARIABLES:
+      VARIABLE     FINAL VALUE    LOWER BOUND    UPPER BOUND
+         1          1.9400        0.50000         40.000    
+         2         0.72056E-02    0.55556E-02    0.11111E-01
+
+      UOS BLOCK D-PUMP   MODEL: PUMP                                              TIME =      0.05
+      VOL-FLOW   =  0.4218E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   126.5     , BRAKE PWR  =   428.0     , ELEC PWR   =   428.0    
+
+      UOS BLOCK B6       MODEL: VALVE                                             TIME =      0.05
+      KODE = 1  NTRIAL =   4  T = 390.7214  P =  400000.      V = 3.475156E-02  Q =  0.00000    
+      OUTLET PRES =   0.4000E+06 PRES DROP =   0.4000E+06
+
+      UOS BLOCK B-PUMP   MODEL: PUMP                                              TIME =      0.05
+      VOL-FLOW   =  0.5542E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   166.3     , BRAKE PWR  =   562.4     , ELEC PWR   =   562.4    
+
+      UOS BLOCK B7       MODEL: VALVE                                             TIME =      0.05
+      KODE = 1  NTRIAL =   5  T = 398.6816  P =  400000.      V = 3.717194E-02  Q =  0.00000    
+      OUTLET PRES =   0.4000E+06 PRES DROP =   0.5000E+06
+
+      GENERATING RESULTS FOR UOS BLOCK D-PUMP   MODEL: PUMP                       TIME =      0.05
+      KODE = 5  NTRIAL =   3  T = 398.1135  P =  499934.      V =  0.00000      Q = 6.442269E-10
+      VOL-FLOW   =  0.4218E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   126.5     , BRAKE PWR  =   428.0     , ELEC PWR   =   428.0    
+      NPSH AVAIL =  0.9588E-01
+
+      GENERATING RESULTS FOR UOS BLOCK B-PUMP   MODEL: PUMP                       TIME =      0.05
+      KODE = 5  NTRIAL =   4  T = 412.1626  P =  603226.      V =  0.00000      Q =  0.00000    
+
+      INFORMATION WHILE GENERATING RESULTS FOR UNIT OPERATIONS BLOCK: "B-PUMP"  
+      (MODEL: "PUMP")                                          (ANPSH.4)        
+      NET POSITIVE SUCTION HEAD IS LESS THAN ZERO                               
+      VOL-FLOW   =  0.5542E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   166.3     , BRAKE PWR  =   562.4     , ELEC PWR   =   562.4    
+      NPSH AVAIL =  -4.018    
+
+ Report Writer entered                                                            Time =      0.06
+
+ Results generated                                                                Time =      0.07
+
+
+*** INPUT SPECIFICATION MESSAGES ***
+
+ CHANGES WERE MADE TO BLOCK        COLUMN   06/13/2024   22:34:34:99 
+ BLOCK COLUMN RADFRAC
+     PARAM NSTAGE=30 ALGORITHM=STANDARD MAXOL=25 DAMPING=NONE
+     COL-CONFIG CONDENSER=TOTAL
+     FEEDS F 24
+     PRODUCTS D1 1 L / B1 30 L
+     P-SPEC 1 5.
+     COL-SPECS DP-COL=1. MOLE-D=25. MOLE-RR=1.
+     SPEC 1 MOLE-FRAC 0.93 COMPS=ETHANOL BASE-COMPS=ETHANOL  &
+         WATER STREAMS=D1 SPEC-DESCRIP="xDL"
+     SPEC 2 MOLE-FRAC 0.93 COMPS=WATER BASE-COMPS=ETHANOL WATER  &
+         STREAMS=B1 SPEC-DESCRIP="xBH"
+     VARY 1 MOLE-RR 0.5 40. 0.01
+     VARY 2 MOLE-D 20. 40. 0.01
+
+ PDF updated                                                                      TIME =     70.16
+ THIS COPY OF ASPEN PLUS LICENSED TO NORWEGIAN UNIVERSITY OF         
+
+
+Calculations begin                                                              time     70.17
+
+
+      UOS BLOCK COLUMN   MODEL: RADFRAC                                           TIME =     70.17
+
+       Convergence iterations:
+         OL   ML   IL     Err/Tol
+          1    5   13      24.535    
+          2    7   15      48.950    
+          3    7   14      50.669    
+          4    7   13      46.233    
+          5    7   13      37.512    
+          6    7   13      28.892    
+          7    7   13      22.016    
+          8    7   13      16.727    
+          9    7   13      13.166    
+         10    7   13      10.585    
+         11    7   13      8.4467    
+         12    7   13      7.1283    
+         13    7   13      7.4035    
+         14    7   13      9.3157    
+         15    7   13      11.785    
+         16    7   13      13.896    
+         17    7   13      15.135    
+         18    7   13      15.376    
+         19    7   13      14.796    
+         20    7   13      13.534    
+         21    7   13      12.057    
+         22    7   13      10.602    
+         23    7   12      9.3436    
+         24    7   12      8.3929    
+         25    7   12      7.8015    
+
+  **  ERROR WHILE EXECUTING UNIT OPERATIONS BLOCK: "COLUMN" (MODEL: "RADFRAC")  
+                                                               (UDL03.1)        
+      RADFRAC NOT CONVERGED IN  25 OUTSIDE LOOP ITERATIONS.                     
+
+      RESULTS FOR MANIPULATED VARIABLES:
+      VARIABLE     FINAL VALUE    LOWER BOUND    UPPER BOUND
+         1          2.9200        0.50000         40.000    
+         2         0.74778E-02    0.55556E-02    0.11111E-01
+
+      UOS BLOCK D-PUMP   MODEL: PUMP                                              TIME =     70.20
+      VOL-FLOW   =  0.4474E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   134.2     , BRAKE PWR  =   454.0     , ELEC PWR   =   454.0    
+
+      UOS BLOCK B6       MODEL: VALVE                                             TIME =     70.20
+      KODE = 1  NTRIAL =   4  T = 390.6783  P =  400000.      V = 3.540804E-02  Q =  0.00000    
+      OUTLET PRES =   0.4000E+06 PRES DROP =   0.4000E+06
+
+      UOS BLOCK B-PUMP   MODEL: PUMP                                              TIME =     70.20
+      VOL-FLOW   =  0.5287E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   158.6     , BRAKE PWR  =   536.4     , ELEC PWR   =   536.4    
+
+      UOS BLOCK B7       MODEL: VALVE                                             TIME =     70.20
+      KODE = 1  NTRIAL =   5  T = 399.7507  P =  400000.      V = 3.586415E-02  Q =  0.00000    
+      OUTLET PRES =   0.4000E+06 PRES DROP =   0.5000E+06
+
+      GENERATING RESULTS FOR UOS BLOCK D-PUMP   MODEL: PUMP                       TIME =     70.20
+      KODE = 5  NTRIAL =   3  T = 398.0802  P =  499998.      V =  0.00000      Q =  0.00000    
+      VOL-FLOW   =  0.4474E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   134.2     , BRAKE PWR  =   454.0     , ELEC PWR   =   454.0    
+      NPSH AVAIL =   0.000    
+
+      GENERATING RESULTS FOR UOS BLOCK B-PUMP   MODEL: PUMP                       TIME =     70.20
+      KODE = 5  NTRIAL =   4  T = 413.0195  P =  601063.      V =  0.00000      Q = 2.419949E-09
+
+      INFORMATION WHILE GENERATING RESULTS FOR UNIT OPERATIONS BLOCK: "B-PUMP"  
+      (MODEL: "PUMP")                                          (ANPSH.4)        
+      NET POSITIVE SUCTION HEAD IS LESS THAN ZERO                               
+      VOL-FLOW   =  0.5287E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   158.6     , BRAKE PWR  =   536.4     , ELEC PWR   =   536.4    
+      NPSH AVAIL =  -1.312    
+
+ Report Writer entered                                                            Time =     70.21
+
+ Results generated                                                                Time =     70.22
+
+
+*** INPUT SPECIFICATION MESSAGES ***
+
+ CHANGES WERE MADE TO BLOCK        COLUMN   06/13/2024   22:34:56:99 
+ BLOCK COLUMN RADFRAC
+     PARAM NSTAGE=30 ALGORITHM=STANDARD MAXOL=25 DAMPING=NONE
+     COL-CONFIG CONDENSER=TOTAL
+     FEEDS F 24
+     PRODUCTS D1 1 L / B1 30 L
+     P-SPEC 1 5.
+     COL-SPECS DP-COL=1. MOLE-D=25. MOLE-RR=1.
+     SPEC 1 MOLE-FRAC 0.9 COMPS=ETHANOL BASE-COMPS=ETHANOL WATER  &
+         STREAMS=D1 SPEC-DESCRIP="xDL"
+     SPEC 2 MOLE-FRAC 0.9 COMPS=WATER BASE-COMPS=ETHANOL WATER  &
+         STREAMS=B1 SPEC-DESCRIP="xBH"
+     VARY 1 MOLE-RR 0.5 40. 0.01
+     VARY 2 MOLE-D 20. 40. 0.01
+
+ PDF updated                                                                      TIME =     91.79
+ THIS COPY OF ASPEN PLUS LICENSED TO NORWEGIAN UNIVERSITY OF         
+
+
+Calculations begin                                                              time     91.80
+
+
+      UOS BLOCK COLUMN   MODEL: RADFRAC                                           TIME =     91.80
+
+       Convergence iterations:
+         OL   ML   IL     Err/Tol
+          1    5   13      11.307    
+          2    7   14      17.570    
+          3    7   13      17.683    
+          4    7   13      15.736    
+          5    7   13      12.239    
+          6    7   13      9.4913    
+          7    7   13      7.9718    
+          8    7   13      7.3559    
+          9    7   12      7.0883    
+         10    7   12      6.8933    
+         11    7   12      6.7514    
+         12    7   12      6.7101    
+         13    7   12      6.7775    
+         14    7   12      6.8940    
+         15    7   12      6.9885    
+         16    7   12      7.0142    
+         17    7   12      6.9602    
+         18    7   12      6.8428    
+         19    7   12      6.6899    
+         20    7   12      6.5295    
+         21    7   12      6.3820    
+         22    7   12      6.2555    
+         23    7   12      6.1618    
+         24    7   12      6.0871    
+         25    7   12      6.0263    
+
+  **  ERROR WHILE EXECUTING UNIT OPERATIONS BLOCK: "COLUMN" (MODEL: "RADFRAC")  
+                                                               (UDL03.1)        
+      RADFRAC NOT CONVERGED IN  25 OUTSIDE LOOP ITERATIONS.                     
+
+      RESULTS FOR MANIPULATED VARIABLES:
+      VARIABLE     FINAL VALUE    LOWER BOUND    UPPER BOUND
+         1          3.9000        0.50000         40.000    
+         2         0.77500E-02    0.55556E-02    0.11111E-01
+
+      UOS BLOCK D-PUMP   MODEL: PUMP                                              TIME =     91.81
+      VOL-FLOW   =  0.4671E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   140.1     , BRAKE PWR  =   474.0     , ELEC PWR   =   474.0    
+
+      UOS BLOCK B6       MODEL: VALVE                                             TIME =     91.81
+      KODE = 1  NTRIAL =   4  T = 390.6686  P =  400000.      V = 3.562499E-02  Q =  0.00000    
+      OUTLET PRES =   0.4000E+06 PRES DROP =   0.4000E+06
+
+      UOS BLOCK B-PUMP   MODEL: PUMP                                              TIME =     91.81
+      VOL-FLOW   =  0.5092E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   152.8     , BRAKE PWR  =   516.7     , ELEC PWR   =   516.7    
+
+      UOS BLOCK B7       MODEL: VALVE                                             TIME =     91.81
+      KODE = 1  NTRIAL =   5  T = 400.6664  P =  400000.      V = 3.519205E-02  Q =  0.00000    
+      OUTLET PRES =   0.4000E+06 PRES DROP =   0.5000E+06
+
+      GENERATING RESULTS FOR UOS BLOCK D-PUMP   MODEL: PUMP                       TIME =     91.81
+      KODE = 5  NTRIAL =   3  T = 398.0726  P =  499999.      V =  0.00000      Q =  0.00000    
+      VOL-FLOW   =  0.4671E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   140.1     , BRAKE PWR  =   474.0     , ELEC PWR   =   474.0    
+      NPSH AVAIL =   0.000    
+
+      GENERATING RESULTS FOR UOS BLOCK B-PUMP   MODEL: PUMP                       TIME =     91.81
+      KODE = 5  NTRIAL =   4  T = 413.8687  P =  601094.      V =  0.00000      Q =  0.00000    
+
+      INFORMATION WHILE GENERATING RESULTS FOR UNIT OPERATIONS BLOCK: "B-PUMP"  
+      (MODEL: "PUMP")                                          (ANPSH.4)        
+      NET POSITIVE SUCTION HEAD IS LESS THAN ZERO                               
+      VOL-FLOW   =  0.5092E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   152.8     , BRAKE PWR  =   516.7     , ELEC PWR   =   516.7    
+      NPSH AVAIL =  -1.341    
+
+ Report Writer entered                                                            Time =     91.83
+
+ Results generated                                                                Time =     91.85
+
+
+*** INPUT SPECIFICATION MESSAGES ***
+
+ CHANGES WERE MADE TO STREAM       F        06/13/2024   22:35:59:09 
+ STREAM F
+     SUBSTREAM MIXED TEMP=25. PRES=10. MOLE-FLOW=100.
+     MOLE-FLOW ETHANOL 0.4 / WATER 0.6
+
+ PDF updated                                                                      TIME =    154.26
+ THIS COPY OF ASPEN PLUS LICENSED TO NORWEGIAN UNIVERSITY OF         
+
+  *   WARNING IN A "STREAM" PARAGRAPH                                           
+      STREAM NAME: F                                           (STSTRM.29)      
+      COMPONENT MOLE FLOWS OF SUBSTREAM: "MIXED"                                
+      ARE NORMALIZED TO THE TOTAL MOLE FLOW VALUE.                              
+
+
+Calculations begin                                                              time    154.26
+
+
+      ENTHALPY CALCULATION FOR INLET STREAM F OF BLOCK COLUMN                     TIME =    154.26
+      KODE = 2  NTRIAL =   2  T = 298.1500  P = 1.000000E+06  V =  0.00000      Q =  0.00000    
+
+      UOS BLOCK COLUMN   MODEL: RADFRAC                                           TIME =    154.26
+
+       Convergence iterations:
+         OL   ML   IL     Err/Tol
+          1    5   12      466.08    
+          2    7   15      351.82    
+          3    7   15      243.52    
+          4    7   13      167.68    
+          5    7   13      105.01    
+          6    7   12      60.200    
+          7    7   12      37.159    
+          8    7   12      25.594    
+          9    7   11      19.554    
+         10    7   11      14.875    
+         11    7   11      11.245    
+         12    7   11      8.5220    
+         13    7   10      7.5317    
+         14    7   10      7.8461    
+         15    7   10      8.1390    
+         16    7    9      8.3046    
+         17    7    9      7.4458    
+         18    7    9      6.1653    
+         19    7    9      4.9231    
+         20    7    9      3.9575    
+         21    7    9      3.3355    
+         22    7    9      3.0566    
+         23    7    9      3.0596    
+         24    7    9      3.2263    
+         25    7    9      3.4333    
+
+  **  ERROR WHILE EXECUTING UNIT OPERATIONS BLOCK: "COLUMN" (MODEL: "RADFRAC")  
+                                                               (UDL03.1)        
+      RADFRAC NOT CONVERGED IN  25 OUTSIDE LOOP ITERATIONS.                     
+
+      RESULTS FOR MANIPULATED VARIABLES:
+      VARIABLE     FINAL VALUE    LOWER BOUND    UPPER BOUND
+         1          4.8800        0.50000         40.000    
+         2         0.80222E-02    0.55556E-02    0.11111E-01
+
+      UOS BLOCK D-PUMP   MODEL: PUMP                                              TIME =    154.27
+      VOL-FLOW   =  0.4856E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   145.7     , BRAKE PWR  =   492.7     , ELEC PWR   =   492.7    
+
+      UOS BLOCK B6       MODEL: VALVE                                             TIME =    154.27
+      KODE = 1  NTRIAL =   4  T = 390.6641  P =  400000.      V = 3.575157E-02  Q =  0.00000    
+      OUTLET PRES =   0.4000E+06 PRES DROP =   0.4000E+06
+
+      UOS BLOCK B-PUMP   MODEL: PUMP                                              TIME =    154.27
+      VOL-FLOW   =  0.6249E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   187.5     , BRAKE PWR  =   634.1     , ELEC PWR   =   634.1    
+
+      UOS BLOCK B7       MODEL: VALVE                                             TIME =    154.27
+      KODE = 1  NTRIAL =   5  T = 395.5588  P =  400000.      V = 4.146253E-02  Q =  0.00000    
+      OUTLET PRES =   0.4000E+06 PRES DROP =   0.5000E+06
+
+      GENERATING RESULTS FOR UOS BLOCK D-PUMP   MODEL: PUMP                       TIME =    154.27
+      KODE = 5  NTRIAL =   3  T = 398.0693  P =  499999.      V =  0.00000      Q =-2.390809E-10
+      VOL-FLOW   =  0.4856E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   145.7     , BRAKE PWR  =   492.7     , ELEC PWR   =   492.7    
+      NPSH AVAIL =   0.000    
+
+      GENERATING RESULTS FOR UOS BLOCK B-PUMP   MODEL: PUMP                       TIME =    154.27
+      KODE = 5  NTRIAL =   4  T = 409.1698  P =  600710.      V =  0.00000      Q = 1.177523E-09
+
+      INFORMATION WHILE GENERATING RESULTS FOR UNIT OPERATIONS BLOCK: "B-PUMP"  
+      (MODEL: "PUMP")                                          (ANPSH.4)        
+      NET POSITIVE SUCTION HEAD IS LESS THAN ZERO                               
+      VOL-FLOW   =  0.6249E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   187.5     , BRAKE PWR  =   634.1     , ELEC PWR   =   634.1    
+      NPSH AVAIL = -0.9224    
+
+ Report Writer entered                                                            Time =    154.28
+
+ Results generated                                                                Time =    154.30
+
+
+*** INPUT SPECIFICATION MESSAGES ***
+
+ CHANGES WERE MADE TO BLOCK        COLUMN   06/13/2024   23:26:44:99 
+ BLOCK COLUMN RADFRAC
+     PARAM NSTAGE=30 ALGORITHM=STANDARD MAXOL=25 DAMPING=NONE
+     COL-CONFIG CONDENSER=TOTAL
+     FEEDS F 24
+     PRODUCTS D1 1 L / B1 30 L
+     P-SPEC 1 5.
+     COL-SPECS DP-COL=1. MOLE-D=25. MOLE-RR=1.
+     SPEC 1 MOLE-FRAC 0.8 COMPS=ETHANOL BASE-COMPS=ETHANOL WATER  &
+         STREAMS=D1 SPEC-DESCRIP="xDL"
+     SPEC 2 MOLE-FRAC 0.8 COMPS=WATER BASE-COMPS=ETHANOL WATER  &
+         STREAMS=B1 SPEC-DESCRIP="xBH"
+     VARY 1 MOLE-RR 0.5 40. 0.01
+     VARY 2 MOLE-D 20. 40. 0.01
+
+ PDF updated                                                                      TIME =   3200.12
+ THIS COPY OF ASPEN PLUS LICENSED TO NORWEGIAN UNIVERSITY OF         
+
+
+Calculations begin                                                              time   3200.13
+
+
+      UOS BLOCK COLUMN   MODEL: RADFRAC                                           TIME =   3200.13
+
+       Convergence iterations:
+         OL   ML   IL     Err/Tol
+          1    5   12      5.2393    
+          2    5    8      4.0569    
+          3    5    6      1.2963    
+          4    5    6      2.3695    
+          5    5    6      3.4434    
+          6    5    6      3.9803    
+          7    5    6      4.0693    
+          8    5    6      3.9654    
+          9    5    6      3.8246    
+         10    5    6      3.7150    
+         11    5    6      3.6537    
+         12    5    6      3.6372    
+         13    5    6      3.6579    
+         14    5    6      3.7072    
+         15    5    6      3.7758    
+         16    5    6      3.8537    
+         17    5    7      3.9323    
+         18    5    7      4.0058    
+         19    5    7      4.0721    
+         20    5    7      4.1317    
+         21    5    7      4.1870    
+         22    5    7      4.2408    
+         23    5    7      4.2957    
+         24    5    7      4.3535    
+         25    5    7      4.4151    
+
+  **  ERROR WHILE EXECUTING UNIT OPERATIONS BLOCK: "COLUMN" (MODEL: "RADFRAC")  
+                                                               (UDL03.1)        
+      RADFRAC NOT CONVERGED IN  25 OUTSIDE LOOP ITERATIONS.                     
+
+      RESULTS FOR MANIPULATED VARIABLES:
+      VARIABLE     FINAL VALUE    LOWER BOUND    UPPER BOUND
+         1          3.9000        0.50000         40.000    
+         2         0.82944E-02    0.55556E-02    0.11111E-01
+
+      UOS BLOCK D-PUMP   MODEL: PUMP                                              TIME =   3200.14
+      VOL-FLOW   =  0.4992E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   149.8     , BRAKE PWR  =   506.6     , ELEC PWR   =   506.6    
+
+      UOS BLOCK B6       MODEL: VALVE                                             TIME =   3200.14
+      KODE = 1  NTRIAL =   4  T = 390.6702  P =  400000.      V = 3.558424E-02  Q =  0.00000    
+      OUTLET PRES =   0.4000E+06 PRES DROP =   0.4000E+06
+
+      UOS BLOCK B-PUMP   MODEL: PUMP                                              TIME =   3200.14
+      VOL-FLOW   =  0.6111E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   183.3     , BRAKE PWR  =   620.0     , ELEC PWR   =   620.0    
+
+      UOS BLOCK B7       MODEL: VALVE                                             TIME =   3200.14
+      KODE = 1  NTRIAL =   5  T = 395.6714  P =  400000.      V = 4.114747E-02  Q =  0.00000    
+      OUTLET PRES =   0.4000E+06 PRES DROP =   0.5000E+06
+
+      GENERATING RESULTS FOR UOS BLOCK D-PUMP   MODEL: PUMP                       TIME =   3200.14
+      KODE = 5  NTRIAL =   3  T = 398.0741  P =  500001.      V =  0.00000      Q = 2.471937E-10
+      VOL-FLOW   =  0.4992E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   149.8     , BRAKE PWR  =   506.6     , ELEC PWR   =   506.6    
+      NPSH AVAIL =   0.000    
+
+      GENERATING RESULTS FOR UOS BLOCK B-PUMP   MODEL: PUMP                       TIME =   3200.14
+      KODE = 5  NTRIAL =   4  T = 409.2524  P =  600335.      V =  0.00000      Q =-1.161297E-09
+
+      INFORMATION WHILE GENERATING RESULTS FOR UNIT OPERATIONS BLOCK: "B-PUMP"  
+      (MODEL: "PUMP")                                          (ANPSH.4)        
+      NET POSITIVE SUCTION HEAD IS LESS THAN ZERO                               
+      VOL-FLOW   =  0.6111E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   183.3     , BRAKE PWR  =   620.0     , ELEC PWR   =   620.0    
+      NPSH AVAIL = -0.4344    
+
+ Report Writer entered                                                            Time =   3200.17
+
+ Results generated                                                                Time =   3200.19
+
+
+*** INPUT SPECIFICATION MESSAGES ***
+
+ CHANGES WERE MADE TO BLOCK        COLUMN   06/13/2024   23:27:38:99 
+ BLOCK COLUMN RADFRAC
+     PARAM NSTAGE=30 ALGORITHM=STANDARD MAXOL=25 DAMPING=NONE
+     COL-CONFIG CONDENSER=TOTAL
+     FEEDS F 24
+     PRODUCTS D1 1 L / B1 30 L
+     P-SPEC 1 5.
+     COL-SPECS DP-COL=1. MOLE-D=25. MOLE-RR=10.
+     SPEC 1 MOLE-FRAC 0.8 COMPS=ETHANOL BASE-COMPS=ETHANOL WATER  &
+         STREAMS=D1 SPEC-DESCRIP="xDL"
+     SPEC 2 MOLE-FRAC 0.8 COMPS=WATER BASE-COMPS=ETHANOL WATER  &
+         STREAMS=B1 SPEC-DESCRIP="xBH"
+     VARY 1 MOLE-RR 0.5 40. 0.01
+     VARY 2 MOLE-D 20. 40. 0.01
+
+ PDF updated                                                                      TIME =   3253.77
+ THIS COPY OF ASPEN PLUS LICENSED TO NORWEGIAN UNIVERSITY OF         
+
+
+Calculations begin                                                              time   3253.78
+
+
+      UOS BLOCK COLUMN   MODEL: RADFRAC                                           TIME =   3253.78
+
+       Convergence iterations:
+         OL   ML   IL     Err/Tol
+          1    6   14      2.6590    
+          2    5    8      5.9499    
+          3    5    8      6.6923    
+          4    5    7      6.5330    
+          5    5    7      5.9879    
+          6    5    7      5.4526    
+          7    5    7      5.1508    
+          8    5    7      5.0031    
+          9    5    7      4.9486    
+         10    5    7      4.9644    
+         11    5    7      5.0434    
+         12    5    7      5.1746    
+         13    5    7      5.3385    
+         14    5    7      5.5130    
+         15    5    7      5.6805    
+         16    5    7      5.8315    
+         17    5    7      5.9638    
+         18    5    7      6.0810    
+         19    5    7      6.1889    
+         20    5    7      6.2943    
+         21    5    7      6.4029    
+         22    5    8      6.5228    
+         23    5   10      6.6485    
+         24    5   10      6.7844    
+         25    5   10      6.9316    
+
+  **  ERROR WHILE EXECUTING UNIT OPERATIONS BLOCK: "COLUMN" (MODEL: "RADFRAC")  
+                                                               (UDL03.1)        
+      RADFRAC NOT CONVERGED IN  25 OUTSIDE LOOP ITERATIONS.                     
+
+      RESULTS FOR MANIPULATED VARIABLES:
+      VARIABLE     FINAL VALUE    LOWER BOUND    UPPER BOUND
+         1          2.9200        0.50000         40.000    
+         2         0.85667E-02    0.55556E-02    0.11111E-01
+
+      UOS BLOCK D-PUMP   MODEL: PUMP                                              TIME =   3253.78
+      VOL-FLOW   =  0.5115E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   153.5     , BRAKE PWR  =   519.0     , ELEC PWR   =   519.0    
+
+      UOS BLOCK B6       MODEL: VALVE                                             TIME =   3253.78
+      KODE = 1  NTRIAL =   4  T = 390.6815  P =  400000.      V = 3.534711E-02  Q =  0.00000    
+      OUTLET PRES =   0.4000E+06 PRES DROP =   0.4000E+06
+
+      UOS BLOCK B-PUMP   MODEL: PUMP                                              TIME =   3253.79
+      VOL-FLOW   =  0.5986E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   179.6     , BRAKE PWR  =   607.4     , ELEC PWR   =   607.4    
+
+      UOS BLOCK B7       MODEL: VALVE                                             TIME =   3253.79
+      KODE = 1  NTRIAL =   5  T = 395.7598  P =  400000.      V = 4.092916E-02  Q =  0.00000    
+      OUTLET PRES =   0.4000E+06 PRES DROP =   0.5000E+06
+
+      GENERATING RESULTS FOR UOS BLOCK D-PUMP   MODEL: PUMP                       TIME =   3253.79
+      KODE = 5  NTRIAL =   3  T = 398.0833  P =  500003.      V =  0.00000      Q =-2.553066E-10
+      VOL-FLOW   =  0.5115E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   153.5     , BRAKE PWR  =   519.0     , ELEC PWR   =   519.0    
+      NPSH AVAIL =   0.000    
+
+      GENERATING RESULTS FOR UOS BLOCK B-PUMP   MODEL: PUMP                       TIME =   3253.79
+      KODE = 5  NTRIAL =   4  T = 409.3245  P =  600169.      V =  0.00000      Q =  0.00000    
+
+      INFORMATION WHILE GENERATING RESULTS FOR UNIT OPERATIONS BLOCK: "B-PUMP"  
+      (MODEL: "PUMP")                                          (ANPSH.4)        
+      NET POSITIVE SUCTION HEAD IS LESS THAN ZERO                               
+      VOL-FLOW   =  0.5986E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   179.6     , BRAKE PWR  =   607.4     , ELEC PWR   =   607.4    
+      NPSH AVAIL = -0.2185    
+
+ Report Writer entered                                                            Time =   3253.80
+
+ Results generated                                                                Time =   3253.83
+
+
+*** INPUT SPECIFICATION MESSAGES ***
+
+ CHANGES WERE MADE TO BLOCK        COLUMN   06/13/2024   23:29:05:99 
+ BLOCK COLUMN RADFRAC
+     PARAM NSTAGE=30 ALGORITHM=STANDARD MAXOL=25 DAMPING=NONE
+     COL-CONFIG CONDENSER=TOTAL
+     FEEDS F 24
+     PRODUCTS D1 1 L / B1 30 L
+     P-SPEC 1 5.
+     COL-SPECS DP-COL=1. MOLE-D=25. MOLE-RR=25.
+     SPEC 1 MOLE-FRAC 0.8 COMPS=ETHANOL BASE-COMPS=ETHANOL WATER  &
+         STREAMS=D1 SPEC-DESCRIP="xDL"
+     SPEC 2 MOLE-FRAC 0.8 COMPS=WATER BASE-COMPS=ETHANOL WATER  &
+         STREAMS=B1 SPEC-DESCRIP="xBH"
+     VARY 1 MOLE-RR 0.5 40. 0.01
+     VARY 2 MOLE-D 20. 40. 0.01
+
+ PDF updated                                                                      TIME =   3340.67
+ THIS COPY OF ASPEN PLUS LICENSED TO NORWEGIAN UNIVERSITY OF         
+
+
+Calculations begin                                                              time   3340.68
+
+
+      UOS BLOCK COLUMN   MODEL: RADFRAC                                           TIME =   3340.68
+
+       Convergence iterations:
+         OL   ML   IL     Err/Tol
+          1    6   15      3.5652    
+          2    5   11      6.7550    
+          3    5   11      8.7806    
+          4    5   11      9.6440    
+          5    5   11      9.7594    
+          6    5   11      9.5172    
+          7    5   11      9.4373    
+          8    5   11      9.3375    
+          9    5   11      9.2292    
+         10    5   10      8.2491    
+         11    5   10      7.1685    
+         12    5    9      6.1088    
+         13    5   10      5.1025    
+         14    5    9      4.0733    
+         15    5    8      3.3718    
+         16    5    8      2.7722    
+         17    5    8      2.4000    
+         18    5    8      2.1183    
+         19    5    8      1.9633    
+         20    5    8      1.8755    
+         21    5    8      1.8567    
+         22    5    8      1.8724    
+         23    5    8      1.9158    
+         24    5    8      1.9698    
+         25    5    8      2.0270    
+
+  **  ERROR WHILE EXECUTING UNIT OPERATIONS BLOCK: "COLUMN" (MODEL: "RADFRAC")  
+                                                               (UDL03.1)        
+      RADFRAC NOT CONVERGED IN  25 OUTSIDE LOOP ITERATIONS.                     
+
+      RESULTS FOR MANIPULATED VARIABLES:
+      VARIABLE     FINAL VALUE    LOWER BOUND    UPPER BOUND
+         1          2.3515        0.50000         40.000    
+         2         0.88389E-02    0.55556E-02    0.11111E-01
+
+      UOS BLOCK D-PUMP   MODEL: PUMP                                              TIME =   3340.69
+      VOL-FLOW   =  0.5245E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   157.4     , BRAKE PWR  =   532.2     , ELEC PWR   =   532.2    
+
+      UOS BLOCK B6       MODEL: VALVE                                             TIME =   3340.69
+      KODE = 1  NTRIAL =   4  T = 390.6921  P =  400000.      V = 3.516656E-02  Q =  0.00000    
+      OUTLET PRES =   0.4000E+06 PRES DROP =   0.4000E+06
+
+      UOS BLOCK B-PUMP   MODEL: PUMP                                              TIME =   3340.69
+      VOL-FLOW   =  0.5854E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   175.6     , BRAKE PWR  =   594.0     , ELEC PWR   =   594.0    
+
+      UOS BLOCK B7       MODEL: VALVE                                             TIME =   3340.69
+      KODE = 1  NTRIAL =   5  T = 395.8726  P =  400000.      V = 4.074256E-02  Q =  0.00000    
+      OUTLET PRES =   0.4000E+06 PRES DROP =   0.5000E+06
+
+      GENERATING RESULTS FOR UOS BLOCK D-PUMP   MODEL: PUMP                       TIME =   3340.69
+      KODE = 5  NTRIAL =   3  T = 398.0921  P =  500001.      V =  0.00000      Q =  0.00000    
+      VOL-FLOW   =  0.5245E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   157.4     , BRAKE PWR  =   532.2     , ELEC PWR   =   532.2    
+      NPSH AVAIL =   0.000    
+
+      GENERATING RESULTS FOR UOS BLOCK B-PUMP   MODEL: PUMP                       TIME =   3340.69
+      KODE = 5  NTRIAL =   4  T = 409.4439  P =  600433.      V =  0.00000      Q = 1.128846E-09
+
+      INFORMATION WHILE GENERATING RESULTS FOR UNIT OPERATIONS BLOCK: "B-PUMP"  
+      (MODEL: "PUMP")                                          (ANPSH.4)        
+      NET POSITIVE SUCTION HEAD IS LESS THAN ZERO                               
+      VOL-FLOW   =  0.5854E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   175.6     , BRAKE PWR  =   594.0     , ELEC PWR   =   594.0    
+      NPSH AVAIL = -0.5595    
+
+ Report Writer entered                                                            Time =   3340.70
+
+ Results generated                                                                Time =   3340.72
+
+
+*** INPUT SPECIFICATION MESSAGES ***
+
+ CHANGES WERE MADE TO BLOCK        COLUMN   06/13/2024   23:29:24:99 
+ BLOCK COLUMN RADFRAC
+     PARAM NSTAGE=30 ALGORITHM=STANDARD MAXOL=25 DAMPING=NONE
+     COL-CONFIG CONDENSER=TOTAL
+     FEEDS F 24
+     PRODUCTS D1 1 L / B1 30 L
+     P-SPEC 1 5.
+     COL-SPECS DP-COL=1. MOLE-D=25. MOLE-RR=3.
+     SPEC 1 MOLE-FRAC 0.8 COMPS=ETHANOL BASE-COMPS=ETHANOL WATER  &
+         STREAMS=D1 SPEC-DESCRIP="xDL"
+     SPEC 2 MOLE-FRAC 0.8 COMPS=WATER BASE-COMPS=ETHANOL WATER  &
+         STREAMS=B1 SPEC-DESCRIP="xBH"
+     VARY 1 MOLE-RR 0.5 40. 0.01
+     VARY 2 MOLE-D 20. 40. 0.01
+
+ PDF updated                                                                      TIME =   3359.87
+ THIS COPY OF ASPEN PLUS LICENSED TO NORWEGIAN UNIVERSITY OF         
+
+
+Calculations begin                                                              time   3359.88
+
+
+      UOS BLOCK COLUMN   MODEL: RADFRAC                                           TIME =   3359.88
+
+       Convergence iterations:
+         OL   ML   IL     Err/Tol
+          1    6   14      1.4966    
+          2    5    8      1.6853    
+          3    5    7      1.6403    
+          4    5    6      1.6706    
+          5    5    6      1.7440    
+          6    5    6      1.8299    
+          7    5    6      1.9106    
+          8    5    6      1.9783    
+          9    5    6      2.0307    
+         10    5    6      2.0681    
+         11    5    6      2.0923    
+         12    5    6      2.1058    
+         13    5    6      2.1108    
+         14    5    6      2.1100    
+         15    5    6      2.1053    
+         16    5    6      2.0987    
+         17    5    6      2.0916    
+         18    5    6      2.0852    
+         19    5    6      2.0802    
+         20    5    6      2.0770    
+         21    5    6      2.0758    
+         22    5    6      2.0763    
+         23    5    6      2.0784    
+         24    5    6      2.0817    
+         25    5    6      2.0858    
+
+  **  ERROR WHILE EXECUTING UNIT OPERATIONS BLOCK: "COLUMN" (MODEL: "RADFRAC")  
+                                                               (UDL03.1)        
+      RADFRAC NOT CONVERGED IN  25 OUTSIDE LOOP ITERATIONS.                     
+
+      RESULTS FOR MANIPULATED VARIABLES:
+      VARIABLE     FINAL VALUE    LOWER BOUND    UPPER BOUND
+         1          2.1860        0.50000         40.000    
+         2         0.91111E-02    0.55556E-02    0.11111E-01
+
+      UOS BLOCK D-PUMP   MODEL: PUMP                                              TIME =   3359.89
+      VOL-FLOW   =  0.5392E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   161.8     , BRAKE PWR  =   547.1     , ELEC PWR   =   547.1    
+
+      UOS BLOCK B6       MODEL: VALVE                                             TIME =   3359.89
+      KODE = 1  NTRIAL =   4  T = 390.6975  P =  400000.      V = 3.508486E-02  Q =  0.00000    
+      OUTLET PRES =   0.4000E+06 PRES DROP =   0.4000E+06
+
+      UOS BLOCK B-PUMP   MODEL: PUMP                                              TIME =   3359.89
+      VOL-FLOW   =  0.5706E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   171.2     , BRAKE PWR  =   579.0     , ELEC PWR   =   579.0    
+
+      UOS BLOCK B7       MODEL: VALVE                                             TIME =   3359.89
+      KODE = 1  NTRIAL =   5  T = 396.0354  P =  400000.      V = 4.042295E-02  Q =  0.00000    
+      OUTLET PRES =   0.4000E+06 PRES DROP =   0.5000E+06
+
+      GENERATING RESULTS FOR UOS BLOCK D-PUMP   MODEL: PUMP                       TIME =   3359.89
+      KODE = 5  NTRIAL =   3  T = 398.0968  P =  500001.      V =  0.00000      Q = 2.715323E-10
+      VOL-FLOW   =  0.5392E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   161.8     , BRAKE PWR  =   547.1     , ELEC PWR   =   547.1    
+      NPSH AVAIL =   0.000    
+
+      GENERATING RESULTS FOR UOS BLOCK B-PUMP   MODEL: PUMP                       TIME =   3359.89
+      KODE = 5  NTRIAL =   4  T = 409.5950  P =  600456.      V =  0.00000      Q = 2.225240E-09
+
+      INFORMATION WHILE GENERATING RESULTS FOR UNIT OPERATIONS BLOCK: "B-PUMP"  
+      (MODEL: "PUMP")                                          (ANPSH.4)        
+      NET POSITIVE SUCTION HEAD IS LESS THAN ZERO                               
+      VOL-FLOW   =  0.5706E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   171.2     , BRAKE PWR  =   579.0     , ELEC PWR   =   579.0    
+      NPSH AVAIL = -0.5879    
+
+ Report Writer entered                                                            Time =   3359.89
+
+ Results generated                                                                Time =   3359.90
+
+
+*** INPUT SPECIFICATION MESSAGES ***
+
+ Report Writer entered                                                            Time =   3484.36
+
+ Results generated                                                                Time =   3484.37
+
+
+*** INPUT SPECIFICATION MESSAGES ***
+
+ CHANGES WERE MADE TO BLOCK        COLUMN   06/13/2024   23:31:47:99 
+ BLOCK COLUMN RADFRAC
+     PARAM NSTAGE=30 ALGORITHM=STANDARD MAXOL=25 DAMPING=NONE
+     COL-CONFIG CONDENSER=TOTAL
+     FEEDS F 15
+     PRODUCTS D1 1 L / B1 30 L
+     P-SPEC 1 5.
+     COL-SPECS DP-COL=1. MOLE-D=25. MOLE-RR=3.
+     SPEC 1 MOLE-FRAC 0.8 COMPS=ETHANOL BASE-COMPS=ETHANOL WATER  &
+         STREAMS=D1 SPEC-DESCRIP="xDL"
+     SPEC 2 MOLE-FRAC 0.8 COMPS=WATER BASE-COMPS=ETHANOL WATER  &
+         STREAMS=B1 SPEC-DESCRIP="xBH"
+     VARY 1 MOLE-RR 0.5 40. 0.01
+     VARY 2 MOLE-D 20. 40. 0.01
+
+ PDF updated                                                                      TIME =   3502.97
+ THIS COPY OF ASPEN PLUS LICENSED TO NORWEGIAN UNIVERSITY OF         
+
+
+Calculations begin                                                              time   3502.97
+
+
+      UOS BLOCK COLUMN   MODEL: RADFRAC                                           TIME =   3502.97
+
+       Convergence iterations:
+         OL   ML   IL     Err/Tol
+          1    6   16      32.687    
+          2    5   13      28.007    
+          3    5   12      9.1286    
+          4    5   11      12.460    
+          5    5   12      15.082    
+          6    5   11      16.081    
+          7    5   11      14.450    
+          8    5   11      12.626    
+          9    5   11      11.137    
+         10    5   11      10.030    
+         11    5   11      9.2657    
+         12    5   11      7.7114    
+         13    5   11      5.8680    
+         14    5   10      4.2046    
+         15    5   11      1.9474    
+         16    2    4     0.90131    
+
+      RESULTS FOR MANIPULATED VARIABLES:
+      VARIABLE     FINAL VALUE    LOWER BOUND    UPPER BOUND
+         1          2.7067        0.50000         40.000    
+         2         0.92593E-02    0.55556E-02    0.11111E-01
+
+      UOS BLOCK D-PUMP   MODEL: PUMP                                              TIME =   3502.98
+      VOL-FLOW   =  0.5471E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   164.1     , BRAKE PWR  =   555.1     , ELEC PWR   =   555.1    
+
+      UOS BLOCK B6       MODEL: VALVE                                             TIME =   3502.98
+      KODE = 1  NTRIAL =   4  T = 390.7005  P =  400000.      V = 3.503995E-02  Q =  0.00000    
+      OUTLET PRES =   0.4000E+06 PRES DROP =   0.4000E+06
+
+      UOS BLOCK B-PUMP   MODEL: PUMP                                              TIME =   3502.98
+      VOL-FLOW   =  0.5626E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   168.8     , BRAKE PWR  =   570.8     , ELEC PWR   =   570.8    
+
+      UOS BLOCK B7       MODEL: VALVE                                             TIME =   3502.98
+      KODE = 1  NTRIAL =   5  T = 396.1285  P =  400000.      V = 4.016569E-02  Q =  0.00000    
+      OUTLET PRES =   0.4000E+06 PRES DROP =   0.5000E+06
+
+      GENERATING RESULTS FOR UOS BLOCK D-PUMP   MODEL: PUMP                       TIME =   3502.98
+      KODE = 5  NTRIAL =   3  T = 398.0994  P =  500000.      V =  0.00000      Q =-2.759491E-10
+      VOL-FLOW   =  0.5471E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   164.1     , BRAKE PWR  =   555.1     , ELEC PWR   =   555.1    
+      NPSH AVAIL =   0.000    
+
+      GENERATING RESULTS FOR UOS BLOCK B-PUMP   MODEL: PUMP                       TIME =   3502.98
+      KODE = 5  NTRIAL =   4  T = 409.6544  P =  600006.      V =  0.00000      Q =  0.00000    
+      VOL-FLOW   =  0.5626E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   168.8     , BRAKE PWR  =   570.8     , ELEC PWR   =   570.8    
+      NPSH AVAIL =   0.000    
+
+      CHECKING PHASE EQUILIBRIUM RESULTS                                          TIME =   3502.98
+
+      CHECKING PHASE EQUILIBRIUM RESULTS                                          TIME =   3502.98
+
+ Report Writer entered                                                            Time =   3503.01
+
+ Results generated                                                                Time =   3503.02
+
+
+*** INPUT SPECIFICATION MESSAGES ***
+
+ CHANGES WERE MADE TO BLOCK        COLUMN   06/13/2024   23:32:11:99 
+ BLOCK COLUMN RADFRAC
+     PARAM NSTAGE=30 ALGORITHM=STANDARD MAXOL=25 DAMPING=NONE
+     COL-CONFIG CONDENSER=TOTAL
+     FEEDS F 15
+     PRODUCTS D1 1 L / B1 30 L
+     P-SPEC 1 5.
+     COL-SPECS DP-COL=1. MOLE-D=25. MOLE-RR=3.
+     SPEC 1 MOLE-FRAC 0.95 COMPS=ETHANOL BASE-COMPS=ETHANOL  &
+         WATER STREAMS=D1 SPEC-DESCRIP="xDL"
+     SPEC 2 MOLE-FRAC 0.95 COMPS=WATER BASE-COMPS=ETHANOL WATER  &
+         STREAMS=B1 SPEC-DESCRIP="xBH"
+     VARY 1 MOLE-RR 0.5 40. 0.01
+     VARY 2 MOLE-D 20. 40. 0.01
+
+ PDF updated                                                                      TIME =   3526.91
+ THIS COPY OF ASPEN PLUS LICENSED TO NORWEGIAN UNIVERSITY OF         
+
+
+Calculations begin                                                              time   3526.92
+
+
+      UOS BLOCK COLUMN   MODEL: RADFRAC                                           TIME =   3526.92
+
+       Convergence iterations:
+         OL   ML   IL     Err/Tol
+          1    6   15      3.6032    
+          2    7   15      6.5038    
+          3    7   14      8.2275    
+          4    7   13      9.0675    
+          5    7   13      9.1345    
+          6    7   13      8.8326    
+          7    7   13      8.4863    
+          8    7   13      8.2007    
+          9    7   13      7.9930    
+         10    7   13      7.8531    
+         11    7   13      7.7616    
+         12    7   13      7.6972    
+         13    7   12      7.6419    
+         14    7   12      7.5845    
+         15    7   12      7.5201    
+         16    7   12      7.4483    
+         17    7   12      7.3713    
+         18    7   12      7.2920    
+         19    7   12      7.2130    
+         20    7   12      7.1359    
+         21    7   12      7.0617    
+         22    7   12      6.9904    
+         23    7   11      6.9218    
+         24    7   11      6.8553    
+         25    7   11      6.7906    
+
+  **  ERROR WHILE EXECUTING UNIT OPERATIONS BLOCK: "COLUMN" (MODEL: "RADFRAC")  
+                                                               (UDL03.1)        
+      RADFRAC NOT CONVERGED IN  25 OUTSIDE LOOP ITERATIONS.                     
+
+      RESULTS FOR MANIPULATED VARIABLES:
+      VARIABLE     FINAL VALUE    LOWER BOUND    UPPER BOUND
+         1          3.6867        0.50000         40.000    
+         2         0.95315E-02    0.55556E-02    0.11111E-01
+
+      UOS BLOCK D-PUMP   MODEL: PUMP                                              TIME =   3526.92
+      VOL-FLOW   =  0.5685E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   170.5     , BRAKE PWR  =   576.8     , ELEC PWR   =   576.8    
+
+      UOS BLOCK B6       MODEL: VALVE                                             TIME =   3526.92
+      KODE = 1  NTRIAL =   4  T = 390.6834  P =  400000.      V = 3.531054E-02  Q =  0.00000    
+      OUTLET PRES =   0.4000E+06 PRES DROP =   0.4000E+06
+
+      UOS BLOCK B-PUMP   MODEL: PUMP                                              TIME =   3526.92
+      VOL-FLOW   =  0.5411E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   162.3     , BRAKE PWR  =   549.1     , ELEC PWR   =   549.1    
+
+      UOS BLOCK B7       MODEL: VALVE                                             TIME =   3526.92
+      KODE = 1  NTRIAL =   5  T = 396.5228  P =  400000.      V = 3.961732E-02  Q =  0.00000    
+      OUTLET PRES =   0.4000E+06 PRES DROP =   0.5000E+06
+
+      GENERATING RESULTS FOR UOS BLOCK D-PUMP   MODEL: PUMP                       TIME =   3526.92
+      KODE = 5  NTRIAL =   3  T = 398.0845  P =  499998.      V =  0.00000      Q =-2.840620E-10
+      VOL-FLOW   =  0.5685E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   170.5     , BRAKE PWR  =   576.8     , ELEC PWR   =   576.8    
+      NPSH AVAIL =   0.000    
+
+      GENERATING RESULTS FOR UOS BLOCK B-PUMP   MODEL: PUMP                       TIME =   3526.92
+      KODE = 5  NTRIAL =   4  T = 410.0672  P =  600909.      V =  0.00000      Q =  0.00000    
+
+      INFORMATION WHILE GENERATING RESULTS FOR UNIT OPERATIONS BLOCK: "B-PUMP"  
+      (MODEL: "PUMP")                                          (ANPSH.4)        
+      NET POSITIVE SUCTION HEAD IS LESS THAN ZERO                               
+      VOL-FLOW   =  0.5411E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   162.3     , BRAKE PWR  =   549.1     , ELEC PWR   =   549.1    
+      NPSH AVAIL =  -1.161    
+
+ Report Writer entered                                                            Time =   3526.94
+
+ Results generated                                                                Time =   3526.96
+
+
+*** INPUT SPECIFICATION MESSAGES ***
+
+ CHANGES WERE MADE TO BLOCK        COLUMN   06/13/2024   23:33:10:99 
+ BLOCK COLUMN RADFRAC
+     PARAM NSTAGE=30 ALGORITHM=STANDARD MAXOL=25 DAMPING=NONE
+     COL-CONFIG CONDENSER=TOTAL
+     FEEDS F 15
+     PRODUCTS D1 1 L / B1 30 L
+     P-SPEC 1 5.
+     COL-SPECS DP-COL=1. MOLE-D=25. MOLE-RR=3.
+     SPEC 1 MOLE-FRAC 0.95 COMPS=ETHANOL BASE-COMPS=ETHANOL  &
+         WATER STREAMS=D1 SPEC-DESCRIP="xDL"
+     SPEC 2 MOLE-FRAC 0.95 COMPS=WATER BASE-COMPS=ETHANOL WATER  &
+         STREAMS=B1 SPEC-DESCRIP="xBH"
+     VARY 1 MOLE-RR 0.5 40. 0.01
+     VARY 2 MOLE-D 20. 100. 0.01
+
+ PDF updated                                                                      TIME =   3585.93
+ THIS COPY OF ASPEN PLUS LICENSED TO NORWEGIAN UNIVERSITY OF         
+
+
+Calculations begin                                                              time   3585.93
+
+
+      UOS BLOCK COLUMN   MODEL: RADFRAC                                           TIME =   3585.93
+
+       Convergence iterations:
+         OL   ML   IL     Err/Tol
+          1    5   13      10.788    
+          2    7   13      13.604    
+          3    7   13      9.2036    
+          4    7   12      7.0028    
+          5    7   12      6.6232    
+          6    7   12      6.5807    
+          7    7   12      6.3926    
+          8    7   12      6.2047    
+          9    7   12      6.1159    
+         10    7   12      6.0972    
+         11    7   12      6.0947    
+         12    7   12      6.0806    
+         13    7   12      6.0494    
+         14    7   11      6.0052    
+         15    7   11      5.9538    
+         16    7   11      5.9000    
+         17    7   11      5.8473    
+         18    7   11      5.7970    
+         19    7   10      5.7493    
+         20    7   10      5.7039    
+         21    7   10      5.6599    
+         22    7   10      5.6169    
+         23    7    9      5.5745    
+         24    7    9      5.5327    
+         25    7    9      5.4913    
+
+  **  ERROR WHILE EXECUTING UNIT OPERATIONS BLOCK: "COLUMN" (MODEL: "RADFRAC")  
+                                                               (UDL03.1)        
+      RADFRAC NOT CONVERGED IN  25 OUTSIDE LOOP ITERATIONS.                     
+
+      RESULTS FOR MANIPULATED VARIABLES:
+      VARIABLE     FINAL VALUE    LOWER BOUND    UPPER BOUND
+         1          4.6667        0.50000         40.000    
+         2         0.98038E-02    0.55556E-02    0.27778E-01
+
+      UOS BLOCK D-PUMP   MODEL: PUMP                                              TIME =   3585.94
+      VOL-FLOW   =  0.5874E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   176.2     , BRAKE PWR  =   596.0     , ELEC PWR   =   596.0    
+
+      UOS BLOCK B6       MODEL: VALVE                                             TIME =   3585.94
+      KODE = 1  NTRIAL =   4  T = 390.6764  P =  400000.      V = 3.544586E-02  Q =  0.00000    
+      OUTLET PRES =   0.4000E+06 PRES DROP =   0.4000E+06
+
+      UOS BLOCK B-PUMP   MODEL: PUMP                                              TIME =   3585.94
+      VOL-FLOW   =  0.5221E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   156.6     , BRAKE PWR  =   529.8     , ELEC PWR   =   529.8    
+
+      UOS BLOCK B7       MODEL: VALVE                                             TIME =   3585.94
+      KODE = 1  NTRIAL =   5  T = 396.8991  P =  400000.      V = 3.900823E-02  Q =  0.00000    
+      OUTLET PRES =   0.4000E+06 PRES DROP =   0.5000E+06
+
+      GENERATING RESULTS FOR UOS BLOCK D-PUMP   MODEL: PUMP                       TIME =   3585.94
+      KODE = 5  NTRIAL =   3  T = 398.0788  P =  499999.      V =  0.00000      Q =-8.765245E-10
+      VOL-FLOW   =  0.5874E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   176.2     , BRAKE PWR  =   596.0     , ELEC PWR   =   596.0    
+      NPSH AVAIL =   0.000    
+
+      GENERATING RESULTS FOR UOS BLOCK B-PUMP   MODEL: PUMP                       TIME =   3585.94
+      KODE = 5  NTRIAL =   4  T = 410.4088  P =  600889.      V =  0.00000      Q =  0.00000    
+
+      INFORMATION WHILE GENERATING RESULTS FOR UNIT OPERATIONS BLOCK: "B-PUMP"  
+      (MODEL: "PUMP")                                          (ANPSH.4)        
+      NET POSITIVE SUCTION HEAD IS LESS THAN ZERO                               
+      VOL-FLOW   =  0.5221E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   156.6     , BRAKE PWR  =   529.8     , ELEC PWR   =   529.8    
+      NPSH AVAIL =  -1.129    
+
+ Report Writer entered                                                            Time =   3585.94
+
+ Results generated                                                                Time =   3585.96
+
+
+*** INPUT SPECIFICATION MESSAGES ***
+
+ CHANGES WERE MADE TO BLOCK        COLUMN   06/13/2024   23:33:28:09 
+ BLOCK COLUMN RADFRAC
+     PARAM NSTAGE=30 ALGORITHM=STANDARD MAXOL=25 DAMPING=NONE
+     COL-CONFIG CONDENSER=TOTAL
+     FEEDS F 15
+     PRODUCTS D1 1 L / B1 30 L
+     P-SPEC 1 5.
+     COL-SPECS DP-COL=1. MOLE-D=30. MOLE-RR=5.
+     SPEC 1 MOLE-FRAC 0.95 COMPS=ETHANOL BASE-COMPS=ETHANOL  &
+         WATER STREAMS=D1 SPEC-DESCRIP="xDL"
+     SPEC 2 MOLE-FRAC 0.95 COMPS=WATER BASE-COMPS=ETHANOL WATER  &
+         STREAMS=B1 SPEC-DESCRIP="xBH"
+     VARY 1 MOLE-RR 0.5 40. 0.01
+     VARY 2 MOLE-D 20. 100. 0.01
+
+ PDF updated                                                                      TIME =   3603.35
+ THIS COPY OF ASPEN PLUS LICENSED TO NORWEGIAN UNIVERSITY OF         
+
+
+Calculations begin                                                              time   3603.36
+
+
+      UOS BLOCK COLUMN   MODEL: RADFRAC                                           TIME =   3603.36
+
+       Convergence iterations:
+         OL   ML   IL     Err/Tol
+          1    5   12      10.754    
+          2    7   11      13.795    
+          3    7   11      9.0295    
+          4    7   10      5.4201    
+          5    7   10      4.7927    
+          6    7   10      5.1546    
+          7    7    9      5.1883    
+          8    7    9      5.0796    
+          9    7    9      5.0436    
+         10    7    9      5.0616    
+         11    7    9      5.0681    
+         12    7    9      5.0461    
+         13    7    9      5.0079    
+         14    7    9      4.9661    
+         15    7    9      4.9262    
+         16    7    9      4.8895    
+         17    7    9      4.8557    
+         18    7    8      4.8265    
+         19    7    8      4.7971    
+         20    7    8      4.7636    
+         21    7    8      4.7324    
+         22    7    8      4.7031    
+         23    7    8      4.6741    
+         24    7    8      4.6452    
+         25    7    8      4.6164    
+
+  **  ERROR WHILE EXECUTING UNIT OPERATIONS BLOCK: "COLUMN" (MODEL: "RADFRAC")  
+                                                               (UDL03.1)        
+      RADFRAC NOT CONVERGED IN  25 OUTSIDE LOOP ITERATIONS.                     
+
+      RESULTS FOR MANIPULATED VARIABLES:
+      VARIABLE     FINAL VALUE    LOWER BOUND    UPPER BOUND
+         1          5.6467        0.50000         40.000    
+         2         0.10076E-01    0.55556E-02    0.27778E-01
+
+      UOS BLOCK D-PUMP   MODEL: PUMP                                              TIME =   3603.37
+      VOL-FLOW   =  0.6055E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   181.7     , BRAKE PWR  =   614.4     , ELEC PWR   =   614.4    
+
+      UOS BLOCK B6       MODEL: VALVE                                             TIME =   3603.37
+      KODE = 1  NTRIAL =   4  T = 390.6723  P =  400000.      V = 3.553597E-02  Q =  0.00000    
+      OUTLET PRES =   0.4000E+06 PRES DROP =   0.4000E+06
+
+      UOS BLOCK B-PUMP   MODEL: PUMP                                              TIME =   3603.37
+      VOL-FLOW   =  0.5039E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   151.2     , BRAKE PWR  =   511.3     , ELEC PWR   =   511.3    
+
+      UOS BLOCK B7       MODEL: VALVE                                             TIME =   3603.37
+      KODE = 1  NTRIAL =   5  T = 397.3068  P =  400000.      V = 3.841881E-02  Q =  0.00000    
+      OUTLET PRES =   0.4000E+06 PRES DROP =   0.5000E+06
+
+      GENERATING RESULTS FOR UOS BLOCK D-PUMP   MODEL: PUMP                       TIME =   3603.37
+      KODE = 5  NTRIAL =   3  T = 398.0755  P =  499999.      V =  0.00000      Q = 3.002877E-10
+      VOL-FLOW   =  0.6055E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   181.7     , BRAKE PWR  =   614.4     , ELEC PWR   =   614.4    
+      NPSH AVAIL =   0.000    
+
+      GENERATING RESULTS FOR UOS BLOCK B-PUMP   MODEL: PUMP                       TIME =   3603.37
+      KODE = 5  NTRIAL =   4  T = 410.7802  P =  600903.      V =  0.00000      Q =  0.00000    
+
+      INFORMATION WHILE GENERATING RESULTS FOR UNIT OPERATIONS BLOCK: "B-PUMP"  
+      (MODEL: "PUMP")                                          (ANPSH.4)        
+      NET POSITIVE SUCTION HEAD IS LESS THAN ZERO                               
+      VOL-FLOW   =  0.5039E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   151.2     , BRAKE PWR  =   511.3     , ELEC PWR   =   511.3    
+      NPSH AVAIL =  -1.141    
+
+ Report Writer entered                                                            Time =   3603.39
+
+ Results generated                                                                Time =   3603.41
+
+
+*** INPUT SPECIFICATION MESSAGES ***
+
+ CHANGES WERE MADE TO BLOCK        COLUMN   06/13/2024   23:47:55:99 
+ BLOCK COLUMN RADFRAC
+     PARAM NSTAGE=30 ALGORITHM=STANDARD MAXOL=25 DAMPING=NONE
+     COL-CONFIG CONDENSER=TOTAL
+     FEEDS F 15
+     PRODUCTS D1 1 L / B1 30 L
+     P-SPEC 1 5.
+     COL-SPECS DP-COL=1. MOLE-D=30. MOLE-RR=5.
+     SPEC 1 MOLE-FRAC 0.9 COMPS=ETHANOL BASE-COMPS=ETHANOL WATER  &
+         STREAMS=D1 SPEC-DESCRIP="xDL"
+     SPEC 2 MOLE-FRAC 0.9 COMPS=WATER BASE-COMPS=ETHANOL WATER  &
+         STREAMS=B1 SPEC-DESCRIP="xBH"
+     VARY 1 MOLE-RR 0.5 40. 0.01
+     VARY 2 MOLE-D 20. 100. 0.01
+
+ PDF updated                                                                      TIME =   4471.16
+ THIS COPY OF ASPEN PLUS LICENSED TO NORWEGIAN UNIVERSITY OF         
+
+
+Calculations begin                                                              time   4471.16
+
+
+      UOS BLOCK COLUMN   MODEL: RADFRAC                                           TIME =   4471.16
+
+       Convergence iterations:
+         OL   ML   IL     Err/Tol
+          1    5   12      10.467    
+          2    7   10      13.609    
+          3    7   10      9.2786    
+          4    7    9      4.3718    
+          5    7    9      3.4794    
+          6    7    9      4.3263    
+          7    7    8      4.4930    
+          8    7    8      4.3794    
+          9    7    8      4.3038    
+         10    7    8      4.3234    
+         11    7    8      4.3345    
+         12    7    8      4.3072    
+         13    7    8      4.2672    
+         14    7    8      4.2338    
+         15    7    8      4.2080    
+         16    7    8      4.1853    
+         17    7    8      4.1636    
+         18    7    8      4.1423    
+         19    7    8      4.1211    
+         20    7    8      4.0999    
+         21    7    8      4.0787    
+         22    7    8      4.0576    
+         23    7    8      4.0368    
+         24    7    8      4.0164    
+         25    7    8      3.9963    
+
+  **  ERROR WHILE EXECUTING UNIT OPERATIONS BLOCK: "COLUMN" (MODEL: "RADFRAC")  
+                                                               (UDL03.1)        
+      RADFRAC NOT CONVERGED IN  25 OUTSIDE LOOP ITERATIONS.                     
+
+      RESULTS FOR MANIPULATED VARIABLES:
+      VARIABLE     FINAL VALUE    LOWER BOUND    UPPER BOUND
+         1          6.6267        0.50000         40.000    
+         2         0.10348E-01    0.55556E-02    0.27778E-01
+
+      UOS BLOCK D-PUMP   MODEL: PUMP                                              TIME =   4471.17
+      VOL-FLOW   =  0.6232E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   187.0     , BRAKE PWR  =   632.4     , ELEC PWR   =   632.4    
+
+      UOS BLOCK B6       MODEL: VALVE                                             TIME =   4471.17
+      KODE = 1  NTRIAL =   4  T = 390.6696  P =  400000.      V = 3.560045E-02  Q =  0.00000    
+      OUTLET PRES =   0.4000E+06 PRES DROP =   0.4000E+06
+
+      UOS BLOCK B-PUMP   MODEL: PUMP                                              TIME =   4471.17
+      VOL-FLOW   =  0.4861E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   145.8     , BRAKE PWR  =   493.3     , ELEC PWR   =   493.3    
+
+      UOS BLOCK B7       MODEL: VALVE                                             TIME =   4471.17
+      KODE = 1  NTRIAL =   5  T = 397.7634  P =  400000.      V = 3.782892E-02  Q =  0.00000    
+      OUTLET PRES =   0.4000E+06 PRES DROP =   0.5000E+06
+
+      GENERATING RESULTS FOR UOS BLOCK D-PUMP   MODEL: PUMP                       TIME =   4471.17
+      KODE = 5  NTRIAL =   3  T = 398.0734  P =  500000.      V =  0.00000      Q = 3.084005E-10
+      VOL-FLOW   =  0.6232E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   187.0     , BRAKE PWR  =   632.4     , ELEC PWR   =   632.4    
+      NPSH AVAIL =   0.000    
+
+      GENERATING RESULTS FOR UOS BLOCK B-PUMP   MODEL: PUMP                       TIME =   4471.17
+      KODE = 5  NTRIAL =   4  T = 411.1968  P =  600935.      V =  0.00000      Q = 2.077767E-09
+
+      INFORMATION WHILE GENERATING RESULTS FOR UNIT OPERATIONS BLOCK: "B-PUMP"  
+      (MODEL: "PUMP")                                          (ANPSH.4)        
+      NET POSITIVE SUCTION HEAD IS LESS THAN ZERO                               
+      VOL-FLOW   =  0.4861E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   145.8     , BRAKE PWR  =   493.3     , ELEC PWR   =   493.3    
+      NPSH AVAIL =  -1.176    
+
+ Report Writer entered                                                            Time =   4471.17
+
+ Results generated                                                                Time =   4471.19
+
+
+*** INPUT SPECIFICATION MESSAGES ***
+
+ CHANGES WERE MADE TO BLOCK        COLUMN   06/13/2024   23:49:21:99 
+ BLOCK COLUMN RADFRAC
+     PARAM NSTAGE=30 ALGORITHM=STANDARD MAXOL=25 DAMPING=NONE
+     COL-CONFIG CONDENSER=TOTAL
+     FEEDS F 20
+     PRODUCTS D1 1 L / B1 30 L
+     P-SPEC 1 5.
+     COL-SPECS DP-COL=1. MOLE-D=30. MOLE-RR=5.
+     SPEC 1 MOLE-FRAC 0.9 COMPS=ETHANOL BASE-COMPS=ETHANOL WATER  &
+         STREAMS=D1 SPEC-DESCRIP="xDL"
+     SPEC 2 MOLE-FRAC 0.9 COMPS=WATER BASE-COMPS=ETHANOL WATER  &
+         STREAMS=B1 SPEC-DESCRIP="xBH"
+     VARY 1 MOLE-RR 0.5 40. 0.01
+     VARY 2 MOLE-D 20. 100. 0.01
+
+ PDF updated                                                                      TIME =   4556.69
+ THIS COPY OF ASPEN PLUS LICENSED TO NORWEGIAN UNIVERSITY OF         
+
+
+Calculations begin                                                              time   4556.70
+
+
+      UOS BLOCK COLUMN   MODEL: RADFRAC                                           TIME =   4556.70
+
+       Convergence iterations:
+         OL   ML   IL     Err/Tol
+          1    5   13      63.052    
+          2    7   13      92.963    
+          3    7   10      45.482    
+          4    7   10      40.731    
+          5    7    9      38.124    
+          6    7    9      22.653    
+          7    7    9      19.912    
+          8    7    9      13.571    
+          9    7    9      4.6763    
+         10    7    9      4.4019    
+         11    7    8      6.4691    
+         12    7    9      6.8885    
+         13    7    9      6.5419    
+         14    7    9      4.8623    
+         15    7    9      2.0809    
+         16    7    8      2.8188    
+         17    7    8      3.7203    
+         18    7    8      3.8727    
+         19    7    8      3.5640    
+         20    7    8      3.0186    
+         21    7    8      2.9351    
+         22    7    8      3.0993    
+         23    7    8      3.1691    
+         24    7    8      3.1084    
+         25    7    8      3.0277    
+
+  **  ERROR WHILE EXECUTING UNIT OPERATIONS BLOCK: "COLUMN" (MODEL: "RADFRAC")  
+                                                               (UDL03.1)        
+      RADFRAC NOT CONVERGED IN  25 OUTSIDE LOOP ITERATIONS.                     
+
+      RESULTS FOR MANIPULATED VARIABLES:
+      VARIABLE     FINAL VALUE    LOWER BOUND    UPPER BOUND
+         1          7.6067        0.50000         40.000    
+         2         0.10620E-01    0.55556E-02    0.27778E-01
+
+      UOS BLOCK D-PUMP   MODEL: PUMP                                              TIME =   4556.72
+      VOL-FLOW   =  0.6444E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   193.3     , BRAKE PWR  =   653.8     , ELEC PWR   =   653.8    
+
+      UOS BLOCK B6       MODEL: VALVE                                             TIME =   4556.72
+      KODE = 1  NTRIAL =   4  T = 390.6619  P =  400000.      V = 3.582334E-02  Q =  0.00000    
+      OUTLET PRES =   0.4000E+06 PRES DROP =   0.4000E+06
+
+      UOS BLOCK B-PUMP   MODEL: PUMP                                              TIME =   4556.72
+      VOL-FLOW   =  0.4650E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   139.5     , BRAKE PWR  =   471.9     , ELEC PWR   =   471.9    
+
+      UOS BLOCK B7       MODEL: VALVE                                             TIME =   4556.72
+      KODE = 1  NTRIAL =   5  T = 398.4983  P =  400000.      V = 3.699989E-02  Q =  0.00000    
+      OUTLET PRES =   0.4000E+06 PRES DROP =   0.5000E+06
+
+      GENERATING RESULTS FOR UOS BLOCK D-PUMP   MODEL: PUMP                       TIME =   4556.72
+      KODE = 5  NTRIAL =   3  T = 398.0680  P =  500000.      V =  0.00000      Q =-6.330268E-10
+      VOL-FLOW   =  0.6444E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   193.3     , BRAKE PWR  =   653.8     , ELEC PWR   =   653.8    
+      NPSH AVAIL =   0.000    
+
+      GENERATING RESULTS FOR UOS BLOCK B-PUMP   MODEL: PUMP                       TIME =   4556.72
+      KODE = 5  NTRIAL =   4  T = 411.8672  P =  600967.      V =  0.00000      Q =  0.00000    
+
+      INFORMATION WHILE GENERATING RESULTS FOR UNIT OPERATIONS BLOCK: "B-PUMP"  
+      (MODEL: "PUMP")                                          (ANPSH.4)        
+      NET POSITIVE SUCTION HEAD IS LESS THAN ZERO                               
+      VOL-FLOW   =  0.4650E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   139.5     , BRAKE PWR  =   471.9     , ELEC PWR   =   471.9    
+      NPSH AVAIL =  -1.206    
+
+ Report Writer entered                                                            Time =   4556.72
+
+ Results generated                                                                Time =   4556.74
+
+
+*** INPUT SPECIFICATION MESSAGES ***
+
+ CHANGES WERE MADE TO BLOCK        COLUMN   06/13/2024   23:49:29:99 
+ BLOCK COLUMN RADFRAC
+     PARAM NSTAGE=30 ALGORITHM=STANDARD MAXOL=25 DAMPING=NONE
+     COL-CONFIG CONDENSER=TOTAL
+     FEEDS F 18
+     PRODUCTS D1 1 L / B1 30 L
+     P-SPEC 1 5.
+     COL-SPECS DP-COL=1. MOLE-D=30. MOLE-RR=5.
+     SPEC 1 MOLE-FRAC 0.9 COMPS=ETHANOL BASE-COMPS=ETHANOL WATER  &
+         STREAMS=D1 SPEC-DESCRIP="xDL"
+     SPEC 2 MOLE-FRAC 0.9 COMPS=WATER BASE-COMPS=ETHANOL WATER  &
+         STREAMS=B1 SPEC-DESCRIP="xBH"
+     VARY 1 MOLE-RR 0.5 40. 0.01
+     VARY 2 MOLE-D 20. 100. 0.01
+
+ PDF updated                                                                      TIME =   4564.90
+ THIS COPY OF ASPEN PLUS LICENSED TO NORWEGIAN UNIVERSITY OF         
+
+
+Calculations begin                                                              time   4564.90
+
+
+      UOS BLOCK COLUMN   MODEL: RADFRAC                                           TIME =   4564.90
+
+       Convergence iterations:
+         OL   ML   IL     Err/Tol
+          1    5   12      18.065    
+          2    7   11      25.482    
+          3    7   10      17.476    
+          4    7   10      15.538    
+          5    7   10      5.1418    
+          6    7    9      3.0830    
+          7    7    9      5.5317    
+          8    7    9      5.4896    
+          9    7    9      5.4754    
+         10    7    9      2.8953    
+         11    7    8      2.5239    
+         12    7    8      3.5580    
+         13    7    8      3.7912    
+         14    7    8      3.4598    
+         15    7    8      2.9406    
+         16    7    8      2.9082    
+         17    7    8      3.0944    
+         18    7    8      3.1537    
+         19    7    8      3.0920    
+         20    7    8      3.0391    
+         21    7    8      3.0459    
+         22    7    8      3.0655    
+         23    7    8      3.0609    
+         24    7    8      3.0415    
+         25    7    8      3.0290    
+
+  **  ERROR WHILE EXECUTING UNIT OPERATIONS BLOCK: "COLUMN" (MODEL: "RADFRAC")  
+                                                               (UDL03.1)        
+      RADFRAC NOT CONVERGED IN  25 OUTSIDE LOOP ITERATIONS.                     
+
+      RESULTS FOR MANIPULATED VARIABLES:
+      VARIABLE     FINAL VALUE    LOWER BOUND    UPPER BOUND
+         1          8.5867        0.50000         40.000    
+         2         0.10893E-01    0.55556E-02    0.27778E-01
+
+      UOS BLOCK D-PUMP   MODEL: PUMP                                              TIME =   4564.91
+      VOL-FLOW   =  0.6604E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   198.1     , BRAKE PWR  =   670.1     , ELEC PWR   =   670.1    
+
+      UOS BLOCK B6       MODEL: VALVE                                             TIME =   4564.91
+      KODE = 1  NTRIAL =   4  T = 390.6626  P =  400000.      V = 3.580147E-02  Q =  0.00000    
+      OUTLET PRES =   0.4000E+06 PRES DROP =   0.4000E+06
+
+      UOS BLOCK B-PUMP   MODEL: PUMP                                              TIME =   4564.91
+      VOL-FLOW   =  0.4490E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   134.7     , BRAKE PWR  =   455.6     , ELEC PWR   =   455.6    
+
+      UOS BLOCK B7       MODEL: VALVE                                             TIME =   4564.91
+      KODE = 1  NTRIAL =   5  T = 399.0611  P =  400000.      V = 3.645653E-02  Q =  0.00000    
+      OUTLET PRES =   0.4000E+06 PRES DROP =   0.5000E+06
+
+      GENERATING RESULTS FOR UOS BLOCK D-PUMP   MODEL: PUMP                       TIME =   4564.91
+      KODE = 5  NTRIAL =   3  T = 398.0684  P =  500000.      V =  0.00000      Q =  0.00000    
+      VOL-FLOW   =  0.6604E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   198.1     , BRAKE PWR  =   670.1     , ELEC PWR   =   670.1    
+      NPSH AVAIL =   0.000    
+
+      GENERATING RESULTS FOR UOS BLOCK B-PUMP   MODEL: PUMP                       TIME =   4564.91
+      KODE = 5  NTRIAL =   4  T = 412.3850  P =  601034.      V =  0.00000      Q =-2.012864E-09
+
+      INFORMATION WHILE GENERATING RESULTS FOR UNIT OPERATIONS BLOCK: "B-PUMP"  
+      (MODEL: "PUMP")                                          (ANPSH.4)        
+      NET POSITIVE SUCTION HEAD IS LESS THAN ZERO                               
+      VOL-FLOW   =  0.4490E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   134.7     , BRAKE PWR  =   455.6     , ELEC PWR   =   455.6    
+      NPSH AVAIL =  -1.284    
+
+ Report Writer entered                                                            Time =   4564.91
+
+ Results generated                                                                Time =   4564.93
+
+
+*** INPUT SPECIFICATION MESSAGES ***
+
+ CHANGES WERE MADE TO BLOCK        COLUMN   06/13/2024   23:51:11:99 
+ BLOCK COLUMN RADFRAC
+     PARAM NSTAGE=30 ALGORITHM=STANDARD MAXOL=25 DAMPING=NONE
+     COL-CONFIG CONDENSER=TOTAL
+     FEEDS F 10
+     PRODUCTS D1 1 L / B1 30 L
+     P-SPEC 1 5.
+     COL-SPECS DP-COL=1. MOLE-D=30. MOLE-RR=5.
+     SPEC 1 MOLE-FRAC 0.9 COMPS=ETHANOL BASE-COMPS=ETHANOL WATER  &
+         STREAMS=D1 SPEC-DESCRIP="xDL"
+     SPEC 2 MOLE-FRAC 0.9 COMPS=WATER BASE-COMPS=ETHANOL WATER  &
+         STREAMS=B1 SPEC-DESCRIP="xBH"
+     VARY 1 MOLE-RR 0.5 40. 0.01
+     VARY 2 MOLE-D 20. 100. 0.01
+
+ PDF updated                                                                      TIME =   4666.36
+ THIS COPY OF ASPEN PLUS LICENSED TO NORWEGIAN UNIVERSITY OF         
+
+
+Calculations begin                                                              time   4666.37
+
+
+      UOS BLOCK COLUMN   MODEL: RADFRAC                                           TIME =   4666.37
+
+       Convergence iterations:
+         OL   ML   IL     Err/Tol
+          1    5   13      221.75    
+          2    5   13      272.84    
+          3    5   10      143.11    
+          4    5    9      96.293    
+          5    5    8      41.383    
+          6    5    7      30.431    
+          7    5    7      17.909    
+          8    5    7      17.635    
+          9    5    7      7.9190    
+         10    5    7      4.0740    
+         11    5    7      5.7784    
+         12    5    7      5.6593    
+         13    5    7      5.1708    
+         14    5    7      3.3374    
+         15    5    7      3.0171    
+         16    5    7      3.4886    
+         17    5    7      3.4939    
+         18    5    7      3.3520    
+         19    5    7      3.3589    
+         20    5    7      3.3880    
+         21    5    7      3.3618    
+         22    5    6      3.3331    
+         23    5    6      3.3305    
+         24    5    6      3.3338    
+         25    5    6      3.3308    
+
+  **  ERROR WHILE EXECUTING UNIT OPERATIONS BLOCK: "COLUMN" (MODEL: "RADFRAC")  
+                                                               (UDL03.1)        
+      RADFRAC NOT CONVERGED IN  25 OUTSIDE LOOP ITERATIONS.                     
+
+      RESULTS FOR MANIPULATED VARIABLES:
+      VARIABLE     FINAL VALUE    LOWER BOUND    UPPER BOUND
+         1          9.5667        0.50000         40.000    
+         2         0.11165E-01    0.55556E-02    0.27778E-01
+
+      UOS BLOCK D-PUMP   MODEL: PUMP                                              TIME =   4666.38
+      VOL-FLOW   =  0.6673E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   200.2     , BRAKE PWR  =   677.1     , ELEC PWR   =   677.1    
+
+      UOS BLOCK B6       MODEL: VALVE                                             TIME =   4666.38
+      KODE = 1  NTRIAL =   4  T = 390.6800  P =  400000.      V = 3.537492E-02  Q =  0.00000    
+      OUTLET PRES =   0.4000E+06 PRES DROP =   0.4000E+06
+
+      UOS BLOCK B-PUMP   MODEL: PUMP                                              TIME =   4666.38
+      VOL-FLOW   =  0.4419E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   132.6     , BRAKE PWR  =   448.4     , ELEC PWR   =   448.4    
+
+      UOS BLOCK B7       MODEL: VALVE                                             TIME =   4666.38
+      KODE = 1  NTRIAL =   5  T = 399.0522  P =  400000.      V = 3.646705E-02  Q =  0.00000    
+      OUTLET PRES =   0.4000E+06 PRES DROP =   0.5000E+06
+
+      GENERATING RESULTS FOR UOS BLOCK D-PUMP   MODEL: PUMP                       TIME =   4666.38
+      KODE = 5  NTRIAL =   3  T = 398.0818  P =  500000.      V =  0.00000      Q = 6.654782E-10
+      VOL-FLOW   =  0.6673E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   200.2     , BRAKE PWR  =   677.1     , ELEC PWR   =   677.1    
+      NPSH AVAIL =   0.000    
+
+      GENERATING RESULTS FOR UOS BLOCK B-PUMP   MODEL: PUMP                       TIME =   4666.38
+      KODE = 5  NTRIAL =   4  T = 412.3776  P =  601049.      V =  0.00000      Q =  0.00000    
+
+      INFORMATION WHILE GENERATING RESULTS FOR UNIT OPERATIONS BLOCK: "B-PUMP"  
+      (MODEL: "PUMP")                                          (ANPSH.4)        
+      NET POSITIVE SUCTION HEAD IS LESS THAN ZERO                               
+      VOL-FLOW   =  0.4419E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   132.6     , BRAKE PWR  =   448.4     , ELEC PWR   =   448.4    
+      NPSH AVAIL =  -1.302    
+
+ Report Writer entered                                                            Time =   4666.40
+
+ Results generated                                                                Time =   4666.42
+
+
+*** INPUT SPECIFICATION MESSAGES ***
+
+ FLOWSHEET    IS GENERATED BECAUSE OF OTHER CHANGES 06/13/2024   23:51:35:99 
+ FLOWSHEET
+     BLOCK COLUMN IN=F OUT=D1 B1
+     BLOCK D-PUMP IN=D1 OUT=D2
+     BLOCK B-PUMP IN=B1 OUT=B2
+     BLOCK B6 IN=D2 OUT=D
+     BLOCK B7 IN=B2 OUT=B
+
+ CHANGES WERE MADE TO BLOCK        COLUMN   06/13/2024   23:51:35:99 
+ BLOCK COLUMN RADFRAC
+     PARAM NSTAGE=50 ALGORITHM=STANDARD MAXOL=25 DAMPING=NONE
+     COL-CONFIG CONDENSER=TOTAL
+     FEEDS F 20
+     PRODUCTS D1 1 L / B1 50 L
+     P-SPEC 1 5.
+     COL-SPECS DP-COL=1. MOLE-D=30. MOLE-RR=5.
+     SPEC 1 MOLE-FRAC 0.9 COMPS=ETHANOL BASE-COMPS=ETHANOL WATER  &
+         STREAMS=D1 SPEC-DESCRIP="xDL"
+     SPEC 2 MOLE-FRAC 0.9 COMPS=WATER BASE-COMPS=ETHANOL WATER  &
+         STREAMS=B1 SPEC-DESCRIP="xBH"
+     VARY 1 MOLE-RR 0.5 40. 0.01
+     VARY 2 MOLE-D 20. 100. 0.01
+
+ PDF updated                                                                      TIME =   4691.24
+ THIS COPY OF ASPEN PLUS LICENSED TO NORWEGIAN UNIVERSITY OF         
+
+
+Calculations begin                                                              time   4691.26
+
+
+      UOS BLOCK COLUMN   MODEL: RADFRAC                                           TIME =   4691.26
+
+       Convergence iterations:
+         OL   ML   IL     Err/Tol
+          1    5   16      113.66    
+          2    7   13      135.03    
+          3    7   10      79.427    
+          4    7   10      73.721    
+          5    7   10      53.342    
+          6    5    9      34.444    
+          7    5    9      22.155    
+          8    5    7      15.818    
+          9    5    7      10.018    
+         10    5    7      5.7028    
+         11    5    7      4.2638    
+         12    5    7      4.9251    
+         13    5    7      4.1945    
+         14    5    7      3.5869    
+         15    5    7      2.8339    
+         16    5    7      2.9398    
+         17    5    7      2.9665    
+         18    5    6      2.9328    
+         19    5    6      2.9264    
+         20    5    6      2.8864    
+         21    5    6      2.8543    
+         22    5    6      2.8679    
+         23    5    6      2.8892    
+         24    5    6      2.8938    
+         25    5    6      2.8881    
+
+  **  ERROR WHILE EXECUTING UNIT OPERATIONS BLOCK: "COLUMN" (MODEL: "RADFRAC")  
+                                                               (UDL03.1)        
+      RADFRAC NOT CONVERGED IN  25 OUTSIDE LOOP ITERATIONS.                     
+
+      RESULTS FOR MANIPULATED VARIABLES:
+      VARIABLE     FINAL VALUE    LOWER BOUND    UPPER BOUND
+         1          10.547        0.50000         40.000    
+         2         0.11426E-01    0.55556E-02    0.27778E-01
+
+      UOS BLOCK D-PUMP   MODEL: PUMP                                              TIME =   4691.28
+      VOL-FLOW   =  0.6953E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   208.6     , BRAKE PWR  =   705.6     , ELEC PWR   =   705.6    
+
+      UOS BLOCK B6       MODEL: VALVE                                             TIME =   4691.28
+      KODE = 1  NTRIAL =   4  T = 390.6595  P =  400000.      V = 3.591601E-02  Q =  0.00000    
+      OUTLET PRES =   0.4000E+06 PRES DROP =   0.4000E+06
+
+      UOS BLOCK B-PUMP   MODEL: PUMP                                              TIME =   4691.28
+      VOL-FLOW   =  0.4143E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   124.3     , BRAKE PWR  =   420.4     , ELEC PWR   =   420.4    
+
+      UOS BLOCK B7       MODEL: VALVE                                             TIME =   4691.28
+      KODE = 1  NTRIAL =   5  T = 400.8136  P =  400000.      V = 3.510115E-02  Q =  0.00000    
+      OUTLET PRES =   0.4000E+06 PRES DROP =   0.5000E+06
+
+      GENERATING RESULTS FOR UOS BLOCK D-PUMP   MODEL: PUMP                       TIME =   4691.28
+      KODE = 5  NTRIAL =   3  T = 398.0665  P =  500000.      V =  0.00000      Q =  0.00000    
+      VOL-FLOW   =  0.6953E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   208.6     , BRAKE PWR  =   705.6     , ELEC PWR   =   705.6    
+      NPSH AVAIL =   0.000    
+
+      GENERATING RESULTS FOR UOS BLOCK B-PUMP   MODEL: PUMP                       TIME =   4691.28
+      KODE = 5  NTRIAL =   4  T = 414.0084  P =  601140.      V =  0.00000      Q =  0.00000    
+
+      INFORMATION WHILE GENERATING RESULTS FOR UNIT OPERATIONS BLOCK: "B-PUMP"  
+      (MODEL: "PUMP")                                          (ANPSH.4)        
+      NET POSITIVE SUCTION HEAD IS LESS THAN ZERO                               
+      VOL-FLOW   =  0.4143E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   124.3     , BRAKE PWR  =   420.4     , ELEC PWR   =   420.4    
+      NPSH AVAIL =  -1.397    
+
+ Report Writer entered                                                            Time =   4691.29
+
+ Results generated                                                                Time =   4691.31
+
+
+*** INPUT SPECIFICATION MESSAGES ***
+
+ CHANGES WERE MADE TO BLOCK        COLUMN   06/13/2024   23:52:04:99 
+ BLOCK COLUMN RADFRAC
+     PARAM NSTAGE=50 ALGORITHM=STANDARD MAXOL=25 DAMPING=NONE
+     COL-CONFIG CONDENSER=TOTAL
+     FEEDS F 30
+     PRODUCTS D1 1 L / B1 50 L
+     P-SPEC 1 5.
+     COL-SPECS DP-COL=1. MOLE-D=30. MOLE-RR=5.
+     SPEC 1 MOLE-FRAC 0.9 COMPS=ETHANOL BASE-COMPS=ETHANOL WATER  &
+         STREAMS=D1 SPEC-DESCRIP="xDL"
+     SPEC 2 MOLE-FRAC 0.9 COMPS=WATER BASE-COMPS=ETHANOL WATER  &
+         STREAMS=B1 SPEC-DESCRIP="xBH"
+     VARY 1 MOLE-RR 0.5 40. 0.01
+     VARY 2 MOLE-D 20. 100. 0.01
+
+ PDF updated                                                                      TIME =   4720.05
+ THIS COPY OF ASPEN PLUS LICENSED TO NORWEGIAN UNIVERSITY OF         
+
+
+Calculations begin                                                              time   4720.06
+
+
+      UOS BLOCK COLUMN   MODEL: RADFRAC                                           TIME =   4720.06
+
+       Convergence iterations:
+         OL   ML   IL     Err/Tol
+          1    5   13      166.76    
+          2    7   14      253.12    
+          3    7   14      142.96    
+          4    5   10      130.61    
+          5    5   11      75.602    
+          6    5    9      61.006    
+          7    5    9      35.275    
+          8    5    9      47.845    
+          9    5    8      42.930    
+         10    5    8      34.759    
+         11    5    9      46.359    
+         12    5    8      27.759    
+         13    5    7      19.783    
+         14    5    8      16.925    
+         15    5    7      9.6540    
+         16    5    7      8.3757    
+         17    5    7      4.0423    
+         18    5    6      3.9138    
+         19    5    7      4.2651    
+         20    5    9      5.9480    
+         21    5    7      4.0151    
+         22    5    6      2.1348    
+         23    5    8      2.0227    
+         24    5    8      1.9924    
+         25    5    8      1.4432    
+
+  **  ERROR WHILE EXECUTING UNIT OPERATIONS BLOCK: "COLUMN" (MODEL: "RADFRAC")  
+                                                               (UDL03.1)        
+      RADFRAC NOT CONVERGED IN  25 OUTSIDE LOOP ITERATIONS.                     
+
+      RESULTS FOR MANIPULATED VARIABLES:
+      VARIABLE     FINAL VALUE    LOWER BOUND    UPPER BOUND
+         1          11.527        0.50000         40.000    
+         2         0.11403E-01    0.55556E-02    0.27778E-01
+
+      UOS BLOCK D-PUMP   MODEL: PUMP                                              TIME =   4720.07
+      VOL-FLOW   =  0.6972E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   209.2     , BRAKE PWR  =   707.5     , ELEC PWR   =   707.5    
+
+      UOS BLOCK B6       MODEL: VALVE                                             TIME =   4720.07
+      KODE = 1  NTRIAL =   4  T = 390.6567  P =  400000.      V = 3.605873E-02  Q =  0.00000    
+      OUTLET PRES =   0.4000E+06 PRES DROP =   0.4000E+06
+
+      UOS BLOCK B-PUMP   MODEL: PUMP                                              TIME =   4720.07
+      VOL-FLOW   =  0.4125E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   123.7     , BRAKE PWR  =   418.5     , ELEC PWR   =   418.5    
+
+      UOS BLOCK B7       MODEL: VALVE                                             TIME =   4720.07
+      KODE = 1  NTRIAL =   5  T = 401.0496  P =  400000.      V = 3.477643E-02  Q =  0.00000    
+      OUTLET PRES =   0.4000E+06 PRES DROP =   0.5000E+06
+
+      GENERATING RESULTS FOR UOS BLOCK D-PUMP   MODEL: PUMP                       TIME =   4720.07
+      KODE = 5  NTRIAL =   3  T = 398.0650  P =  499999.      V =  0.00000      Q =  0.00000    
+      VOL-FLOW   =  0.6972E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   209.2     , BRAKE PWR  =   707.5     , ELEC PWR   =   707.5    
+      NPSH AVAIL =   0.000    
+
+      GENERATING RESULTS FOR UOS BLOCK B-PUMP   MODEL: PUMP                       TIME =   4720.07
+      KODE = 5  NTRIAL =   4  T = 414.1643  P =  599994.      V =  0.00000      Q =-9.759940E-10
+      VOL-FLOW   =  0.4125E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   123.7     , BRAKE PWR  =   418.5     , ELEC PWR   =   418.5    
+      NPSH AVAIL =   0.000    
+
+ Report Writer entered                                                            Time =   4720.07
+
+ Results generated                                                                Time =   4720.09
+
+
+*** INPUT SPECIFICATION MESSAGES ***
+
+ CHANGES WERE MADE TO BLOCK        COLUMN   06/13/2024   23:52:26:99 
+ BLOCK COLUMN RADFRAC
+     PARAM NSTAGE=50 ALGORITHM=STANDARD MAXOL=25 DAMPING=NONE
+     COL-CONFIG CONDENSER=TOTAL
+     FEEDS F 25
+     PRODUCTS D1 1 L / B1 50 L
+     P-SPEC 1 5.
+     COL-SPECS DP-COL=1. MOLE-D=30. MOLE-RR=5.
+     SPEC 1 MOLE-FRAC 0.9 COMPS=ETHANOL BASE-COMPS=ETHANOL WATER  &
+         STREAMS=D1 SPEC-DESCRIP="xDL"
+     SPEC 2 MOLE-FRAC 0.9 COMPS=WATER BASE-COMPS=ETHANOL WATER  &
+         STREAMS=B1 SPEC-DESCRIP="xBH"
+     VARY 1 MOLE-RR 0.5 40. 0.01
+     VARY 2 MOLE-D 20. 100. 0.01
+
+ PDF updated                                                                      TIME =   4742.17
+ THIS COPY OF ASPEN PLUS LICENSED TO NORWEGIAN UNIVERSITY OF         
+
+
+Calculations begin                                                              time   4742.19
+
+
+      UOS BLOCK COLUMN   MODEL: RADFRAC                                           TIME =   4742.19
+
+       Convergence iterations:
+         OL   ML   IL     Err/Tol
+          1    5   13      81.856    
+          2    5   12      110.58    
+          3    5   10      94.044    
+          4    5    9      51.075    
+          5    5    8      32.119    
+          6    5    8      21.404    
+          7    5    9      22.656    
+          8    5    7      22.154    
+          9    5    7      12.704    
+         10    5    9      18.170    
+         11    5    8      9.8674    
+         12    5    8      8.4738    
+         13    5    7      7.3006    
+         14    5    7      3.0250    
+         15    5    7      2.5572    
+         16    5    7      3.1582    
+         17    5    8      2.5289    
+         18    5    9      1.8305    
+         19    5    8      1.4364    
+         20    5    9      1.5852    
+         21    5   10      1.8473    
+         22    5    9      1.7428    
+         23    5    8      1.4942    
+         24    5    9      1.3180    
+         25    5    9      1.2966    
+
+  **  ERROR WHILE EXECUTING UNIT OPERATIONS BLOCK: "COLUMN" (MODEL: "RADFRAC")  
+                                                               (UDL03.1)        
+      RADFRAC NOT CONVERGED IN  25 OUTSIDE LOOP ITERATIONS.                     
+
+      RESULTS FOR MANIPULATED VARIABLES:
+      VARIABLE     FINAL VALUE    LOWER BOUND    UPPER BOUND
+         1          12.507        0.50000         40.000    
+         2         0.11522E-01    0.55556E-02    0.27778E-01
+
+      UOS BLOCK D-PUMP   MODEL: PUMP                                              TIME =   4742.20
+      VOL-FLOW   =  0.7037E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   211.1     , BRAKE PWR  =   714.0     , ELEC PWR   =   714.0    
+
+      UOS BLOCK B6       MODEL: VALVE                                             TIME =   4742.20
+      KODE = 1  NTRIAL =   4  T = 390.6573  P =  400000.      V = 3.602349E-02  Q =  0.00000    
+      OUTLET PRES =   0.4000E+06 PRES DROP =   0.4000E+06
+
+      UOS BLOCK B-PUMP   MODEL: PUMP                                              TIME =   4742.20
+      VOL-FLOW   =  0.4061E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   121.8     , BRAKE PWR  =   412.0     , ELEC PWR   =   412.0    
+
+      UOS BLOCK B7       MODEL: VALVE                                             TIME =   4742.20
+      KODE = 1  NTRIAL =   5  T = 401.4254  P =  400000.      V = 3.454806E-02  Q =  0.00000    
+      OUTLET PRES =   0.4000E+06 PRES DROP =   0.5000E+06
+
+      GENERATING RESULTS FOR UOS BLOCK D-PUMP   MODEL: PUMP                       TIME =   4742.20
+      KODE = 5  NTRIAL =   3  T = 398.0653  P =  500000.      V =  0.00000      Q =-3.433960E-10
+      VOL-FLOW   =  0.7037E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   211.1     , BRAKE PWR  =   714.0     , ELEC PWR   =   714.0    
+      NPSH AVAIL =   0.000    
+
+      GENERATING RESULTS FOR UOS BLOCK B-PUMP   MODEL: PUMP                       TIME =   4742.20
+      KODE = 5  NTRIAL =   4  T = 414.5158  P =  599980.      V =  0.00000      Q = 9.688926E-10
+      VOL-FLOW   =  0.4061E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   121.8     , BRAKE PWR  =   412.0     , ELEC PWR   =   412.0    
+      NPSH AVAIL =   0.000    
+
+ Report Writer entered                                                            Time =   4742.21
+
+ Results generated                                                                Time =   4742.22
+
+
+*** INPUT SPECIFICATION MESSAGES ***
+
+ CHANGES WERE MADE TO BLOCK        COLUMN   06/13/2024   23:52:38:99 
+ BLOCK COLUMN RADFRAC
+     PARAM NSTAGE=50 ALGORITHM=STANDARD MAXOL=25 DAMPING=NONE
+     COL-CONFIG CONDENSER=TOTAL
+     FEEDS F 20
+     PRODUCTS D1 1 L / B1 50 L
+     P-SPEC 1 5.
+     COL-SPECS DP-COL=1. MOLE-D=30. MOLE-RR=5.
+     SPEC 1 MOLE-FRAC 0.9 COMPS=ETHANOL BASE-COMPS=ETHANOL WATER  &
+         STREAMS=D1 SPEC-DESCRIP="xDL"
+     SPEC 2 MOLE-FRAC 0.9 COMPS=WATER BASE-COMPS=ETHANOL WATER  &
+         STREAMS=B1 SPEC-DESCRIP="xBH"
+     VARY 1 MOLE-RR 0.5 40. 0.01
+     VARY 2 MOLE-D 20. 100. 0.01
+
+ PDF updated                                                                      TIME =   4753.84
+ THIS COPY OF ASPEN PLUS LICENSED TO NORWEGIAN UNIVERSITY OF         
+
+
+Calculations begin                                                              time   4753.85
+
+
+      UOS BLOCK COLUMN   MODEL: RADFRAC                                           TIME =   4753.85
+
+       Convergence iterations:
+         OL   ML   IL     Err/Tol
+          1    5   14      108.80    
+          2    5   11      135.58    
+          3    5   10      66.292    
+          4    5    9      42.031    
+          5    5    9      21.615    
+          6    5    7      16.299    
+          7    5    7      12.216    
+          8    5    7      7.7469    
+          9    5    8      6.1758    
+         10    5    8      5.0515    
+         11    5    7      4.2249    
+         12    5    9      2.9253    
+         13    5    8      1.5006    
+         14    5    9      1.5363    
+         15    5    8      1.6106    
+         16    5    8      1.4760    
+         17    5    9      1.4277    
+         18    5    9      1.3998    
+         19    5    9      1.3778    
+         20    5    9      1.3706    
+         21    5    9      1.3791    
+         22    5    9      1.3885    
+         23    5    9      1.3868    
+         24    5    9      1.3755    
+         25    5    9      1.3630    
+
+  **  ERROR WHILE EXECUTING UNIT OPERATIONS BLOCK: "COLUMN" (MODEL: "RADFRAC")  
+                                                               (UDL03.1)        
+      RADFRAC NOT CONVERGED IN  25 OUTSIDE LOOP ITERATIONS.                     
+
+      RESULTS FOR MANIPULATED VARIABLES:
+      VARIABLE     FINAL VALUE    LOWER BOUND    UPPER BOUND
+         1          13.487        0.50000         40.000    
+         2         0.11549E-01    0.55556E-02    0.27778E-01
+
+      UOS BLOCK D-PUMP   MODEL: PUMP                                              TIME =   4753.86
+      VOL-FLOW   =  0.7038E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   211.1     , BRAKE PWR  =   714.1     , ELEC PWR   =   714.1    
+
+      UOS BLOCK B6       MODEL: VALVE                                             TIME =   4753.86
+      KODE = 1  NTRIAL =   4  T = 390.6586  P =  400000.      V = 3.595681E-02  Q =  0.00000    
+      OUTLET PRES =   0.4000E+06 PRES DROP =   0.4000E+06
+
+      UOS BLOCK B-PUMP   MODEL: PUMP                                              TIME =   4753.86
+      VOL-FLOW   =  0.4059E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   121.8     , BRAKE PWR  =   411.9     , ELEC PWR   =   411.9    
+
+      UOS BLOCK B7       MODEL: VALVE                                             TIME =   4753.86
+      KODE = 1  NTRIAL =   5  T = 401.3658  P =  400000.      V = 3.458486E-02  Q =  0.00000    
+      OUTLET PRES =   0.4000E+06 PRES DROP =   0.5000E+06
+
+      GENERATING RESULTS FOR UOS BLOCK D-PUMP   MODEL: PUMP                       TIME =   4753.86
+      KODE = 5  NTRIAL =   3  T = 398.0660  P =  500000.      V =  0.00000      Q =-3.441885E-10
+      VOL-FLOW   =  0.7038E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   211.1     , BRAKE PWR  =   714.1     , ELEC PWR   =   714.1    
+      NPSH AVAIL =   0.000    
+
+      GENERATING RESULTS FOR UOS BLOCK B-PUMP   MODEL: PUMP                       TIME =   4753.86
+      KODE = 5  NTRIAL =   4  T = 414.4606  P =  599993.      V =  0.00000      Q =  0.00000    
+      VOL-FLOW   =  0.4059E-03 , DELTA P    =  0.3000E+06 , PUMP EFF   =  0.2957    
+      FLUID PWR  =   121.8     , BRAKE PWR  =   411.9     , ELEC PWR   =   411.9    
+      NPSH AVAIL =   0.000    
+
+ Report Writer entered                                                            Time =   4753.87
+
+ Results generated                                                                Time =   4753.89
+
+RUN SAVED
+
+
+
+ *** SUMMARY OF ERRORS ***
+
+                  PHYSICAL
+                  PROPERTY  SYSTEM  SIMULATION
+ TERMINAL ERRORS      0        0         0
+   SEVERE ERRORS      0        0         0
+          ERRORS      0        0        19
+        WARNINGS      0        0         1
