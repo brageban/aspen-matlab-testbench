@@ -1,326 +1,320 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36" version="24.7.10">
-  <diagram name="Page-1" id="113YbZ88T134uzQnZ3Du">
-    <mxGraphModel dx="3191" dy="1702" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2336" pageHeight="1654" math="0" shadow="0">
-      <root>
-        <mxCell id="0" />
-        <mxCell id="1" parent="0" />
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-39" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=-0.001;entryY=0.705;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="DjzMqCNCpp32R4Y7mPO1-40" target="DjzMqCNCpp32R4Y7mPO1-110" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="2158" y="1092" as="targetPoint" />
-            <Array as="points">
-              <mxPoint x="2058" y="1112" />
-              <mxPoint x="2058" y="1172" />
-              <mxPoint x="858" y="1172" />
-              <mxPoint x="858" y="802" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-56" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="DjzMqCNCpp32R4Y7mPO1-57" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="2068" y="802" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-63" value="" style="group" parent="1" vertex="1" connectable="0">
-          <mxGeometry x="1568" y="682" width="485" height="520" as="geometry" />
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-32" value="" style="verticalLabelPosition=bottom;outlineConnect=0;align=center;dashed=0;html=1;verticalAlign=top;shape=mxgraph.pid2misc.column;columnType=tray" parent="DjzMqCNCpp32R4Y7mPO1-63" vertex="1">
-          <mxGeometry x="70" y="100" width="110" height="300" as="geometry" />
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-33" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="DjzMqCNCpp32R4Y7mPO1-63" target="DjzMqCNCpp32R4Y7mPO1-38" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="350" y="440" />
-              <mxPoint x="350" y="440" />
-            </Array>
-            <mxPoint x="310" y="440" as="sourcePoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-34" value="" style="shape=mxgraph.pid.vessels.pressurized_vessel;html=1;pointerEvents=1;align=center;verticalLabelPosition=bottom;verticalAlign=top;dashed=0;" parent="DjzMqCNCpp32R4Y7mPO1-63" vertex="1">
-          <mxGeometry x="270" width="80" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.005;entryY=0.49;entryDx=0;entryDy=0;entryPerimeter=0;" parent="DjzMqCNCpp32R4Y7mPO1-63" source="DjzMqCNCpp32R4Y7mPO1-32" target="DjzMqCNCpp32R4Y7mPO1-34" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="280" y="30" as="targetPoint" />
-            <Array as="points">
-              <mxPoint x="125" y="29" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-36" value="" style="endArrow=classic;html=1;rounded=0;entryX=-0.004;entryY=0.609;entryDx=0;entryDy=0;entryPerimeter=0;" parent="DjzMqCNCpp32R4Y7mPO1-63" edge="1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="120" y="400" as="sourcePoint" />
-            <mxPoint x="199.55999999999995" y="446.5400000000002" as="targetPoint" />
-            <Array as="points">
-              <mxPoint x="120" y="447" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-37" value="" style="endArrow=classic;html=1;rounded=0;" parent="DjzMqCNCpp32R4Y7mPO1-63" edge="1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="270" y="410" as="sourcePoint" />
-            <mxPoint x="180" y="381.27" as="targetPoint" />
-            <Array as="points">
-              <mxPoint x="270" y="380" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-38" value="" style="verticalLabelPosition=bottom;outlineConnect=0;align=center;dashed=0;html=1;verticalAlign=top;shape=mxgraph.pid.compressors.centrifugal_compressor" parent="DjzMqCNCpp32R4Y7mPO1-63" vertex="1">
-          <mxGeometry x="370" y="420" width="40" height="40" as="geometry" />
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-40" value="" style="verticalLabelPosition=bottom;align=center;html=1;verticalAlign=top;pointerEvents=1;dashed=0;shape=mxgraph.pid2valves.valve;valveType=ball" parent="DjzMqCNCpp32R4Y7mPO1-63" vertex="1">
-          <mxGeometry x="450" y="410" width="30" height="20" as="geometry" />
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-41" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;entryX=-0.119;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" parent="DjzMqCNCpp32R4Y7mPO1-63" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="446" y="420" as="targetPoint" />
-            <mxPoint x="410" y="420" as="sourcePoint" />
-            <Array as="points">
-              <mxPoint x="440" y="420" />
-              <mxPoint x="440" y="420" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-42" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="DjzMqCNCpp32R4Y7mPO1-63" source="DjzMqCNCpp32R4Y7mPO1-43" target="DjzMqCNCpp32R4Y7mPO1-32" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-43" value="" style="verticalLabelPosition=bottom;align=center;html=1;verticalAlign=top;pointerEvents=1;dashed=0;shape=mxgraph.pid2valves.valve;valveType=ball" parent="DjzMqCNCpp32R4Y7mPO1-63" vertex="1">
-          <mxGeometry y="240" width="30" height="20" as="geometry" />
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-45" value="F" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;strokeWidth=3;fontSize=16;" parent="DjzMqCNCpp32R4Y7mPO1-63" vertex="1">
-          <mxGeometry x="30" y="220" width="30" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-48" value="" style="shape=mxgraph.pid.heat_exchangers.reboiler;html=1;pointerEvents=1;align=center;verticalLabelPosition=bottom;verticalAlign=top;dashed=0;" parent="DjzMqCNCpp32R4Y7mPO1-63" vertex="1">
-          <mxGeometry x="200" y="410" width="110" height="50" as="geometry" />
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-51" value="V &#39;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;strokeWidth=3;fontSize=16;" parent="DjzMqCNCpp32R4Y7mPO1-63" vertex="1">
-          <mxGeometry x="90" y="65" width="40" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-54" value="" style="verticalLabelPosition=bottom;outlineConnect=0;align=center;dashed=0;html=1;verticalAlign=top;shape=mxgraph.pid.compressors.centrifugal_compressor;rotation=90;" parent="DjzMqCNCpp32R4Y7mPO1-63" vertex="1">
-          <mxGeometry x="300" y="80" width="30" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-55" value="" style="verticalLabelPosition=bottom;align=center;html=1;verticalAlign=top;pointerEvents=1;dashed=0;shape=mxgraph.pid2valves.valve;valveType=ball" parent="DjzMqCNCpp32R4Y7mPO1-63" vertex="1">
-          <mxGeometry x="219" y="110" width="30" height="20" as="geometry" />
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-57" value="" style="verticalLabelPosition=bottom;align=center;html=1;verticalAlign=top;pointerEvents=1;dashed=0;shape=mxgraph.pid2valves.valve;valveType=ball" parent="DjzMqCNCpp32R4Y7mPO1-63" vertex="1">
-          <mxGeometry x="390" y="110" width="30" height="20" as="geometry" />
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-58" value="" style="endArrow=classic;html=1;rounded=0;exitX=-0.014;exitY=0.443;exitDx=0;exitDy=0;exitPerimeter=0;" parent="DjzMqCNCpp32R4Y7mPO1-63" source="DjzMqCNCpp32R4Y7mPO1-55" edge="1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="207.29999999999995" y="119.15000000000009" as="sourcePoint" />
-            <mxPoint x="180" y="118.86000000000013" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-59" value="L" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;strokeWidth=3;fontSize=16;" parent="DjzMqCNCpp32R4Y7mPO1-63" vertex="1">
-          <mxGeometry x="189" y="120" width="30" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-60" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.993;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;exitX=1;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;" parent="DjzMqCNCpp32R4Y7mPO1-63" source="DjzMqCNCpp32R4Y7mPO1-54" target="DjzMqCNCpp32R4Y7mPO1-55" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="410" y="150" as="targetPoint" />
-            <mxPoint x="320" y="120" as="sourcePoint" />
-            <Array as="points">
-              <mxPoint x="330" y="120" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-61" value="" style="endArrow=classic;html=1;rounded=0;entryX=-0.012;entryY=0.504;entryDx=0;entryDy=0;entryPerimeter=0;" parent="DjzMqCNCpp32R4Y7mPO1-63" target="DjzMqCNCpp32R4Y7mPO1-57" edge="1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="330" y="120" as="sourcePoint" />
-            <mxPoint x="470" y="150" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-62" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.01;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" parent="DjzMqCNCpp32R4Y7mPO1-63" target="DjzMqCNCpp32R4Y7mPO1-54" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="315" y="60" as="sourcePoint" />
-            <Array as="points">
-              <mxPoint x="315" y="70" />
-              <mxPoint x="315" y="70" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-69" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" parent="1" source="DjzMqCNCpp32R4Y7mPO1-90" target="DjzMqCNCpp32R4Y7mPO1-103" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="2068" y="92" as="targetPoint" />
-            <Array as="points">
-              <mxPoint x="1568" y="632" />
-              <mxPoint x="1568" y="462" />
-              <mxPoint x="498" y="462" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-70" value="" style="group" parent="1" vertex="1" connectable="0">
-          <mxGeometry x="1108" y="512" width="485" height="520" as="geometry" />
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-71" value="" style="verticalLabelPosition=bottom;outlineConnect=0;align=center;dashed=0;html=1;verticalAlign=top;shape=mxgraph.pid2misc.column;columnType=tray" parent="DjzMqCNCpp32R4Y7mPO1-70" vertex="1">
-          <mxGeometry x="70" y="100" width="110" height="300" as="geometry" />
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-72" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="DjzMqCNCpp32R4Y7mPO1-70" target="DjzMqCNCpp32R4Y7mPO1-77" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="350" y="440" />
-              <mxPoint x="350" y="440" />
-            </Array>
-            <mxPoint x="310" y="440" as="sourcePoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-73" value="" style="shape=mxgraph.pid.vessels.pressurized_vessel;html=1;pointerEvents=1;align=center;verticalLabelPosition=bottom;verticalAlign=top;dashed=0;" parent="DjzMqCNCpp32R4Y7mPO1-70" vertex="1">
-          <mxGeometry x="270" width="80" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-74" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.005;entryY=0.49;entryDx=0;entryDy=0;entryPerimeter=0;" parent="DjzMqCNCpp32R4Y7mPO1-70" source="DjzMqCNCpp32R4Y7mPO1-71" target="DjzMqCNCpp32R4Y7mPO1-73" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="280" y="30" as="targetPoint" />
-            <Array as="points">
-              <mxPoint x="125" y="29" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-75" value="" style="endArrow=classic;html=1;rounded=0;entryX=-0.004;entryY=0.609;entryDx=0;entryDy=0;entryPerimeter=0;" parent="DjzMqCNCpp32R4Y7mPO1-70" edge="1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="120" y="400" as="sourcePoint" />
-            <mxPoint x="199.55999999999995" y="446.5400000000002" as="targetPoint" />
-            <Array as="points">
-              <mxPoint x="120" y="447" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-76" value="" style="endArrow=classic;html=1;rounded=0;" parent="DjzMqCNCpp32R4Y7mPO1-70" edge="1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="270" y="410" as="sourcePoint" />
-            <mxPoint x="180" y="381.27" as="targetPoint" />
-            <Array as="points">
-              <mxPoint x="270" y="380" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-77" value="" style="verticalLabelPosition=bottom;outlineConnect=0;align=center;dashed=0;html=1;verticalAlign=top;shape=mxgraph.pid.compressors.centrifugal_compressor" parent="DjzMqCNCpp32R4Y7mPO1-70" vertex="1">
-          <mxGeometry x="370" y="420" width="40" height="40" as="geometry" />
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-80" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="DjzMqCNCpp32R4Y7mPO1-70" source="DjzMqCNCpp32R4Y7mPO1-81" target="DjzMqCNCpp32R4Y7mPO1-71" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-81" value="" style="verticalLabelPosition=bottom;align=center;html=1;verticalAlign=top;pointerEvents=1;dashed=0;shape=mxgraph.pid2valves.valve;valveType=ball" parent="DjzMqCNCpp32R4Y7mPO1-70" vertex="1">
-          <mxGeometry y="240" width="30" height="20" as="geometry" />
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-82" value="F" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;strokeWidth=3;fontSize=16;" parent="DjzMqCNCpp32R4Y7mPO1-70" vertex="1">
-          <mxGeometry x="30" y="220" width="30" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-83" value="V" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;strokeWidth=3;fontSize=16;" parent="DjzMqCNCpp32R4Y7mPO1-70" vertex="1">
-          <mxGeometry x="190" y="350" width="30" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-84" value="" style="shape=mxgraph.pid.heat_exchangers.reboiler;html=1;pointerEvents=1;align=center;verticalLabelPosition=bottom;verticalAlign=top;dashed=0;" parent="DjzMqCNCpp32R4Y7mPO1-70" vertex="1">
-          <mxGeometry x="200" y="410" width="110" height="50" as="geometry" />
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-86" value="V &#39;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;strokeWidth=3;fontSize=16;" parent="DjzMqCNCpp32R4Y7mPO1-70" vertex="1">
-          <mxGeometry x="90" y="65" width="40" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-87" value="L&#39;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;strokeWidth=3;fontSize=16;" parent="DjzMqCNCpp32R4Y7mPO1-70" vertex="1">
-          <mxGeometry x="85" y="405" width="40" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-88" value="" style="verticalLabelPosition=bottom;outlineConnect=0;align=center;dashed=0;html=1;verticalAlign=top;shape=mxgraph.pid.compressors.centrifugal_compressor;rotation=90;" parent="DjzMqCNCpp32R4Y7mPO1-70" vertex="1">
-          <mxGeometry x="300" y="80" width="30" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-89" value="" style="verticalLabelPosition=bottom;align=center;html=1;verticalAlign=top;pointerEvents=1;dashed=0;shape=mxgraph.pid2valves.valve;valveType=ball" parent="DjzMqCNCpp32R4Y7mPO1-70" vertex="1">
-          <mxGeometry x="219" y="110" width="30" height="20" as="geometry" />
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-90" value="" style="verticalLabelPosition=bottom;align=center;html=1;verticalAlign=top;pointerEvents=1;dashed=0;shape=mxgraph.pid2valves.valve;valveType=ball" parent="DjzMqCNCpp32R4Y7mPO1-70" vertex="1">
-          <mxGeometry x="380" y="110" width="30" height="20" as="geometry" />
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-91" value="" style="endArrow=classic;html=1;rounded=0;exitX=-0.014;exitY=0.443;exitDx=0;exitDy=0;exitPerimeter=0;" parent="DjzMqCNCpp32R4Y7mPO1-70" source="DjzMqCNCpp32R4Y7mPO1-89" edge="1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="207.29999999999995" y="119.15000000000009" as="sourcePoint" />
-            <mxPoint x="180" y="118.86000000000013" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-92" value="L" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;strokeWidth=3;fontSize=16;" parent="DjzMqCNCpp32R4Y7mPO1-70" vertex="1">
-          <mxGeometry x="189" y="120" width="30" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-93" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.993;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;exitX=1;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;" parent="DjzMqCNCpp32R4Y7mPO1-70" source="DjzMqCNCpp32R4Y7mPO1-88" target="DjzMqCNCpp32R4Y7mPO1-89" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="410" y="150" as="targetPoint" />
-            <mxPoint x="320" y="120" as="sourcePoint" />
-            <Array as="points">
-              <mxPoint x="330" y="120" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-94" value="" style="endArrow=classic;html=1;rounded=0;entryX=-0.012;entryY=0.504;entryDx=0;entryDy=0;entryPerimeter=0;" parent="DjzMqCNCpp32R4Y7mPO1-70" target="DjzMqCNCpp32R4Y7mPO1-90" edge="1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="330" y="120" as="sourcePoint" />
-            <mxPoint x="470" y="150" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-95" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.01;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" parent="DjzMqCNCpp32R4Y7mPO1-70" target="DjzMqCNCpp32R4Y7mPO1-88" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="315" y="60" as="sourcePoint" />
-            <Array as="points">
-              <mxPoint x="315" y="70" />
-              <mxPoint x="315" y="70" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-98" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.063;entryY=0.469;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="DjzMqCNCpp32R4Y7mPO1-77" target="DjzMqCNCpp32R4Y7mPO1-43" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="1570" y="932" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-100" value="" style="shape=mxgraph.pid.vessels.mixing_reactor;html=1;pointerEvents=1;align=center;verticalLabelPosition=bottom;verticalAlign=top;dashed=0;" parent="1" vertex="1">
-          <mxGeometry x="508" y="664.5" width="150" height="195" as="geometry" />
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-103" value="" style="triangle;whiteSpace=wrap;html=1;rotation=90;" parent="1" vertex="1">
-          <mxGeometry x="448" y="542" width="60" height="80" as="geometry" />
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-105" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" parent="1" source="DjzMqCNCpp32R4Y7mPO1-104" target="DjzMqCNCpp32R4Y7mPO1-103" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="458" y="462" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-104" value="" style="verticalLabelPosition=bottom;align=center;html=1;verticalAlign=top;pointerEvents=1;dashed=0;shape=mxgraph.pid2valves.valve;valveType=ball" parent="1" vertex="1">
-          <mxGeometry x="398" y="452" width="30" height="20" as="geometry" />
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-106" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="DjzMqCNCpp32R4Y7mPO1-103" target="DjzMqCNCpp32R4Y7mPO1-100" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-107" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=-0.003;entryY=0.757;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="DjzMqCNCpp32R4Y7mPO1-108" target="DjzMqCNCpp32R4Y7mPO1-100" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="508" y="802" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-108" value="" style="verticalLabelPosition=bottom;align=center;html=1;verticalAlign=top;pointerEvents=1;dashed=0;shape=mxgraph.pid2valves.valve;valveType=ball" parent="1" vertex="1">
-          <mxGeometry x="398" y="802" width="30" height="20" as="geometry" />
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-112" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="DjzMqCNCpp32R4Y7mPO1-110" target="DjzMqCNCpp32R4Y7mPO1-81" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-110" value="" style="shape=mxgraph.pid.vessels.mixing_reactor;html=1;pointerEvents=1;align=center;verticalLabelPosition=bottom;verticalAlign=top;dashed=0;" parent="1" vertex="1">
-          <mxGeometry x="878" y="664.5" width="150" height="195" as="geometry" />
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-113" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="DjzMqCNCpp32R4Y7mPO1-114" target="DjzMqCNCpp32R4Y7mPO1-110" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="848" y="789" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-114" value="" style="verticalLabelPosition=bottom;align=center;html=1;verticalAlign=top;pointerEvents=1;dashed=0;shape=mxgraph.pid2valves.valve;valveType=ball" parent="1" vertex="1">
-          <mxGeometry x="748" y="752" width="30" height="20" as="geometry" />
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-122" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="DjzMqCNCpp32R4Y7mPO1-100" target="DjzMqCNCpp32R4Y7mPO1-114" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-125" value="" style="endArrow=classic;html=1;rounded=0;entryX=-0.1;entryY=0.643;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" edge="1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="268" y="462" as="sourcePoint" />
-            <mxPoint x="398" y="461.71000000000015" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="DjzMqCNCpp32R4Y7mPO1-126" value="" style="endArrow=classic;html=1;rounded=0;entryX=-0.1;entryY=0.643;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" edge="1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="278" y="812" as="sourcePoint" />
-            <mxPoint x="398" y="811.7100000000002" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-      </root>
-    </mxGraphModel>
-  </diagram>
+<mxfile host="65bd71144e">
+    <diagram name="Page-1" id="113YbZ88T134uzQnZ3Du">
+        <mxGraphModel dx="1999" dy="1349" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2336" pageHeight="1654" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-39" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=-0.001;entryY=0.705;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="DjzMqCNCpp32R4Y7mPO1-40" target="DjzMqCNCpp32R4Y7mPO1-110" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="2158" y="1092" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="2058" y="1112"/>
+                            <mxPoint x="2058" y="1172"/>
+                            <mxPoint x="858" y="1172"/>
+                            <mxPoint x="858" y="802"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-56" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="DjzMqCNCpp32R4Y7mPO1-57" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="2068" y="802" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-69" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" parent="1" source="DjzMqCNCpp32R4Y7mPO1-90" target="DjzMqCNCpp32R4Y7mPO1-103" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="2068" y="92" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="1568" y="632"/>
+                            <mxPoint x="1568" y="462"/>
+                            <mxPoint x="498" y="462"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-98" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.063;entryY=0.469;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="DjzMqCNCpp32R4Y7mPO1-77" target="DjzMqCNCpp32R4Y7mPO1-43" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="1570" y="932"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-100" value="" style="shape=mxgraph.pid.vessels.mixing_reactor;html=1;pointerEvents=1;align=center;verticalLabelPosition=bottom;verticalAlign=top;dashed=0;" parent="1" vertex="1">
+                    <mxGeometry x="508" y="664.5" width="150" height="195" as="geometry"/>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-103" value="" style="triangle;whiteSpace=wrap;html=1;rotation=90;" parent="1" vertex="1">
+                    <mxGeometry x="448" y="542" width="60" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-105" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" parent="1" source="DjzMqCNCpp32R4Y7mPO1-104" target="DjzMqCNCpp32R4Y7mPO1-103" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="458" y="462"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-104" value="" style="verticalLabelPosition=bottom;align=center;html=1;verticalAlign=top;pointerEvents=1;dashed=0;shape=mxgraph.pid2valves.valve;valveType=ball" parent="1" vertex="1">
+                    <mxGeometry x="398" y="452" width="30" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-106" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="DjzMqCNCpp32R4Y7mPO1-103" target="DjzMqCNCpp32R4Y7mPO1-100" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-107" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=-0.003;entryY=0.757;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="DjzMqCNCpp32R4Y7mPO1-108" target="DjzMqCNCpp32R4Y7mPO1-100" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="508" y="802" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-108" value="" style="verticalLabelPosition=bottom;align=center;html=1;verticalAlign=top;pointerEvents=1;dashed=0;shape=mxgraph.pid2valves.valve;valveType=ball" parent="1" vertex="1">
+                    <mxGeometry x="398" y="802" width="30" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-112" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="DjzMqCNCpp32R4Y7mPO1-110" target="DjzMqCNCpp32R4Y7mPO1-81" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-110" value="" style="shape=mxgraph.pid.vessels.mixing_reactor;html=1;pointerEvents=1;align=center;verticalLabelPosition=bottom;verticalAlign=top;dashed=0;" parent="1" vertex="1">
+                    <mxGeometry x="878" y="664.5" width="150" height="195" as="geometry"/>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-113" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="DjzMqCNCpp32R4Y7mPO1-114" target="DjzMqCNCpp32R4Y7mPO1-110" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="848" y="789" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-114" value="" style="verticalLabelPosition=bottom;align=center;html=1;verticalAlign=top;pointerEvents=1;dashed=0;shape=mxgraph.pid2valves.valve;valveType=ball" parent="1" vertex="1">
+                    <mxGeometry x="748" y="752" width="30" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-122" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="DjzMqCNCpp32R4Y7mPO1-100" target="DjzMqCNCpp32R4Y7mPO1-114" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-125" value="" style="endArrow=classic;html=1;rounded=0;entryX=-0.1;entryY=0.643;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="268" y="462" as="sourcePoint"/>
+                        <mxPoint x="398" y="461.71000000000015" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-126" value="" style="endArrow=classic;html=1;rounded=0;entryX=-0.1;entryY=0.643;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="278" y="812" as="sourcePoint"/>
+                        <mxPoint x="398" y="811.7100000000002" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-71" value="" style="verticalLabelPosition=bottom;outlineConnect=0;align=center;dashed=0;html=1;verticalAlign=top;shape=mxgraph.pid2misc.column;columnType=tray" parent="1" vertex="1">
+                    <mxGeometry x="1178" y="612" width="110" height="300" as="geometry"/>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-72" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" target="DjzMqCNCpp32R4Y7mPO1-77" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="1458" y="952"/>
+                            <mxPoint x="1458" y="952"/>
+                        </Array>
+                        <mxPoint x="1418" y="952" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-73" value="" style="shape=mxgraph.pid.vessels.pressurized_vessel;html=1;pointerEvents=1;align=center;verticalLabelPosition=bottom;verticalAlign=top;dashed=0;" parent="1" vertex="1">
+                    <mxGeometry x="1378" y="512" width="80" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-74" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.005;entryY=0.49;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="DjzMqCNCpp32R4Y7mPO1-71" target="DjzMqCNCpp32R4Y7mPO1-73" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="1388" y="542" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="1233" y="541"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-75" value="" style="endArrow=classic;html=1;rounded=0;entryX=-0.004;entryY=0.609;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1228" y="912" as="sourcePoint"/>
+                        <mxPoint x="1307.56" y="958.5400000000002" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="1228" y="959"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-76" value="" style="endArrow=classic;html=1;rounded=0;" parent="1" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1378" y="922" as="sourcePoint"/>
+                        <mxPoint x="1288" y="893.27" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="1378" y="892"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-77" value="" style="verticalLabelPosition=bottom;outlineConnect=0;align=center;dashed=0;html=1;verticalAlign=top;shape=mxgraph.pid.compressors.centrifugal_compressor" parent="1" vertex="1">
+                    <mxGeometry x="1478" y="932" width="40" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-80" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="DjzMqCNCpp32R4Y7mPO1-81" target="DjzMqCNCpp32R4Y7mPO1-71" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-81" value="" style="verticalLabelPosition=bottom;align=center;html=1;verticalAlign=top;pointerEvents=1;dashed=0;shape=mxgraph.pid2valves.valve;valveType=ball" parent="1" vertex="1">
+                    <mxGeometry x="1108" y="752" width="30" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-82" value="F" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;strokeWidth=3;fontSize=16;" parent="1" vertex="1">
+                    <mxGeometry x="1138" y="732" width="30" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-83" value="V" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;strokeWidth=3;fontSize=16;" parent="1" vertex="1">
+                    <mxGeometry x="1298" y="862" width="30" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-84" value="" style="shape=mxgraph.pid.heat_exchangers.reboiler;html=1;pointerEvents=1;align=center;verticalLabelPosition=bottom;verticalAlign=top;dashed=0;" parent="1" vertex="1">
+                    <mxGeometry x="1308" y="922" width="110" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-86" value="V '" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;strokeWidth=3;fontSize=16;" parent="1" vertex="1">
+                    <mxGeometry x="1198" y="577" width="40" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-87" value="L'" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;strokeWidth=3;fontSize=16;" parent="1" vertex="1">
+                    <mxGeometry x="1193" y="917" width="40" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-88" value="" style="verticalLabelPosition=bottom;outlineConnect=0;align=center;dashed=0;html=1;verticalAlign=top;shape=mxgraph.pid.compressors.centrifugal_compressor;rotation=90;" parent="1" vertex="1">
+                    <mxGeometry x="1408" y="592" width="30" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-89" value="" style="verticalLabelPosition=bottom;align=center;html=1;verticalAlign=top;pointerEvents=1;dashed=0;shape=mxgraph.pid2valves.valve;valveType=ball" parent="1" vertex="1">
+                    <mxGeometry x="1327" y="622" width="30" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-90" value="" style="verticalLabelPosition=bottom;align=center;html=1;verticalAlign=top;pointerEvents=1;dashed=0;shape=mxgraph.pid2valves.valve;valveType=ball" parent="1" vertex="1">
+                    <mxGeometry x="1488" y="622" width="30" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-91" value="" style="endArrow=classic;html=1;rounded=0;exitX=-0.014;exitY=0.443;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="DjzMqCNCpp32R4Y7mPO1-89" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1315.3" y="631.1500000000001" as="sourcePoint"/>
+                        <mxPoint x="1288" y="630.8600000000001" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-92" value="L" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;strokeWidth=3;fontSize=16;" parent="1" vertex="1">
+                    <mxGeometry x="1297" y="632" width="30" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-93" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.993;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;exitX=1;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="DjzMqCNCpp32R4Y7mPO1-88" target="DjzMqCNCpp32R4Y7mPO1-89" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="1518" y="662" as="targetPoint"/>
+                        <mxPoint x="1428" y="632" as="sourcePoint"/>
+                        <Array as="points">
+                            <mxPoint x="1438" y="632"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-94" value="" style="endArrow=classic;html=1;rounded=0;entryX=-0.012;entryY=0.504;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" target="DjzMqCNCpp32R4Y7mPO1-90" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1438" y="632" as="sourcePoint"/>
+                        <mxPoint x="1578" y="662" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-95" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.01;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" target="DjzMqCNCpp32R4Y7mPO1-88" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="1423" y="572" as="sourcePoint"/>
+                        <Array as="points">
+                            <mxPoint x="1423" y="582"/>
+                            <mxPoint x="1423" y="582"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-32" value="" style="verticalLabelPosition=bottom;outlineConnect=0;align=center;dashed=0;html=1;verticalAlign=top;shape=mxgraph.pid2misc.column;columnType=tray" parent="1" vertex="1">
+                    <mxGeometry x="1638" y="782" width="110" height="300" as="geometry"/>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-33" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" target="DjzMqCNCpp32R4Y7mPO1-38" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="1918" y="1122"/>
+                            <mxPoint x="1918" y="1122"/>
+                        </Array>
+                        <mxPoint x="1878" y="1122" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-34" value="" style="shape=mxgraph.pid.vessels.pressurized_vessel;html=1;pointerEvents=1;align=center;verticalLabelPosition=bottom;verticalAlign=top;dashed=0;" parent="1" vertex="1">
+                    <mxGeometry x="1838" y="682" width="80" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.005;entryY=0.49;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="DjzMqCNCpp32R4Y7mPO1-32" target="DjzMqCNCpp32R4Y7mPO1-34" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="1848" y="712" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="1693" y="711"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-36" value="" style="endArrow=classic;html=1;rounded=0;entryX=-0.004;entryY=0.609;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1688" y="1082" as="sourcePoint"/>
+                        <mxPoint x="1767.56" y="1128.5400000000002" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="1688" y="1129"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-37" value="" style="endArrow=classic;html=1;rounded=0;" parent="1" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1838" y="1092" as="sourcePoint"/>
+                        <mxPoint x="1748" y="1063.27" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="1838" y="1062"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-38" value="" style="verticalLabelPosition=bottom;outlineConnect=0;align=center;dashed=0;html=1;verticalAlign=top;shape=mxgraph.pid.compressors.centrifugal_compressor" parent="1" vertex="1">
+                    <mxGeometry x="1938" y="1102" width="40" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-40" value="" style="verticalLabelPosition=bottom;align=center;html=1;verticalAlign=top;pointerEvents=1;dashed=0;shape=mxgraph.pid2valves.valve;valveType=ball" parent="1" vertex="1">
+                    <mxGeometry x="2018" y="1092" width="30" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-41" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;entryX=-0.119;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="2014" y="1102" as="targetPoint"/>
+                        <mxPoint x="1978" y="1102" as="sourcePoint"/>
+                        <Array as="points">
+                            <mxPoint x="2008" y="1102"/>
+                            <mxPoint x="2008" y="1102"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-42" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="DjzMqCNCpp32R4Y7mPO1-43" target="DjzMqCNCpp32R4Y7mPO1-32" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-43" value="" style="verticalLabelPosition=bottom;align=center;html=1;verticalAlign=top;pointerEvents=1;dashed=0;shape=mxgraph.pid2valves.valve;valveType=ball" parent="1" vertex="1">
+                    <mxGeometry x="1568" y="922" width="30" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-45" value="F" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;strokeWidth=3;fontSize=16;" parent="1" vertex="1">
+                    <mxGeometry x="1598" y="902" width="30" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-48" value="" style="shape=mxgraph.pid.heat_exchangers.reboiler;html=1;pointerEvents=1;align=center;verticalLabelPosition=bottom;verticalAlign=top;dashed=0;" parent="1" vertex="1">
+                    <mxGeometry x="1768" y="1092" width="110" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-51" value="V '" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;strokeWidth=3;fontSize=16;" parent="1" vertex="1">
+                    <mxGeometry x="1658" y="747" width="40" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-54" value="" style="verticalLabelPosition=bottom;outlineConnect=0;align=center;dashed=0;html=1;verticalAlign=top;shape=mxgraph.pid.compressors.centrifugal_compressor;rotation=90;" parent="1" vertex="1">
+                    <mxGeometry x="1868" y="762" width="30" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-55" value="" style="verticalLabelPosition=bottom;align=center;html=1;verticalAlign=top;pointerEvents=1;dashed=0;shape=mxgraph.pid2valves.valve;valveType=ball" parent="1" vertex="1">
+                    <mxGeometry x="1787" y="792" width="30" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-57" value="" style="verticalLabelPosition=bottom;align=center;html=1;verticalAlign=top;pointerEvents=1;dashed=0;shape=mxgraph.pid2valves.valve;valveType=ball" parent="1" vertex="1">
+                    <mxGeometry x="1958" y="792" width="30" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-58" value="" style="endArrow=classic;html=1;rounded=0;exitX=-0.014;exitY=0.443;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="DjzMqCNCpp32R4Y7mPO1-55" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1775.3" y="801.1500000000001" as="sourcePoint"/>
+                        <mxPoint x="1748" y="800.8600000000001" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-59" value="L" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;strokeWidth=3;fontSize=16;" parent="1" vertex="1">
+                    <mxGeometry x="1757" y="802" width="30" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-60" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.993;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;exitX=1;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="DjzMqCNCpp32R4Y7mPO1-54" target="DjzMqCNCpp32R4Y7mPO1-55" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="1978" y="832" as="targetPoint"/>
+                        <mxPoint x="1888" y="802" as="sourcePoint"/>
+                        <Array as="points">
+                            <mxPoint x="1898" y="802"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-61" value="" style="endArrow=classic;html=1;rounded=0;entryX=-0.012;entryY=0.504;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" target="DjzMqCNCpp32R4Y7mPO1-57" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1898" y="802" as="sourcePoint"/>
+                        <mxPoint x="2038" y="832" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="DjzMqCNCpp32R4Y7mPO1-62" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.01;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" target="DjzMqCNCpp32R4Y7mPO1-54" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="1883" y="742" as="sourcePoint"/>
+                        <Array as="points">
+                            <mxPoint x="1883" y="752"/>
+                            <mxPoint x="1883" y="752"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
 </mxfile>
