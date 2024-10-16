@@ -1,0 +1,10 @@
+SLAVE:
+INPUT: _2637tfr.inm
+MODNAME: apmain
+RUNID: _2637tfr
+NEW_RUNID: _2637tfr
+OLD_RUNID: _2637tfr
+PDF: _2637tfr.appdf
+USERNAME: braan
+XMOD: C:\Program Files\AspenTech\Aspen Plus V14.0\Engine\xeq\apmain
+SPONLY:

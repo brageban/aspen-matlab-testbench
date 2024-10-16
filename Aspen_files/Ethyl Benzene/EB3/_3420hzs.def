@@ -1,0 +1,11 @@
+SLAVE:
+INPUT: _3420hzs.inm
+MODNAME: apmain
+RUNID: _3420hzs
+NEW_RUNID: _3420hzs
+OLD_RUNID: _3420hzs
+PDF: _3420hzs.appdf
+USERNAME: Braan
+XMOD: e:\Programs\AspenTech\Aspen Plus V14.0\Engine\xeq\apmain
+SPONLY:
+DBCONN: _3420hzs.ads

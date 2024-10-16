@@ -1,0 +1,11 @@
+SLAVE:
+INPUT: _4418kxe.inm
+MODNAME: apmain
+RUNID: _4418kxe
+NEW_RUNID: _4418kxe
+OLD_RUNID: _4418kxe
+PDF: _4418kxe.appdf
+USERNAME: Braan
+XMOD: e:\Programs\AspenTech\Aspen Plus V14.0\Engine\xeq\apmain
+SPONLY:
+DBCONN: _4418kxe
