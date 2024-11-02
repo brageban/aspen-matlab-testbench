@@ -1,0 +1,11 @@
+SLAVE:
+INPUT: _0543kno.inm
+MODNAME: apmain
+RUNID: _0543kno
+NEW_RUNID: _0543kno
+OLD_RUNID: _0543kno
+PDF: _0543kno.appdf
+USERNAME: Braan
+XMOD: e:\Programs\AspenTech\Aspen Plus V14.0\Engine\xeq\apmain
+SPONLY:
+DBCONN: _0543kno
