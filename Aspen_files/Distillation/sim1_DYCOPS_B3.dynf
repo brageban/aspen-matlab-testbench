@@ -737,7 +737,7 @@ Label:
 Legend:Setpoint
 SubstValue:C
 Axis:0
-ARange:0 10 0 10 0 10
+ARange:9.63 10 0 10 0 10
 ARange3:0 10 0 10 0.5 0.5 0
 AxisResetRange:1
 AxisScale:0 0
@@ -745,8 +745,8 @@ Multiplier:0
 MultiplierType:0
 AxisFlag:0
 Axis:1
-ARange:118.889 119.195 105 130 107.275 129.922
-ARange3:105 130 105 130 5 5 0
+ARange:118.889 119.195 118.85 119.25 118.889 119.229
+ARange3:118.85 119.25 118.85 119.25 0.2 0.2 0
 AxisResetRange:1
 AxisScale:0 0
 Multiplier:0
@@ -967,8 +967,7 @@ LegendBox2:90 1.250000 5 }
 DisplayAs : Plot
 ColumnWidths : [ ]
 ProfileDimensions : [ ]
-}
-  </FORM>
+}  </FORM>
   <FORM NAME="ResultsPlot" MODEL="FC_LV">
     { Version : 2
 SizeX : 5130
@@ -1143,7 +1142,7 @@ EndText;
   BLOCKS("B-PUMP").pliq_out(1).MW : 18.02930688000002;
   BLOCKS("B-PUMP").pliq_out(1).P : 7.299999725904373;
   BLOCKS("B-PUMP").pliq_out(1).Rho : 49.41099947424223;
-  BLOCKS("B-PUMP").pliq_out(1).Rhom : 890.8460727686327;
+  BLOCKS("B-PUMP").pliq_out(1).Rhom : 890.8460727686328;
   BLOCKS("B-PUMP").pliq_out(1).T : 124.9290315613609;
   BLOCKS("B-PUMP").pliq_out(1).x("METHANOL") : 1.e-003;
   BLOCKS("B-PUMP").pliq_out(1).x("WATER") : 0.9989999999999998;
@@ -3077,7 +3076,7 @@ EndText;
   BLOCKS("COLUMN").Stage(2).Rhol : 22.4848415;
   BLOCKS("COLUMN").Stage(2).Rhoml : 719.7670981542093;
   BLOCKS("COLUMN").Stage(2).Rhov : 6.779514230415649e-002;
-  BLOCKS("COLUMN").Stage(2).Rhovin : 6.802978298041427e-002;
+  BLOCKS("COLUMN").Stage(2).Rhovin : 6.802978298041429e-002;
   BLOCKS("COLUMN").Stage(2).stagearea.spec : Fixed;
   BLOCKS("COLUMN").Stage(2).stagearea : 2.8274337;
   BLOCKS("COLUMN").Stage(2).stagenumber : 2;
@@ -3309,7 +3308,7 @@ EndText;
   BLOCKS("COLUMN").Stage(21).M : 3.7402667290083;
   BLOCKS("COLUMN").Stage(21).Mc("METHANOL").derivative : 5.103504037151652e-007;
   BLOCKS("COLUMN").Stage(21).Mc("METHANOL") : 3.330329916099;
-  BLOCKS("COLUMN").Stage(21).Mc("WATER").derivative : 2.633810325392005e-008;
+  BLOCKS("COLUMN").Stage(21).Mc("WATER").derivative : 2.633810503027689e-008;
   BLOCKS("COLUMN").Stage(21).Mc("WATER") : 0.4099368129093;
   BLOCKS("COLUMN").Stage(21).Ml : 3.613385908164;
   BLOCKS("COLUMN").Stage(21).Mv : 0.1268808208442;
@@ -3449,7 +3448,7 @@ EndText;
   BLOCKS("COLUMN").Stage(22).M : 3.7702562682818;
   BLOCKS("COLUMN").Stage(22).Mc("METHANOL").derivative : -1.580500708087129e-007;
   BLOCKS("COLUMN").Stage(22).Mc("METHANOL") : 3.298513422096;
-  BLOCKS("COLUMN").Stage(22).Mc("WATER").derivative : -3.190982766909656e-008;
+  BLOCKS("COLUMN").Stage(22).Mc("WATER").derivative : -3.190982855727498e-008;
   BLOCKS("COLUMN").Stage(22).Mc("WATER") : 0.4717428461858;
   BLOCKS("COLUMN").Stage(22).Ml : 3.643044686426;
   BLOCKS("COLUMN").Stage(22).Mv : 0.1272115818171;
@@ -4583,7 +4582,7 @@ EndText;
   BLOCKS("COLUMN").Stage(3).P : 2.01538462;
   BLOCKS("COLUMN").Stage(3).P_diff : 7.6923e-003;
   BLOCKS("COLUMN").Stage(3).P_diffv : 3.88277488343e-003;
-  BLOCKS("COLUMN").Stage(3).P_diffvp : 3.882771477438966e-003;
+  BLOCKS("COLUMN").Stage(3).P_diffvp : 3.882771477438965e-003;
   BLOCKS("COLUMN").Stage(3).pflash2(1).DSID : 6.;
   BLOCKS("COLUMN").Stage(3).pflash2(1).eff("METHANOL").spec : Fixed;
   BLOCKS("COLUMN").Stage(3).pflash2(1).eff("METHANOL") : 1.;
@@ -4613,7 +4612,7 @@ EndText;
   BLOCKS("COLUMN").Stage(3).Rhol : 22.4964568;
   BLOCKS("COLUMN").Stage(3).Rhoml : 719.7014780368924;
   BLOCKS("COLUMN").Stage(3).Rhov : 6.802978298041427e-002;
-  BLOCKS("COLUMN").Stage(3).Rhovin : 6.826369470621303e-002;
+  BLOCKS("COLUMN").Stage(3).Rhovin : 6.826369470621305e-002;
   BLOCKS("COLUMN").Stage(3).stagearea.spec : Fixed;
   BLOCKS("COLUMN").Stage(3).stagearea : 2.8274337;
   BLOCKS("COLUMN").Stage(3).stagenumber : 3;
@@ -4946,7 +4945,7 @@ EndText;
   BLOCKS("COLUMN").Stage(32).ComponentList : "Type1";
   BLOCKS("COLUMN").Stage(32).Diam.spec : Fixed;
   BLOCKS("COLUMN").Stage(32).Diam : 2.;
-  BLOCKS("COLUMN").Stage(32).E.derivative : 7.96826640225845e-008;
+  BLOCKS("COLUMN").Stage(32).E.derivative : 7.968267112801186e-008;
   BLOCKS("COLUMN").Stage(32).E.spec : Free;
   BLOCKS("COLUMN").Stage(32).E : -1.104007563161021;
   BLOCKS("COLUMN").Stage(32).effo.spec : Fixed;
@@ -4991,7 +4990,7 @@ EndText;
   BLOCKS("COLUMN").Stage(32).M : 4.41393633986;
   BLOCKS("COLUMN").Stage(32).Mc("METHANOL").derivative : -3.534064632049194e-007;
   BLOCKS("COLUMN").Stage(32).Mc("METHANOL") : 2.666977908202;
-  BLOCKS("COLUMN").Stage(32).Mc("WATER").derivative : -4.698285849258355e-008;
+  BLOCKS("COLUMN").Stage(32).Mc("WATER").derivative : -4.698285493986987e-008;
   BLOCKS("COLUMN").Stage(32).Mc("WATER") : 1.746958431658;
   BLOCKS("COLUMN").Stage(32).Ml : 4.284217148934;
   BLOCKS("COLUMN").Stage(32).Mv : 0.1297191909254;
@@ -5017,7 +5016,7 @@ EndText;
   BLOCKS("COLUMN").Stage(32).pflash2(1).LFactor : 0.;
   BLOCKS("COLUMN").Stage(32).pflash2(1).MWl : 26.40050843853185;
   BLOCKS("COLUMN").Stage(32).pflash2(1).Rhol : 28.4862024;
-  BLOCKS("COLUMN").Stage(32).pflash2(1).Rhoml : 752.0502354117965;
+  BLOCKS("COLUMN").Stage(32).pflash2(1).Rhoml : 752.0502354117964;
   BLOCKS("COLUMN").Stage(32).pflash2(1).VFactor : 0.;
   BLOCKS("COLUMN").Stage(32).pflash2(1).vfR : 2.938855047681e-002;
   BLOCKS("COLUMN").Stage(32).pflash2(1).z("METHANOL") : 0.6042175742585919;
@@ -5033,7 +5032,7 @@ EndText;
   BLOCKS("COLUMN").Stage(32).ratio_Fv_in : 1.;
   BLOCKS("COLUMN").Stage(32).ratio_Fv_inx : 9.999998996684512;
   BLOCKS("COLUMN").Stage(32).Rhol : 28.4862024;
-  BLOCKS("COLUMN").Stage(32).Rhoml : 752.0502354117965;
+  BLOCKS("COLUMN").Stage(32).Rhoml : 752.0502354117964;
   BLOCKS("COLUMN").Stage(32).Rhov : 7.350700169392804e-002;
   BLOCKS("COLUMN").Stage(32).Rhovin : 7.359466672353088e-002;
   BLOCKS("COLUMN").Stage(32).stagearea.spec : Fixed;
@@ -5086,7 +5085,7 @@ EndText;
   BLOCKS("COLUMN").Stage(33).ComponentList : "Type1";
   BLOCKS("COLUMN").Stage(33).Diam.spec : Fixed;
   BLOCKS("COLUMN").Stage(33).Diam : 2.;
-  BLOCKS("COLUMN").Stage(33).E.derivative : 3.631846823282103e-009;
+  BLOCKS("COLUMN").Stage(33).E.derivative : 3.631839717854746e-009;
   BLOCKS("COLUMN").Stage(33).E.spec : Free;
   BLOCKS("COLUMN").Stage(33).E : -1.138278886121576;
   BLOCKS("COLUMN").Stage(33).effo.spec : Fixed;
@@ -5131,7 +5130,7 @@ EndText;
   BLOCKS("COLUMN").Stage(33).M : 4.519786874298;
   BLOCKS("COLUMN").Stage(33).Mc("METHANOL").derivative : 3.220128519387799e-008;
   BLOCKS("COLUMN").Stage(33).Mc("METHANOL") : 2.569578549533;
-  BLOCKS("COLUMN").Stage(33).Mc("WATER").derivative : -3.242313439955069e-008;
+  BLOCKS("COLUMN").Stage(33).Mc("WATER").derivative : -3.242314150497805e-008;
   BLOCKS("COLUMN").Stage(33).Mc("WATER") : 1.950208324765;
   BLOCKS("COLUMN").Stage(33).Ml : 4.389898221688;
   BLOCKS("COLUMN").Stage(33).Mv : 0.1298886526114;
@@ -5430,7 +5429,7 @@ EndText;
   BLOCKS("COLUMN").Stage(35).P : 2.26153846;
   BLOCKS("COLUMN").Stage(35).P_diff : 7.69231e-003;
   BLOCKS("COLUMN").Stage(35).P_diffv : 3.401046451886e-003;
-  BLOCKS("COLUMN").Stage(35).P_diffvp : 3.401043762507471e-003;
+  BLOCKS("COLUMN").Stage(35).P_diffvp : 3.40104376250747e-003;
   BLOCKS("COLUMN").Stage(35).pflash2(1).DSID : 38.;
   BLOCKS("COLUMN").Stage(35).pflash2(1).eff("METHANOL").spec : Fixed;
   BLOCKS("COLUMN").Stage(35).pflash2(1).eff("METHANOL") : 1.;
@@ -5460,7 +5459,7 @@ EndText;
   BLOCKS("COLUMN").Stage(35).Rhol : 31.5395464;
   BLOCKS("COLUMN").Stage(35).Rhoml : 772.19079735427;
   BLOCKS("COLUMN").Stage(35).Rhov : 7.362403317012378e-002;
-  BLOCKS("COLUMN").Stage(35).Rhovin : 7.307157862033956e-002;
+  BLOCKS("COLUMN").Stage(35).Rhovin : 7.307157862033957e-002;
   BLOCKS("COLUMN").Stage(35).stagearea.spec : Fixed;
   BLOCKS("COLUMN").Stage(35).stagearea : 2.8274337;
   BLOCKS("COLUMN").Stage(35).stagenumber : 35;
@@ -5651,7 +5650,7 @@ EndText;
   BLOCKS("COLUMN").Stage(37).ComponentList : "Type1";
   BLOCKS("COLUMN").Stage(37).Diam.spec : Fixed;
   BLOCKS("COLUMN").Stage(37).Diam : 2.;
-  BLOCKS("COLUMN").Stage(37).E.derivative : 9.869047801203124e-009;
+  BLOCKS("COLUMN").Stage(37).E.derivative : 9.869040695775766e-009;
   BLOCKS("COLUMN").Stage(37).E.spec : Free;
   BLOCKS("COLUMN").Stage(37).E : -1.874217817706774;
   BLOCKS("COLUMN").Stage(37).effo.spec : Fixed;
@@ -5716,7 +5715,7 @@ EndText;
   BLOCKS("COLUMN").Stage(37).pflash2(1).eff("METHANOL") : 1.;
   BLOCKS("COLUMN").Stage(37).pflash2(1).eff("WATER").spec : Fixed;
   BLOCKS("COLUMN").Stage(37).pflash2(1).eff("WATER") : 1.;
-  BLOCKS("COLUMN").Stage(37).pflash2(1).h : -0.2724177944999885;
+  BLOCKS("COLUMN").Stage(37).pflash2(1).h : -0.2724177944999884;
   BLOCKS("COLUMN").Stage(37).pflash2(1).K("METHANOL") : 3.704277274857189;
   BLOCKS("COLUMN").Stage(37).pflash2(1).K("WATER") : 0.6246190170507832;
   BLOCKS("COLUMN").Stage(37).pflash2(1).LFactor : 0.;
@@ -6022,7 +6021,7 @@ EndText;
   BLOCKS("COLUMN").Stage(39).Rhol : 49.1886838;
   BLOCKS("COLUMN").Stage(39).Rhoml : 890.0277943242476;
   BLOCKS("COLUMN").Stage(39).Rhov : 6.95174886872196e-002;
-  BLOCKS("COLUMN").Stage(39).Rhovin : 6.956071735588694e-002;
+  BLOCKS("COLUMN").Stage(39).Rhovin : 6.956071735588695e-002;
   BLOCKS("COLUMN").Stage(39).stagearea.spec : Fixed;
   BLOCKS("COLUMN").Stage(39).stagearea : 2.8274337;
   BLOCKS("COLUMN").Stage(39).stagenumber : 39;
@@ -6274,7 +6273,7 @@ EndText;
   BLOCKS("COLUMN").Stage(40).pflash2(1).LFactor : 0.;
   BLOCKS("COLUMN").Stage(40).pflash2(1).MWl : 18.02930688000002;
   BLOCKS("COLUMN").Stage(40).pflash2(1).Rhol : 49.4352134;
-  BLOCKS("COLUMN").Stage(40).pflash2(1).Rhoml : 891.2826411383047;
+  BLOCKS("COLUMN").Stage(40).pflash2(1).Rhoml : 891.2826411383049;
   BLOCKS("COLUMN").Stage(40).pflash2(1).VFactor : 0.;
   BLOCKS("COLUMN").Stage(40).pflash2(1).vfR : 1.405131473517e-003;
   BLOCKS("COLUMN").Stage(40).pflash2(1).z("METHANOL") : 1.009440028583996e-003;
@@ -6287,7 +6286,7 @@ EndText;
   BLOCKS("COLUMN").Stage(40).rate("METHANOL") : 0.;
   BLOCKS("COLUMN").Stage(40).rate("WATER") : 0.;
   BLOCKS("COLUMN").Stage(40).Rhol : 49.4352134;
-  BLOCKS("COLUMN").Stage(40).Rhoml : 891.2826411383047;
+  BLOCKS("COLUMN").Stage(40).Rhoml : 891.2826411383049;
   BLOCKS("COLUMN").Stage(40).Rhov : 6.956071735588694e-002;
   BLOCKS("COLUMN").Stage(40).stagenumber : 40;
   BLOCKS("COLUMN").Stage(40).stagetype : 3;
@@ -6671,7 +6670,7 @@ EndText;
   BLOCKS("COLUMN").Stage(7).P : 2.04615385;
   BLOCKS("COLUMN").Stage(7).P_diff : 7.6923e-003;
   BLOCKS("COLUMN").Stage(7).P_diffv : 3.884288110683e-003;
-  BLOCKS("COLUMN").Stage(7).P_diffvp : 3.884284706988511e-003;
+  BLOCKS("COLUMN").Stage(7).P_diffvp : 3.88428470698851e-003;
   BLOCKS("COLUMN").Stage(7).pflash2(1).DSID : 10.;
   BLOCKS("COLUMN").Stage(7).pflash2(1).eff("METHANOL").spec : Fixed;
   BLOCKS("COLUMN").Stage(7).pflash2(1).eff("METHANOL") : 1.;
@@ -6701,7 +6700,7 @@ EndText;
   BLOCKS("COLUMN").Stage(7).Rhol : 22.5711253;
   BLOCKS("COLUMN").Stage(7).Rhoml : 719.5887455993854;
   BLOCKS("COLUMN").Stage(7).Rhov : 6.896006749439626e-002;
-  BLOCKS("COLUMN").Stage(7).Rhovin : 6.919000270709284e-002;
+  BLOCKS("COLUMN").Stage(7).Rhovin : 6.919000270709286e-002;
   BLOCKS("COLUMN").Stage(7).stagearea.spec : Fixed;
   BLOCKS("COLUMN").Stage(7).stagearea : 2.8274337;
   BLOCKS("COLUMN").Stage(7).stagenumber : 7;
@@ -6981,7 +6980,7 @@ EndText;
   BLOCKS("COLUMN").Stage(9).Rhol : 22.6315874;
   BLOCKS("COLUMN").Stage(9).Rhoml : 719.6554595013419;
   BLOCKS("COLUMN").Stage(9).Rhov : 6.941860197454131e-002;
-  BLOCKS("COLUMN").Stage(9).Rhovin : 6.964569042852392e-002;
+  BLOCKS("COLUMN").Stage(9).Rhovin : 6.964569042852393e-002;
   BLOCKS("COLUMN").Stage(9).stagearea.spec : Fixed;
   BLOCKS("COLUMN").Stage(9).stagearea : 2.8274337;
   BLOCKS("COLUMN").Stage(9).stagenumber : 9;
@@ -7558,7 +7557,7 @@ EndText;
   LC_B.IntegralTime : 9999.;
   LC_B.OP : 50.;
   LC_B.OPClipping : "Yes";
-  LC_B.OPMan.derivative : 2.131841391419442e-016;
+  LC_B.OPMan.derivative : 2.131841391419443e-016;
   LC_B.OPMan : 50.;
   LC_B.OPMans : 50.;
   LC_B.OPmax : 100.;
@@ -8070,7 +8069,7 @@ EndText;
   VF.Output_ : 1.103440495025586;
   Graphics : TEXT CLSID {A0DFFFE6-908E-11CE-A964-0000C08C668E}
 # of PFS Objects = 49
-SIZE -5.3 -0.579051 -2.06836 2.40352
+SIZE -5.3 -0.579051 -1.92558 2.40352
 BLOCK
 ID: B-PUMP
 Version: 1
@@ -8145,7 +8144,7 @@ Version: 1
 ICON: "Icon1"
 Flag 0
 Section 
-At -4.597309 0.659770
+At -4.653401 0.726061
 Label At 0.150000 0.150000
 Scale 1.000000 Modifier 0
 BLOCK
@@ -8710,23 +8709,23 @@ ID: S9
 Version: 2
 Flag 1
 TYPE 0 TERMINAL 0
-At -4.928873 0.603678
-Label At 0.043687 0.000000
+At -4.850000 0.525531
+Label At 0.000000 0.000000
 ROUTE 0 0
-r r -4.928873 0.603678 0
-x x -5.025000 0.603678 0
-y x -5.025000 0.425000 0
-x 0 -4.928764 0.425000 0
-y y -4.928764 0.296726 0
+r r -4.850000 0.525531 0
+y x -4.850000 0.325000 0
+x y -4.882870 0.325000 0
+y 0 -4.882870 0.241627 0
+x x -4.928764 0.241627 0
 t u -4.928764 0.246726 0
 $ D -0.033035 0.047126
 $ C 0.000000 0.0
 $ $ 0.0 0.0
 ROUTE 1 0
-r r -4.928873 0.603678 0
-x x -4.745372 0.603678 0
-y x -4.745372 0.659770 0
-t l -4.697309 0.659770 0
+r r -4.850000 0.525531 0
+y x -4.850000 0.726061 0
+x x -4.803401 0.726061 0
+t l -4.753401 0.726061 0
 $ C 1.000000 0.0
 $ $ 0.0 0.0
 At 0.000000 0.000000
@@ -8746,20 +8745,18 @@ ID: S10
 Version: 2
 Flag 1
 TYPE 0 TERMINAL 0
-At -4.395496 0.462003
-Label At -0.015659 0.197767
+At -4.395496 0.600531
+Label At -0.019619 0.125531
 ROUTE 0 0
-r r -4.395496 0.462003 0
-y 0 -4.395496 0.550000 0
-x y -4.325000 0.550000 0
-y r -4.325000 0.659770 0
-x x -4.447309 0.659770 0
-t r -4.497309 0.659770 0
+r r -4.395496 0.600531 0
+y x -4.395496 0.726061 0
+x 0 -4.503401 0.726061 0
+t r -4.553401 0.726061 0
 $ C 1.000000 0.0
 $ $ 0.0 0.0
 ROUTE 1 0
-r r -4.395496 0.462003 0
-y y -4.395496 0.418005 0
+r r -4.395496 0.600531 0
+y y -4.395496 0.424006 0
 t u -4.395496 0.374006 0
 $ C 1.000000 0.0
 $ $ 0.0 0.0
@@ -8814,20 +8811,20 @@ ID: S12
 Version: 2
 Flag 1
 TYPE 0 TERMINAL 0
-At -5.250000 -0.185012
-Label At 0.000000 0.005074
+At -5.200000 -0.422511
+Label At 0.000000 0.005085
 ROUTE 0 0
-r r -5.250000 -0.185012 0
-y x -5.250000 0.500000 0
-x y -4.913466 0.500000 0
-y y -4.913466 0.346726 0
-t u -4.913466 0.246726 0
-$ D -0.017737 0.047126
+r r -5.200000 -0.422511 0
+y x -5.200000 0.025000 0
+x y -4.944062 0.025000 0
+y 0 -4.944062 0.054939 0
+t d -4.944062 0.154939 0
+$ D -0.048333 -0.044661
 $ C 0.000000 0.0
 $ $ 0.0 0.0
 ROUTE 1 0
-r r -5.250000 -0.185012 0
-y x -5.250000 -0.870023 0
+r r -5.200000 -0.422511 0
+y x -5.200000 -0.870023 0
 x x -5.098575 -0.870023 0
 t l -4.998575 -0.870023 0
 $ C 1.000000 0.0
@@ -9047,20 +9044,18 @@ ID: S21
 Version: 2
 Flag 1
 TYPE 0 TERMINAL 0
-At -4.948168 1.307530
-Label At 0.000000 0.000000
+At -4.933863 1.295030
+Label At 0.000000 -0.015295
 ROUTE 0 0
-r r -4.948168 1.307530 0
-y x -4.948168 0.400000 0
-x 0 -4.898168 0.400000 0
-y y -4.898168 0.346726 0
-t u -4.898168 0.246726 0
-$ D -0.002439 0.047126
+r r -4.933863 1.295030 0
+y 0 -4.933863 0.346726 0
+t u -4.933863 0.246726 0
+$ D -0.038134 0.047126
 $ C 0.000000 0.0
 $ $ 0.0 0.0
 ROUTE 1 0
-r r -4.948168 1.307530 0
-y y -4.948168 2.215060 0
+r r -4.933863 1.295030 0
+y y -4.933863 2.215060 0
 x x -3.647457 2.215060 0
 t l -3.547457 2.215060 0
 $ C 1.000000 0.0
@@ -9245,14 +9240,14 @@ Label At 0.000000 0.596013
 ROUTE 0 0
 r r -2.725000 -0.585069 0
 y x -2.725000 0.010944 0
-x 0 -3.015549 0.010944 0
+x x -3.115549 0.010944 0
 t r -3.215549 0.010944 0
 $ C 3.000000 0.0
 $ $ 0.0 0.0
 ROUTE 1 0
 r r -2.725000 -0.585069 0
 y y -2.725000 -1.181081 0
-x x -3.343737 -1.181081 0
+x x -3.443737 -1.181081 0
 t r -3.543737 -1.181081 0
 $ C 1.000000 0.0
 $ $ 0.0 0.0

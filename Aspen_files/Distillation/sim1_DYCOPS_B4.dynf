@@ -700,8 +700,8 @@ PhasePlot: 0
 PhaseXVariable: -
 XProfileName: -
 YProfileName: -
-VariablesPaths : [ 27 BLOCKS("COLUMN").Stage(9).T 28 BLOCKS("COLUMN").Stage(30).T 28 BLOCKS("COLUMN").Stage(38).T ]
-HistoryVariablesPaths : [ 27 BLOCKS("COLUMN").Stage(9).T 28 BLOCKS("COLUMN").Stage(30).T 28 BLOCKS("COLUMN").Stage(38).T ]
+VariablesPaths : [ 28 BLOCKS("COLUMN").Stage(38).T ]
+HistoryVariablesPaths : [ 28 BLOCKS("COLUMN").Stage(38).T ]
 ProfileNames : [ ]
 UnusedVariablesPaths : [ ]
 UnusedProfileDimensions : [ ]
@@ -710,7 +710,7 @@ Type:0
 Title:Temperature
 Xlab:Time $UOM
 Ylab:Y Label
-Nvars:3
+Nvars:1
 MultiY:0
 Subst:UOM
 NYaxes:1
@@ -731,20 +731,10 @@ SubstValue:Hours
 Var:1
 AxisMap:1
 Label:Y Label
-Legend:BLOCKS("COLUMN").Stage(9).T $UOM
-SubstValue:C
-Var:2
-AxisMap:1
-Label:
-Legend:BLOCKS("COLUMN").Stage(30).T $UOM
-SubstValue:C
-Var:3
-AxisMap:1
-Label:
 Legend:BLOCKS("COLUMN").Stage(38).T $UOM
 SubstValue:C
 Axis:0
-ARange:0.89 10 0 10 0 10
+ARange:0 10 0 10 0 10
 ARange3:0 10 0 10 0.5 0.5 0
 AxisResetRange:1
 AxisScale:0 0
@@ -752,19 +742,15 @@ Multiplier:0
 MultiplierType:0
 AxisFlag:0
 Axis:1
-ARange:84.031 120.092 60 140 79.6331 120.092
-ARange3:60 140 60 140 25 25 0
+ARange:118.431 120.092 118 120.5 118.431 120.092
+ARange3:118 120.5 118 120.5 0.5 0.5 0
 AxisResetRange:1
 AxisScale:0 0
 Multiplier:0
 MultiplierType:0
 AxisFlag:0
-Attrib:0 4 1 1
+Attrib:0 4 3 3
 Attrib2:0 0 0 0 0
-Attrib:1 4 2 2
-Attrib2:1 0 0 0 0
-Attrib:2 4 3 3
-Attrib2:2 0 0 0 0
 Font:0 10 0:Arial
 Font:1 10 0:Arial
 Font:2 10 0:Arial
@@ -777,7 +763,7 @@ LegendBox:0 1.000000 0.030000
 LegendBox2:90 1.250000 5 } 
 DisplayAs : History
 Transpose : 0
-ColumnWidths : [ 585 3045 3165 3165 ]
+ColumnWidths : [ 585 3045 ]
 ProfileDimensions : [ ]
 }
   </FORM>
@@ -1641,7 +1627,7 @@ EndText;
   BLOCKS("COLUMN").Stage(10).P : 2.06923077;
   BLOCKS("COLUMN").Stage(10).P_diff : 7.69231e-003;
   BLOCKS("COLUMN").Stage(10).P_diffv : 3.884743167217e-003;
-  BLOCKS("COLUMN").Stage(10).P_diffvp : 3.884739743995681e-003;
+  BLOCKS("COLUMN").Stage(10).P_diffvp : 3.88473974399568e-003;
   BLOCKS("COLUMN").Stage(10).pflash2(1).DSID : 13.;
   BLOCKS("COLUMN").Stage(10).pflash2(1).eff("METHANOL").spec : Fixed;
   BLOCKS("COLUMN").Stage(10).pflash2(1).eff("METHANOL") : 1.;
@@ -1667,11 +1653,11 @@ EndText;
   BLOCKS("COLUMN").Stage(10).rate("METHANOL") : 0.;
   BLOCKS("COLUMN").Stage(10).rate("WATER") : 0.;
   BLOCKS("COLUMN").Stage(10).ratio_Fv_in : 1.;
-  BLOCKS("COLUMN").Stage(10).ratio_Fv_inx : 9.999999041502511;
+  BLOCKS("COLUMN").Stage(10).ratio_Fv_inx : 9.999999041502509;
   BLOCKS("COLUMN").Stage(10).Rhol : 22.6696137;
   BLOCKS("COLUMN").Stage(10).Rhoml : 719.7305403395953;
   BLOCKS("COLUMN").Stage(10).Rhov : 6.964569042852392e-002;
-  BLOCKS("COLUMN").Stage(10).Rhovin : 6.987107079607813e-002;
+  BLOCKS("COLUMN").Stage(10).Rhovin : 6.987107079607814e-002;
   BLOCKS("COLUMN").Stage(10).stagearea.spec : Fixed;
   BLOCKS("COLUMN").Stage(10).stagearea : 2.8274337;
   BLOCKS("COLUMN").Stage(10).stagenumber : 10;
@@ -1685,7 +1671,7 @@ EndText;
   BLOCKS("COLUMN").Stage(10).VapIn.P : 2.07692308;
   BLOCKS("COLUMN").Stage(10).VapIn.T : 84.3662308;
   BLOCKS("COLUMN").Stage(10).VapIn.Trev : 84.1947692;
-  BLOCKS("COLUMN").Stage(10).VapIn.V : 14.31207492037077;
+  BLOCKS("COLUMN").Stage(10).VapIn.V : 14.31207492037076;
   BLOCKS("COLUMN").Stage(10).VapIn.z("METHANOL") : 0.988625599;
   BLOCKS("COLUMN").Stage(10).VapIn.z("WATER") : 1.13744012e-002;
   BLOCKS("COLUMN").Stage(10).VapIn.Zrev("METHANOL") : 0.9904796340000001;
@@ -1696,7 +1682,7 @@ EndText;
   BLOCKS("COLUMN").Stage(10).VapOut.P : 2.06923077;
   BLOCKS("COLUMN").Stage(10).VapOut.T : 84.1947692;
   BLOCKS("COLUMN").Stage(10).VapOut.Trev : 84.0309827;
-  BLOCKS("COLUMN").Stage(10).VapOut.V : 14.35839021549053;
+  BLOCKS("COLUMN").Stage(10).VapOut.V : 14.35839021549052;
   BLOCKS("COLUMN").Stage(10).VapOut.z("METHANOL") : 0.9904796340000001;
   BLOCKS("COLUMN").Stage(10).VapOut.z("WATER") : 9.52036557e-003;
   BLOCKS("COLUMN").Stage(10).VapOut.Zrev("METHANOL") : 0.9921056329999999;
@@ -1836,7 +1822,7 @@ EndText;
   BLOCKS("COLUMN").Stage(11).VapOut.P : 2.07692308;
   BLOCKS("COLUMN").Stage(11).VapOut.T : 84.3662308;
   BLOCKS("COLUMN").Stage(11).VapOut.Trev : 84.1947692;
-  BLOCKS("COLUMN").Stage(11).VapOut.V : 14.31207492037077;
+  BLOCKS("COLUMN").Stage(11).VapOut.V : 14.31207492037076;
   BLOCKS("COLUMN").Stage(11).VapOut.z("METHANOL") : 0.988625599;
   BLOCKS("COLUMN").Stage(11).VapOut.z("WATER") : 1.13744012e-002;
   BLOCKS("COLUMN").Stage(11).VapOut.Zrev("METHANOL") : 0.9904796340000001;
@@ -1921,7 +1907,7 @@ EndText;
   BLOCKS("COLUMN").Stage(12).P : 2.08461538;
   BLOCKS("COLUMN").Stage(12).P_diff : 7.69231e-003;
   BLOCKS("COLUMN").Stage(12).P_diffv : 3.884540532373e-003;
-  BLOCKS("COLUMN").Stage(12).P_diffvp : 3.88453711855831e-003;
+  BLOCKS("COLUMN").Stage(12).P_diffvp : 3.884537118558309e-003;
   BLOCKS("COLUMN").Stage(12).pflash2(1).DSID : 15.;
   BLOCKS("COLUMN").Stage(12).pflash2(1).eff("METHANOL").spec : Fixed;
   BLOCKS("COLUMN").Stage(12).pflash2(1).eff("METHANOL") : 1.;
@@ -1947,11 +1933,11 @@ EndText;
   BLOCKS("COLUMN").Stage(12).rate("METHANOL") : 0.;
   BLOCKS("COLUMN").Stage(12).rate("WATER") : 0.;
   BLOCKS("COLUMN").Stage(12).ratio_Fv_in : 1.;
-  BLOCKS("COLUMN").Stage(12).ratio_Fv_inx : 9.9999990405136;
+  BLOCKS("COLUMN").Stage(12).ratio_Fv_inx : 9.999999040513602;
   BLOCKS("COLUMN").Stage(12).Rhol : 22.765102;
   BLOCKS("COLUMN").Stage(12).Rhoml : 719.9855180157253;
   BLOCKS("COLUMN").Stage(12).Rhov : 7.00945197562978e-002;
-  BLOCKS("COLUMN").Stage(12).Rhovin : 7.03157865746897e-002;
+  BLOCKS("COLUMN").Stage(12).Rhovin : 7.031578657468972e-002;
   BLOCKS("COLUMN").Stage(12).stagearea.spec : Fixed;
   BLOCKS("COLUMN").Stage(12).stagearea : 2.8274337;
   BLOCKS("COLUMN").Stage(12).stagenumber : 12;
@@ -2367,7 +2353,7 @@ EndText;
   BLOCKS("COLUMN").Stage(15).rate("METHANOL") : 0.;
   BLOCKS("COLUMN").Stage(15).rate("WATER") : 0.;
   BLOCKS("COLUMN").Stage(15).ratio_Fv_in : 1.;
-  BLOCKS("COLUMN").Stage(15).ratio_Fv_inx : 9.999999038409916;
+  BLOCKS("COLUMN").Stage(15).ratio_Fv_inx : 9.999999038409918;
   BLOCKS("COLUMN").Stage(15).Rhol : 22.9720335;
   BLOCKS("COLUMN").Stage(15).Rhoml : 720.7161216549099;
   BLOCKS("COLUMN").Stage(15).Rhov : 7.075060522514362e-002;
@@ -2481,7 +2467,7 @@ EndText;
   BLOCKS("COLUMN").Stage(16).P : 2.11538462;
   BLOCKS("COLUMN").Stage(16).P_diff : 7.6923e-003;
   BLOCKS("COLUMN").Stage(16).P_diffv : 3.882235062345e-003;
-  BLOCKS("COLUMN").Stage(16).P_diffvp : 3.882231641085675e-003;
+  BLOCKS("COLUMN").Stage(16).P_diffvp : 3.882231641085674e-003;
   BLOCKS("COLUMN").Stage(16).pflash2(1).DSID : 19.;
   BLOCKS("COLUMN").Stage(16).pflash2(1).eff("METHANOL").spec : Fixed;
   BLOCKS("COLUMN").Stage(16).pflash2(1).eff("METHANOL") : 1.;
@@ -2507,11 +2493,11 @@ EndText;
   BLOCKS("COLUMN").Stage(16).rate("METHANOL") : 0.;
   BLOCKS("COLUMN").Stage(16).rate("WATER") : 0.;
   BLOCKS("COLUMN").Stage(16).ratio_Fv_in : 1.;
-  BLOCKS("COLUMN").Stage(16).ratio_Fv_inx : 9.999999037500279;
+  BLOCKS("COLUMN").Stage(16).ratio_Fv_inx : 9.999999037500277;
   BLOCKS("COLUMN").Stage(16).Rhol : 23.0630942;
   BLOCKS("COLUMN").Stage(16).Rhoml : 721.0822783937979;
   BLOCKS("COLUMN").Stage(16).Rhov : 7.096348207577127e-002;
-  BLOCKS("COLUMN").Stage(16).Rhovin : 7.117281906839268e-002;
+  BLOCKS("COLUMN").Stage(16).Rhovin : 7.117281906839269e-002;
   BLOCKS("COLUMN").Stage(16).stagearea.spec : Fixed;
   BLOCKS("COLUMN").Stage(16).stagearea : 2.8274337;
   BLOCKS("COLUMN").Stage(16).stagenumber : 16;
@@ -2525,7 +2511,7 @@ EndText;
   BLOCKS("COLUMN").Stage(16).VapIn.P : 2.12307692;
   BLOCKS("COLUMN").Stage(16).VapIn.T : 85.62676580000003;
   BLOCKS("COLUMN").Stage(16).VapIn.Trev : 85.3813814;
-  BLOCKS("COLUMN").Stage(16).VapIn.V : 14.05030759058542;
+  BLOCKS("COLUMN").Stage(16).VapIn.V : 14.05030759058541;
   BLOCKS("COLUMN").Stage(16).VapIn.z("METHANOL") : 0.9708008339999999;
   BLOCKS("COLUMN").Stage(16).VapIn.z("WATER") : 2.91991664e-002;
   BLOCKS("COLUMN").Stage(16).VapIn.Zrev("METHANOL") : 0.9747736259999999;
@@ -2647,7 +2633,7 @@ EndText;
   BLOCKS("COLUMN").Stage(17).rate("METHANOL") : 0.;
   BLOCKS("COLUMN").Stage(17).rate("WATER") : 0.;
   BLOCKS("COLUMN").Stage(17).ratio_Fv_in : 1.;
-  BLOCKS("COLUMN").Stage(17).ratio_Fv_inx : 9.999999036465299;
+  BLOCKS("COLUMN").Stage(17).ratio_Fv_inx : 9.999999036465297;
   BLOCKS("COLUMN").Stage(17).Rhol : 23.1678754;
   BLOCKS("COLUMN").Stage(17).Rhoml : 721.5258354672253;
   BLOCKS("COLUMN").Stage(17).Rhov : 7.117281906839268e-002;
@@ -2676,7 +2662,7 @@ EndText;
   BLOCKS("COLUMN").Stage(17).VapOut.P : 2.12307692;
   BLOCKS("COLUMN").Stage(17).VapOut.T : 85.62676580000003;
   BLOCKS("COLUMN").Stage(17).VapOut.Trev : 85.3813814;
-  BLOCKS("COLUMN").Stage(17).VapOut.V : 14.05030759058542;
+  BLOCKS("COLUMN").Stage(17).VapOut.V : 14.05030759058541;
   BLOCKS("COLUMN").Stage(17).VapOut.z("METHANOL") : 0.9708008339999999;
   BLOCKS("COLUMN").Stage(17).VapOut.z("WATER") : 2.91991664e-002;
   BLOCKS("COLUMN").Stage(17).VapOut.Zrev("METHANOL") : 0.9747736259999999;
@@ -3085,7 +3071,7 @@ EndText;
   BLOCKS("COLUMN").Stage(2).Rhol : 22.4848415;
   BLOCKS("COLUMN").Stage(2).Rhoml : 719.7670981542093;
   BLOCKS("COLUMN").Stage(2).Rhov : 6.779514230415649e-002;
-  BLOCKS("COLUMN").Stage(2).Rhovin : 6.802978298041427e-002;
+  BLOCKS("COLUMN").Stage(2).Rhovin : 6.802978298041429e-002;
   BLOCKS("COLUMN").Stage(2).stagearea.spec : Fixed;
   BLOCKS("COLUMN").Stage(2).stagearea : 2.8274337;
   BLOCKS("COLUMN").Stage(2).stagenumber : 2;
@@ -3357,7 +3343,7 @@ EndText;
   BLOCKS("COLUMN").Stage(21).rate("METHANOL") : 0.;
   BLOCKS("COLUMN").Stage(21).rate("WATER") : 0.;
   BLOCKS("COLUMN").Stage(21).ratio_Fv_in : 1.;
-  BLOCKS("COLUMN").Stage(21).ratio_Fv_inx : 9.999999030767436;
+  BLOCKS("COLUMN").Stage(21).ratio_Fv_inx : 9.999999030767434;
   BLOCKS("COLUMN").Stage(21).Rhol : 23.7679432;
   BLOCKS("COLUMN").Stage(21).Rhoml : 724.3486673347046;
   BLOCKS("COLUMN").Stage(21).Rhov : 7.19651355869763e-002;
@@ -3373,7 +3359,7 @@ EndText;
   BLOCKS("COLUMN").Stage(21).VapIn.h : -0.2004847447330764;
   BLOCKS("COLUMN").Stage(21).VapIn.hrev : -0.2002031681851809;
   BLOCKS("COLUMN").Stage(21).VapIn.P : 2.16153846;
-  BLOCKS("COLUMN").Stage(21).VapIn.T : 87.18361560000002;
+  BLOCKS("COLUMN").Stage(21).VapIn.T : 87.18361560000004;
   BLOCKS("COLUMN").Stage(21).VapIn.Trev : 86.81914770000002;
   BLOCKS("COLUMN").Stage(21).VapIn.V : 13.86018613541072;
   BLOCKS("COLUMN").Stage(21).VapIn.z("METHANOL") : 0.9419657210000001;
@@ -3450,7 +3436,7 @@ EndText;
   BLOCKS("COLUMN").Stage(22).LiqOut.F : 52.9727309998349;
   BLOCKS("COLUMN").Stage(22).LiqOut.h : -0.2381935854451432;
   BLOCKS("COLUMN").Stage(22).LiqOut.P : 2.16153846;
-  BLOCKS("COLUMN").Stage(22).LiqOut.T : 87.18361560000002;
+  BLOCKS("COLUMN").Stage(22).LiqOut.T : 87.18361560000004;
   BLOCKS("COLUMN").Stage(22).LiqOut.V : 4.170655968611577e-002;
   BLOCKS("COLUMN").Stage(22).LiqOut.z("METHANOL") : 0.8725351309999999;
   BLOCKS("COLUMN").Stage(22).LiqOut.z("WATER") : 0.127464869;
@@ -3483,7 +3469,7 @@ EndText;
   BLOCKS("COLUMN").Stage(22).pflash2(1).LFactor : 0.;
   BLOCKS("COLUMN").Stage(22).pflash2(1).MWl : 30.25422557832129;
   BLOCKS("COLUMN").Stage(22).pflash2(1).Rhol : 23.9770436;
-  BLOCKS("COLUMN").Stage(22).pflash2(1).Rhoml : 725.4068932178079;
+  BLOCKS("COLUMN").Stage(22).pflash2(1).Rhoml : 725.4068932178078;
   BLOCKS("COLUMN").Stage(22).pflash2(1).VFactor : 0.;
   BLOCKS("COLUMN").Stage(22).pflash2(1).vfR : 3.374083159508e-002;
   BLOCKS("COLUMN").Stage(22).pflash2(1).z("METHANOL") : 0.8748777768447196;
@@ -3497,16 +3483,16 @@ EndText;
   BLOCKS("COLUMN").Stage(22).rate("METHANOL") : 0.;
   BLOCKS("COLUMN").Stage(22).rate("WATER") : 0.;
   BLOCKS("COLUMN").Stage(22).ratio_Fv_in : 1.;
-  BLOCKS("COLUMN").Stage(22).ratio_Fv_inx : 9.999999028869201;
+  BLOCKS("COLUMN").Stage(22).ratio_Fv_inx : 9.999999028869203;
   BLOCKS("COLUMN").Stage(22).Rhol : 23.9770436;
-  BLOCKS("COLUMN").Stage(22).Rhoml : 725.4068932178079;
+  BLOCKS("COLUMN").Stage(22).Rhoml : 725.4068932178078;
   BLOCKS("COLUMN").Stage(22).Rhov : 7.214910321046469e-002;
   BLOCKS("COLUMN").Stage(22).Rhovin : 7.232610996312902e-002;
   BLOCKS("COLUMN").Stage(22).stagearea.spec : Fixed;
   BLOCKS("COLUMN").Stage(22).stagearea : 2.8274337;
   BLOCKS("COLUMN").Stage(22).stagenumber : 22;
   BLOCKS("COLUMN").Stage(22).stagetype : 0;
-  BLOCKS("COLUMN").Stage(22).T : 87.18361560000002;
+  BLOCKS("COLUMN").Stage(22).T : 87.18361560000004;
   BLOCKS("COLUMN").Stage(22).V : 1.9151150928;
   BLOCKS("COLUMN").Stage(22).ValidPhases : "Vapor-Liquid";
   BLOCKS("COLUMN").Stage(22).VapIn.F : 102.972731;
@@ -3514,7 +3500,7 @@ EndText;
   BLOCKS("COLUMN").Stage(22).VapIn.hrev : -0.2004847447330764;
   BLOCKS("COLUMN").Stage(22).VapIn.P : 2.16923077;
   BLOCKS("COLUMN").Stage(22).VapIn.T : 87.58094400000003;
-  BLOCKS("COLUMN").Stage(22).VapIn.Trev : 87.18361560000002;
+  BLOCKS("COLUMN").Stage(22).VapIn.Trev : 87.18361560000004;
   BLOCKS("COLUMN").Stage(22).VapIn.V : 13.82626551476068;
   BLOCKS("COLUMN").Stage(22).VapIn.z("METHANOL") : 0.9339421019999999;
   BLOCKS("COLUMN").Stage(22).VapIn.z("WATER") : 6.60578984e-002;
@@ -3524,7 +3510,7 @@ EndText;
   BLOCKS("COLUMN").Stage(22).VapOut.h : -0.2004847447330764;
   BLOCKS("COLUMN").Stage(22).VapOut.hrev : -0.2002031681851809;
   BLOCKS("COLUMN").Stage(22).VapOut.P : 2.16153846;
-  BLOCKS("COLUMN").Stage(22).VapOut.T : 87.18361560000002;
+  BLOCKS("COLUMN").Stage(22).VapOut.T : 87.18361560000004;
   BLOCKS("COLUMN").Stage(22).VapOut.Trev : 86.81914770000002;
   BLOCKS("COLUMN").Stage(22).VapOut.V : 13.86018613541072;
   BLOCKS("COLUMN").Stage(22).VapOut.z("METHANOL") : 0.9419657210000001;
@@ -3583,7 +3569,7 @@ EndText;
   BLOCKS("COLUMN").Stage(23).LiqIn.F : 52.9727309998349;
   BLOCKS("COLUMN").Stage(23).LiqIn.h : -0.2381935854451432;
   BLOCKS("COLUMN").Stage(23).LiqIn.P : 2.16153846;
-  BLOCKS("COLUMN").Stage(23).LiqIn.T : 87.18361560000002;
+  BLOCKS("COLUMN").Stage(23).LiqIn.T : 87.18361560000004;
   BLOCKS("COLUMN").Stage(23).LiqIn.V : 4.170655968611577e-002;
   BLOCKS("COLUMN").Stage(23).LiqIn.z("METHANOL") : 0.8725351309999999;
   BLOCKS("COLUMN").Stage(23).LiqIn.z("WATER") : 0.127464869;
@@ -3665,7 +3651,7 @@ EndText;
   BLOCKS("COLUMN").Stage(23).VapOut.hrev : -0.2004847447330764;
   BLOCKS("COLUMN").Stage(23).VapOut.P : 2.16923077;
   BLOCKS("COLUMN").Stage(23).VapOut.T : 87.58094400000003;
-  BLOCKS("COLUMN").Stage(23).VapOut.Trev : 87.18361560000002;
+  BLOCKS("COLUMN").Stage(23).VapOut.Trev : 87.18361560000004;
   BLOCKS("COLUMN").Stage(23).VapOut.V : 13.82626551476068;
   BLOCKS("COLUMN").Stage(23).VapOut.z("METHANOL") : 0.9339421019999999;
   BLOCKS("COLUMN").Stage(23).VapOut.z("WATER") : 6.60578984e-002;
@@ -3933,7 +3919,7 @@ EndText;
   BLOCKS("COLUMN").Stage(25).VapIn.h : -0.2019756721614324;
   BLOCKS("COLUMN").Stage(25).VapIn.hrev : -0.2015429830016773;
   BLOCKS("COLUMN").Stage(25).VapIn.P : 2.19230769;
-  BLOCKS("COLUMN").Stage(25).VapIn.T : 89.00543460000003;
+  BLOCKS("COLUMN").Stage(25).VapIn.T : 89.00543460000004;
   BLOCKS("COLUMN").Stage(25).VapIn.Trev : 88.48829650000003;
   BLOCKS("COLUMN").Stage(25).VapIn.V : 13.73474972307001;
   BLOCKS("COLUMN").Stage(25).VapIn.z("METHANOL") : 0.904106984;
@@ -4010,7 +3996,7 @@ EndText;
   BLOCKS("COLUMN").Stage(26).LiqOut.F : 51.92366990003003;
   BLOCKS("COLUMN").Stage(26).LiqOut.h : -0.2421912680883747;
   BLOCKS("COLUMN").Stage(26).LiqOut.P : 2.19230769;
-  BLOCKS("COLUMN").Stage(26).LiqOut.T : 89.00543460000003;
+  BLOCKS("COLUMN").Stage(26).LiqOut.T : 89.00543460000004;
   BLOCKS("COLUMN").Stage(26).LiqOut.V : 3.973981390083589e-002;
   BLOCKS("COLUMN").Stage(26).LiqOut.z("METHANOL") : 0.78905789;
   BLOCKS("COLUMN").Stage(26).LiqOut.z("WATER") : 0.21094211;
@@ -4043,7 +4029,7 @@ EndText;
   BLOCKS("COLUMN").Stage(26).pflash2(1).LFactor : 0.;
   BLOCKS("COLUMN").Stage(26).pflash2(1).MWl : 29.08330033608321;
   BLOCKS("COLUMN").Stage(26).pflash2(1).Rhol : 25.163681;
-  BLOCKS("COLUMN").Stage(26).pflash2(1).Rhoml : 731.8428998340887;
+  BLOCKS("COLUMN").Stage(26).pflash2(1).Rhoml : 731.8428998340886;
   BLOCKS("COLUMN").Stage(26).pflash2(1).VFactor : 0.;
   BLOCKS("COLUMN").Stage(26).pflash2(1).vfR : 3.259150300055e-002;
   BLOCKS("COLUMN").Stage(26).pflash2(1).z("METHANOL") : 0.7928075128922721;
@@ -4059,14 +4045,14 @@ EndText;
   BLOCKS("COLUMN").Stage(26).ratio_Fv_in : 1.;
   BLOCKS("COLUMN").Stage(26).ratio_Fv_inx : 9.999999018873728;
   BLOCKS("COLUMN").Stage(26).Rhol : 25.163681;
-  BLOCKS("COLUMN").Stage(26).Rhoml : 731.8428998340887;
+  BLOCKS("COLUMN").Stage(26).Rhoml : 731.8428998340886;
   BLOCKS("COLUMN").Stage(26).Rhov : 7.280802491219174e-002;
   BLOCKS("COLUMN").Stage(26).Rhovin : 7.294992013918884e-002;
   BLOCKS("COLUMN").Stage(26).stagearea.spec : Fixed;
   BLOCKS("COLUMN").Stage(26).stagearea : 2.8274337;
   BLOCKS("COLUMN").Stage(26).stagenumber : 26;
   BLOCKS("COLUMN").Stage(26).stagetype : 0;
-  BLOCKS("COLUMN").Stage(26).T : 89.00543460000003;
+  BLOCKS("COLUMN").Stage(26).T : 89.00543460000004;
   BLOCKS("COLUMN").Stage(26).V : 1.9151150928;
   BLOCKS("COLUMN").Stage(26).ValidPhases : "Vapor-Liquid";
   BLOCKS("COLUMN").Stage(26).VapIn.F : 101.92367;
@@ -4074,7 +4060,7 @@ EndText;
   BLOCKS("COLUMN").Stage(26).VapIn.hrev : -0.2019756721614324;
   BLOCKS("COLUMN").Stage(26).VapIn.P : 2.2;
   BLOCKS("COLUMN").Stage(26).VapIn.T : 89.56925390000002;
-  BLOCKS("COLUMN").Stage(26).VapIn.Trev : 89.00543460000003;
+  BLOCKS("COLUMN").Stage(26).VapIn.Trev : 89.00543460000004;
   BLOCKS("COLUMN").Stage(26).VapIn.V : 13.70803419787156;
   BLOCKS("COLUMN").Stage(26).VapIn.z("METHANOL") : 0.89204776;
   BLOCKS("COLUMN").Stage(26).VapIn.z("WATER") : 0.10795224;
@@ -4084,7 +4070,7 @@ EndText;
   BLOCKS("COLUMN").Stage(26).VapOut.h : -0.2019756721614324;
   BLOCKS("COLUMN").Stage(26).VapOut.hrev : -0.2015429830016773;
   BLOCKS("COLUMN").Stage(26).VapOut.P : 2.19230769;
-  BLOCKS("COLUMN").Stage(26).VapOut.T : 89.00543460000003;
+  BLOCKS("COLUMN").Stage(26).VapOut.T : 89.00543460000004;
   BLOCKS("COLUMN").Stage(26).VapOut.Trev : 88.48829650000003;
   BLOCKS("COLUMN").Stage(26).VapOut.V : 13.73474972307001;
   BLOCKS("COLUMN").Stage(26).VapOut.z("METHANOL") : 0.904106984;
@@ -4143,7 +4129,7 @@ EndText;
   BLOCKS("COLUMN").Stage(27).LiqIn.F : 51.92366990003003;
   BLOCKS("COLUMN").Stage(27).LiqIn.h : -0.2421912680883747;
   BLOCKS("COLUMN").Stage(27).LiqIn.P : 2.19230769;
-  BLOCKS("COLUMN").Stage(27).LiqIn.T : 89.00543460000003;
+  BLOCKS("COLUMN").Stage(27).LiqIn.T : 89.00543460000004;
   BLOCKS("COLUMN").Stage(27).LiqIn.V : 3.973981390083589e-002;
   BLOCKS("COLUMN").Stage(27).LiqIn.z("METHANOL") : 0.78905789;
   BLOCKS("COLUMN").Stage(27).LiqIn.z("WATER") : 0.21094211;
@@ -4213,7 +4199,7 @@ EndText;
   BLOCKS("COLUMN").Stage(27).VapIn.h : -0.2029719845202558;
   BLOCKS("COLUMN").Stage(27).VapIn.hrev : -0.2024517325503559;
   BLOCKS("COLUMN").Stage(27).VapIn.P : 2.20769231;
-  BLOCKS("COLUMN").Stage(27).VapIn.T : 90.18224640000003;
+  BLOCKS("COLUMN").Stage(27).VapIn.T : 90.18224640000004;
   BLOCKS("COLUMN").Stage(27).VapIn.Trev : 89.56925390000002;
   BLOCKS("COLUMN").Stage(27).VapIn.V : 13.6833567421552;
   BLOCKS("COLUMN").Stage(27).VapIn.z("METHANOL") : 0.8788775579999999;
@@ -4225,7 +4211,7 @@ EndText;
   BLOCKS("COLUMN").Stage(27).VapOut.hrev : -0.2019756721614324;
   BLOCKS("COLUMN").Stage(27).VapOut.P : 2.2;
   BLOCKS("COLUMN").Stage(27).VapOut.T : 89.56925390000002;
-  BLOCKS("COLUMN").Stage(27).VapOut.Trev : 89.00543460000003;
+  BLOCKS("COLUMN").Stage(27).VapOut.Trev : 89.00543460000004;
   BLOCKS("COLUMN").Stage(27).VapOut.V : 13.70803419787156;
   BLOCKS("COLUMN").Stage(27).VapOut.z("METHANOL") : 0.89204776;
   BLOCKS("COLUMN").Stage(27).VapOut.z("WATER") : 0.10795224;
@@ -4290,7 +4276,7 @@ EndText;
   BLOCKS("COLUMN").Stage(28).LiqOut.F : 51.24472979991159;
   BLOCKS("COLUMN").Stage(28).LiqOut.h : -0.2448596034684117;
   BLOCKS("COLUMN").Stage(28).LiqOut.P : 2.20769231;
-  BLOCKS("COLUMN").Stage(28).LiqOut.T : 90.18224640000003;
+  BLOCKS("COLUMN").Stage(28).LiqOut.T : 90.18224640000004;
   BLOCKS("COLUMN").Stage(28).LiqOut.V : 3.840940965394163e-002;
   BLOCKS("COLUMN").Stage(28).LiqOut.z("METHANOL") : 0.733486408;
   BLOCKS("COLUMN").Stage(28).LiqOut.z("WATER") : 0.266513592;
@@ -4346,7 +4332,7 @@ EndText;
   BLOCKS("COLUMN").Stage(28).stagearea : 2.8274337;
   BLOCKS("COLUMN").Stage(28).stagenumber : 28;
   BLOCKS("COLUMN").Stage(28).stagetype : 0;
-  BLOCKS("COLUMN").Stage(28).T : 90.18224640000003;
+  BLOCKS("COLUMN").Stage(28).T : 90.18224640000004;
   BLOCKS("COLUMN").Stage(28).V : 1.9151150928;
   BLOCKS("COLUMN").Stage(28).ValidPhases : "Vapor-Liquid";
   BLOCKS("COLUMN").Stage(28).VapIn.F : 101.24473;
@@ -4354,7 +4340,7 @@ EndText;
   BLOCKS("COLUMN").Stage(28).VapIn.hrev : -0.2029719845202558;
   BLOCKS("COLUMN").Stage(28).VapIn.P : 2.21538462;
   BLOCKS("COLUMN").Stage(28).VapIn.T : 90.84563319999997;
-  BLOCKS("COLUMN").Stage(28).VapIn.Trev : 90.18224640000003;
+  BLOCKS("COLUMN").Stage(28).VapIn.Trev : 90.18224640000004;
   BLOCKS("COLUMN").Stage(28).VapIn.V : 13.66074195386042;
   BLOCKS("COLUMN").Stage(28).VapIn.z("METHANOL") : 0.864611056;
   BLOCKS("COLUMN").Stage(28).VapIn.z("WATER") : 0.135388944;
@@ -4364,7 +4350,7 @@ EndText;
   BLOCKS("COLUMN").Stage(28).VapOut.h : -0.2029719845202558;
   BLOCKS("COLUMN").Stage(28).VapOut.hrev : -0.2024517325503559;
   BLOCKS("COLUMN").Stage(28).VapOut.P : 2.20769231;
-  BLOCKS("COLUMN").Stage(28).VapOut.T : 90.18224640000003;
+  BLOCKS("COLUMN").Stage(28).VapOut.T : 90.18224640000004;
   BLOCKS("COLUMN").Stage(28).VapOut.Trev : 89.56925390000002;
   BLOCKS("COLUMN").Stage(28).VapOut.V : 13.6833567421552;
   BLOCKS("COLUMN").Stage(28).VapOut.z("METHANOL") : 0.8788775579999999;
@@ -4423,7 +4409,7 @@ EndText;
   BLOCKS("COLUMN").Stage(29).LiqIn.F : 51.24472979991159;
   BLOCKS("COLUMN").Stage(29).LiqIn.h : -0.2448596034684117;
   BLOCKS("COLUMN").Stage(29).LiqIn.P : 2.20769231;
-  BLOCKS("COLUMN").Stage(29).LiqIn.T : 90.18224640000003;
+  BLOCKS("COLUMN").Stage(29).LiqIn.T : 90.18224640000004;
   BLOCKS("COLUMN").Stage(29).LiqIn.V : 3.840940965394163e-002;
   BLOCKS("COLUMN").Stage(29).LiqIn.z("METHANOL") : 0.733486408;
   BLOCKS("COLUMN").Stage(29).LiqIn.z("WATER") : 0.266513592;
@@ -4477,7 +4463,7 @@ EndText;
   BLOCKS("COLUMN").Stage(29).rate("METHANOL") : 0.;
   BLOCKS("COLUMN").Stage(29).rate("WATER") : 0.;
   BLOCKS("COLUMN").Stage(29).ratio_Fv_in : 1.;
-  BLOCKS("COLUMN").Stage(29).ratio_Fv_inx : 9.999999008628745;
+  BLOCKS("COLUMN").Stage(29).ratio_Fv_inx : 9.999999008628746;
   BLOCKS("COLUMN").Stage(29).Rhol : 26.5577015;
   BLOCKS("COLUMN").Stage(29).Rhoml : 740.0255077799745;
   BLOCKS("COLUMN").Stage(29).Rhov : 7.320246611622788e-002;
@@ -4505,7 +4491,7 @@ EndText;
   BLOCKS("COLUMN").Stage(29).VapOut.hrev : -0.2029719845202558;
   BLOCKS("COLUMN").Stage(29).VapOut.P : 2.21538462;
   BLOCKS("COLUMN").Stage(29).VapOut.T : 90.84563319999997;
-  BLOCKS("COLUMN").Stage(29).VapOut.Trev : 90.18224640000003;
+  BLOCKS("COLUMN").Stage(29).VapOut.Trev : 90.18224640000004;
   BLOCKS("COLUMN").Stage(29).VapOut.V : 13.66074195386042;
   BLOCKS("COLUMN").Stage(29).VapOut.z("METHANOL") : 0.864611056;
   BLOCKS("COLUMN").Stage(29).VapOut.z("WATER") : 0.135388944;
@@ -4591,7 +4577,7 @@ EndText;
   BLOCKS("COLUMN").Stage(3).P : 2.01538462;
   BLOCKS("COLUMN").Stage(3).P_diff : 7.6923e-003;
   BLOCKS("COLUMN").Stage(3).P_diffv : 3.88277488343e-003;
-  BLOCKS("COLUMN").Stage(3).P_diffvp : 3.882771477438966e-003;
+  BLOCKS("COLUMN").Stage(3).P_diffvp : 3.882771477438965e-003;
   BLOCKS("COLUMN").Stage(3).pflash2(1).DSID : 6.;
   BLOCKS("COLUMN").Stage(3).pflash2(1).eff("METHANOL").spec : Fixed;
   BLOCKS("COLUMN").Stage(3).pflash2(1).eff("METHANOL") : 1.;
@@ -4621,7 +4607,7 @@ EndText;
   BLOCKS("COLUMN").Stage(3).Rhol : 22.4964568;
   BLOCKS("COLUMN").Stage(3).Rhoml : 719.7014780368924;
   BLOCKS("COLUMN").Stage(3).Rhov : 6.802978298041427e-002;
-  BLOCKS("COLUMN").Stage(3).Rhovin : 6.826369470621303e-002;
+  BLOCKS("COLUMN").Stage(3).Rhovin : 6.826369470621305e-002;
   BLOCKS("COLUMN").Stage(3).stagearea.spec : Fixed;
   BLOCKS("COLUMN").Stage(3).stagearea : 2.8274337;
   BLOCKS("COLUMN").Stage(3).stagenumber : 3;
@@ -4757,7 +4743,7 @@ EndText;
   BLOCKS("COLUMN").Stage(30).rate("METHANOL") : 0.;
   BLOCKS("COLUMN").Stage(30).rate("WATER") : 0.;
   BLOCKS("COLUMN").Stage(30).ratio_Fv_in : 1.;
-  BLOCKS("COLUMN").Stage(30).ratio_Fv_inx : 9.999999004758786;
+  BLOCKS("COLUMN").Stage(30).ratio_Fv_inx : 9.999999004758784;
   BLOCKS("COLUMN").Stage(30).Rhol : 27.1417288;
   BLOCKS("COLUMN").Stage(30).Rhoml : 743.5947588295193;
   BLOCKS("COLUMN").Stage(30).Rhov : 7.33130443487245e-002;
@@ -5438,7 +5424,7 @@ EndText;
   BLOCKS("COLUMN").Stage(35).P : 2.26153846;
   BLOCKS("COLUMN").Stage(35).P_diff : 7.69231e-003;
   BLOCKS("COLUMN").Stage(35).P_diffv : 3.401046451886e-003;
-  BLOCKS("COLUMN").Stage(35).P_diffvp : 3.401043762507471e-003;
+  BLOCKS("COLUMN").Stage(35).P_diffvp : 3.40104376250747e-003;
   BLOCKS("COLUMN").Stage(35).pflash2(1).DSID : 38.;
   BLOCKS("COLUMN").Stage(35).pflash2(1).eff("METHANOL").spec : Fixed;
   BLOCKS("COLUMN").Stage(35).pflash2(1).eff("METHANOL") : 1.;
@@ -5464,15 +5450,16 @@ EndText;
   BLOCKS("COLUMN").Stage(35).rate("METHANOL") : 0.;
   BLOCKS("COLUMN").Stage(35).rate("WATER") : 0.;
   BLOCKS("COLUMN").Stage(35).ratio_Fv_in : 1.;
-  BLOCKS("COLUMN").Stage(35).ratio_Fv_inx : 9.999999138423345;
+  BLOCKS("COLUMN").Stage(35).ratio_Fv_inx : 9.999999138423343;
   BLOCKS("COLUMN").Stage(35).Rhol : 31.5395464;
   BLOCKS("COLUMN").Stage(35).Rhoml : 772.19079735427;
   BLOCKS("COLUMN").Stage(35).Rhov : 7.362403317012378e-002;
-  BLOCKS("COLUMN").Stage(35).Rhovin : 7.307157862033956e-002;
+  BLOCKS("COLUMN").Stage(35).Rhovin : 7.307157862033957e-002;
   BLOCKS("COLUMN").Stage(35).stagearea.spec : Fixed;
   BLOCKS("COLUMN").Stage(35).stagearea : 2.8274337;
   BLOCKS("COLUMN").Stage(35).stagenumber : 35;
   BLOCKS("COLUMN").Stage(35).stagetype : 0;
+  BLOCKS("COLUMN").Stage(35).T.Record : True;
   BLOCKS("COLUMN").Stage(35).T : 96.30123479999999;
   BLOCKS("COLUMN").Stage(35).V : 1.9151150928;
   BLOCKS("COLUMN").Stage(35).ValidPhases : "Vapor-Liquid";
@@ -5884,7 +5871,7 @@ EndText;
   BLOCKS("COLUMN").Stage(38).rate("METHANOL") : 0.;
   BLOCKS("COLUMN").Stage(38).rate("WATER") : 0.;
   BLOCKS("COLUMN").Stage(38).ratio_Fv_in : 1.;
-  BLOCKS("COLUMN").Stage(38).ratio_Fv_inx : 9.999999086608327;
+  BLOCKS("COLUMN").Stage(38).ratio_Fv_inx : 9.999999086608328;
   BLOCKS("COLUMN").Stage(38).Rhol : 47.9275565;
   BLOCKS("COLUMN").Stage(38).Rhoml : 882.8499814502582;
   BLOCKS("COLUMN").Stage(38).Rhov : 7.003558344178459e-002;
@@ -6166,7 +6153,7 @@ EndText;
   BLOCKS("COLUMN").Stage(4).rate("METHANOL") : 0.;
   BLOCKS("COLUMN").Stage(4).rate("WATER") : 0.;
   BLOCKS("COLUMN").Stage(4).ratio_Fv_in : 1.;
-  BLOCKS("COLUMN").Stage(4).ratio_Fv_inx : 9.999999043180908;
+  BLOCKS("COLUMN").Stage(4).ratio_Fv_inx : 9.99999904318091;
   BLOCKS("COLUMN").Stage(4).Rhol : 22.5105198;
   BLOCKS("COLUMN").Stage(4).Rhoml : 719.6488537649099;
   BLOCKS("COLUMN").Stage(4).Rhov : 6.826369470621303e-002;
@@ -6565,7 +6552,7 @@ EndText;
   BLOCKS("COLUMN").Stage(6).rate("METHANOL") : 0.;
   BLOCKS("COLUMN").Stage(6).rate("WATER") : 0.;
   BLOCKS("COLUMN").Stage(6).ratio_Fv_in : 1.;
-  BLOCKS("COLUMN").Stage(6).ratio_Fv_inx : 9.999999042787229;
+  BLOCKS("COLUMN").Stage(6).ratio_Fv_inx : 9.999999042787227;
   BLOCKS("COLUMN").Stage(6).Rhol : 22.5474294;
   BLOCKS("COLUMN").Stage(6).Rhoml : 719.5902206232611;
   BLOCKS("COLUMN").Stage(6).Rhov : 6.872894968589975e-002;
@@ -6679,7 +6666,7 @@ EndText;
   BLOCKS("COLUMN").Stage(7).P : 2.04615385;
   BLOCKS("COLUMN").Stage(7).P_diff : 7.6923e-003;
   BLOCKS("COLUMN").Stage(7).P_diffv : 3.884288110683e-003;
-  BLOCKS("COLUMN").Stage(7).P_diffvp : 3.884284706988511e-003;
+  BLOCKS("COLUMN").Stage(7).P_diffvp : 3.88428470698851e-003;
   BLOCKS("COLUMN").Stage(7).pflash2(1).DSID : 10.;
   BLOCKS("COLUMN").Stage(7).pflash2(1).eff("METHANOL").spec : Fixed;
   BLOCKS("COLUMN").Stage(7).pflash2(1).eff("METHANOL") : 1.;
@@ -6709,7 +6696,7 @@ EndText;
   BLOCKS("COLUMN").Stage(7).Rhol : 22.5711253;
   BLOCKS("COLUMN").Stage(7).Rhoml : 719.5887455993854;
   BLOCKS("COLUMN").Stage(7).Rhov : 6.896006749439626e-002;
-  BLOCKS("COLUMN").Stage(7).Rhovin : 6.919000270709284e-002;
+  BLOCKS("COLUMN").Stage(7).Rhovin : 6.919000270709286e-002;
   BLOCKS("COLUMN").Stage(7).stagearea.spec : Fixed;
   BLOCKS("COLUMN").Stage(7).stagearea : 2.8274337;
   BLOCKS("COLUMN").Stage(7).stagenumber : 7;
@@ -6989,7 +6976,7 @@ EndText;
   BLOCKS("COLUMN").Stage(9).Rhol : 22.6315874;
   BLOCKS("COLUMN").Stage(9).Rhoml : 719.6554595013419;
   BLOCKS("COLUMN").Stage(9).Rhov : 6.941860197454131e-002;
-  BLOCKS("COLUMN").Stage(9).Rhovin : 6.964569042852392e-002;
+  BLOCKS("COLUMN").Stage(9).Rhovin : 6.964569042852393e-002;
   BLOCKS("COLUMN").Stage(9).stagearea.spec : Fixed;
   BLOCKS("COLUMN").Stage(9).stagearea : 2.8274337;
   BLOCKS("COLUMN").Stage(9).stagenumber : 9;
@@ -7005,7 +6992,7 @@ EndText;
   BLOCKS("COLUMN").Stage(9).VapIn.P : 2.06923077;
   BLOCKS("COLUMN").Stage(9).VapIn.T : 84.1947692;
   BLOCKS("COLUMN").Stage(9).VapIn.Trev : 84.0309827;
-  BLOCKS("COLUMN").Stage(9).VapIn.V : 14.35839021549053;
+  BLOCKS("COLUMN").Stage(9).VapIn.V : 14.35839021549052;
   BLOCKS("COLUMN").Stage(9).VapIn.z("METHANOL") : 0.9904796340000001;
   BLOCKS("COLUMN").Stage(9).VapIn.z("WATER") : 9.52036557e-003;
   BLOCKS("COLUMN").Stage(9).VapIn.Zrev("METHANOL") : 0.9921056329999999;
@@ -7720,7 +7707,7 @@ EndText;
   LF.Input2 : 100.0000004508095;
   LF.Output_.Record : True;
   LF.Output_.Tag : "b";
-  LF.Output_ : 0.5063823544010424;
+  LF.Output_ : 0.5063823544010423;
   LF_ratio.Input1.spec : Free;
   LF_ratio.Input1 : 2502.872011283185;
   LF_ratio.Input2.spec : Free;
@@ -7947,8 +7934,8 @@ EndText;
   STREAMS("B").Out_P.z("METHANOL") : 1.e-003;
   STREAMS("B").Out_P.z("WATER") : 0.9989999999999998;
   STREAMS("B").P : 1.01325;
-  STREAMS("B").Rho : 49.41099969181514;
-  STREAMS("B").Rhom : 890.8460766913214;
+  STREAMS("B").Rho : 49.41099969181513;
+  STREAMS("B").Rhom : 890.8460766913213;
   STREAMS("B").T : 124.929028;
   STREAMS("B").ValidPhases : "Liquid-Only";
   STREAMS("B").Zmn("METHANOL") : 1.777226391079101e-003;
