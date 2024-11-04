@@ -1,13 +1,0 @@
-
-      INFORMATION WHILE INSTANTIATING THE EQUATION-ORIENTED STREAM BLOCK: "F"   
-                                                         (PML_AUTO_PHASE.5)     
-      BLOCK VAPOR PHASE DROPPED.                                                
-
-      INFORMATION WHILE DETERMINING PROBLEM DIMENSIONS OF UNIT OPERATIONS       
-      BLOCK: "CV1" (MODEL: "VALVE")                      (PML_AUTO_PHASE.5)     
-      BLOCK VAPOR PHASE DROPPED.                                                
-
- *** CALCULATION TRACE ***
-
-
-<set objective = None>

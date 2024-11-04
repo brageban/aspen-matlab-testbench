@@ -1,0 +1,5182 @@
+ 
+// Aspen Dynamics input file generated from Aspen Plus 40.0 on Mon Nov  4 07:15:30 2024
+// Aspen Plus Title:
+
+Libraries "Dynamics.acml";
+//
+//************ ACM TYPES ***********************
+//************ DO NOT EDIT!!********************
+//************ END OF ACM TYPES ****************
+//
+//
+// ********** SYSTEM SECTION - WARNING: DO NOT EDIT *************************************
+//
+DynamicsOptions as Table;
+DynamicsOptions: 
+TEXT 
+{ Version              : 1
+SizeX                  : 8035
+SizeY                  : 4020
+ShowAllVariables       : False
+ShowAllAttributes      : False
+ExpandAll              : True
+ShowRegistryAttributes : False
+VariablesPaths         : [ GlobalPropMode GlobalFlashBasis GlobalFlashSmoothTol 
+                           GlobalLLStabilityCheck GlobalPropDamping WaterID 
+                           GlobalPDriven GlobalRFlow GlobalRFlowCol GlobalLiqHead GlobalPDEReverse
+                           GlobalTimeScaler F_max P_max P_min T_max T_min TAmb PropFilter 
+                           GlobalPolMethod GlobalMax_Sites Distribution NptsMWD Upper GPC 
+                           DistType ]
+AttributesPaths        : [ Description Value Units ]
+ColumnWidths           : [ 1500 3620 1500 1100 ]
+}
+ENDTEXT;  // End of Global Table
+Solids as Table;
+Solids:
+TEXT
+    { Version : 1
+SizeX : 6045
+SizeY : 5325
+ShowAllVariables : False
+ShowAllAttributes : False
+ExpandAll : True
+ShowRegistryAttributes : False
+VariablesPaths : [ GlobalStreamClass CISolids NCSolids NIntervalsCI NIntervalsNC CAUSR1Comps CAUSR2Comps CAUSR3Comps CAUSR4Comps CAUSR5Comps CAUSRAComps CAUSRBComps CAUSRCComps CAUSRDComps CAUSREComps PROXANALComps SULFANALComps ULTANALComps GENANALComps ]
+AttributesPaths : [ Description Value ]
+ColumnWidths : [ 1575 2955 1365 ]
+}
+ENDTEXT;
+// ********** SYSTEM SECTION END ********************************************************
+// Note: VariablesPaths must have a space at the end of each line
+//
+// ********** Options Section ***********************************************************
+// Note: Make sure the AD Solver Options are to be consistent with those in .../Scripts/OnNewADScript.vb 
+OPTIONS
+  RunMode                  : "Dynamic";
+  Nonlinear.Method         : "Mixed Newton";
+  Nonlinear.MaxIter        : 150; // 500;
+  Nonlinear.MaxStepRed     : 20;
+  Tearing                  : "Update";
+  Integrator               : "ImplicitEuler"; // "VSIE";
+  Integration.StepSizeType : "Variable";
+  Integration.InitStepSize : 0.001;     // Initial integration step (hours)
+  Integration.MinStepSize  : 0.001;     // Minimum integration step (hours)
+  Integration.MaxStepSize  : 0.05;      // Maximum integration step (hours)   
+  Integration.AbsErrorTol  : 5.e-4;     // 1.e-4;
+  Integration.AbsTearTol   : 5.e-2;     // 1.e-2;
+  Integration.RelErrorTol  : 5.e-4;     // 1.e-4;
+  Integration.RelTearTol   : 5.e-2;     // 1.e-2;
+  Integration.StepSize     : 0.0025;    // Step size for fixed step Implicit Euler
+  ImpEuler.Step            : 0.0025;    // Step size for fixed step Implicit Euler 11.1
+  MA48.PivotTol            : 1.e-050;
+  VSIE.InitialStep         : 0.005;     // Initial integration step (hours)
+  VSIE.MinimumStep         : 0.001;     // Minimum integration step (hours)
+  VSIE.MaximumStep         : 0.05;      // Maximum integration step (hours)
+  VSIE.MaxCorIter          : 150;
+  VSIE.TearErrTol          : 0.01;
+  SnapshotSettings.SaveConvergedOnly: False;
+  UseSavedSnapshotOnLoad   : False;
+  CurrentUOMSet          : "METCBAR";
+END  // End of OPTIONS Section
+//
+//
+//************ Global Parameters Settings ***********************************************
+//
+WaterID as StringParameter("WATER", Description:"Component name used for water");
+WaterID: "WATER";
+
+GlobalPropMode as PropertyMode("Local", Description:"Global property mode");
+
+GlobalPDriven as logicalparameter(False, Description:"Simulation is pressure driven");
+GlobalPDriven: True; 
+
+TAmb as Temperature(10.0, Fixed, Description:"Ambient Temperature");
+TAmb: 1.000000e+01 ; 
+
+T_min as realparameter(-253.15, Description:"Temperature lower limit (C)");
+T_min: -2.631500e+02 ; 
+
+T_max as realparameter(9726.85, Description:"Temperature upper limit (C)");
+T_max: 9.726850e+03 ; 
+
+ADVersion as hidden stringparameter;
+ADVersion: "40.0"; 
+
+// End of Global Parameters Settings
+
+//
+//************ Properties Section********************************************************
+//
+PROPERTIES
+  RUNID:  "sim1_update1dyn";
+
+  Type1 AS COMPONENTLIST;
+  Type1.COMPONENTS: ["METHANOL","WATER"];
+  Type1.OPTION("OPSET"): "NRTL";
+  Type1.OPTION("HENRY-COMPS"): "<none>";
+  Type1.OPTION("CHEMISTRY"): "<none>";
+  Type1.OPTION("FREE-WATER"): "STEAM-TA";
+  Type1.OPTION("TRUE-COMP"): "YES";
+  Type1.OPTION("SOLU-WATER"): "3";
+  Type1.OPTION("KBASE"): "1";
+  Type1.OPTION("MAXIT"): "500";
+  Type1.OPTION("TOLERANCE"): "1E-8";
+END  // End of Properties Section
+
+//
+//*********** FLOWSHEET ****************************************************************
+//
+FLOWSHEET
+  Componentlist: "Type1";
+
+//
+//*********** Global Reactions/Chemistry Structure *********************************************
+
+// Global Reactions Structure
+StructureContainer Reactions
+End
+
+//
+//*********** Global Reactions/Chemistry Structure *********************************************
+
+// Global Chemistry Structure
+StructureContainer Chemistry
+End
+
+// ACM Global Structures
+StructureContainer Structures
+End
+
+//
+//*********** BLOCKs & STREAMs Declaration *********************************************
+//
+  BLOCKS("B-PUMP") AS  PUMP;
+  BLOCKS("COLUMN") AS  RADFRAC;
+  BLOCKS("COLUMN_CondPC") AS PIDIncr;
+  BLOCKS("CV1") AS  VALVE;
+  BLOCKS("CV2") AS  VALVE;
+  BLOCKS("CV3") AS  VALVE;
+  BLOCKS("D-PUMP") AS  PUMP;
+  STREAMS("1") AS  MATERIALSTREAM;
+  STREAMS("11") AS  MATERIALSTREAM;
+  STREAMS("14") AS  MATERIALSTREAM;
+  STREAMS("2") AS  MATERIALSTREAM;
+  STREAMS("6") AS  MATERIALSTREAM;
+  STREAMS("B") AS  MATERIALSTREAM;
+  STREAMS("D") AS  MATERIALSTREAM;
+  STREAMS("F") AS  MATERIALSTREAM;
+
+//
+//*********** Connections **************************************************************
+//
+  CONNECT OUTPUT of BLOCKS("COLUMN").OUT_B AND INPUT of BLOCKS("B-PUMP").IN_F WITH STREAMS("14");
+  CONNECT OUTPUT of BLOCKS("CV1").OUT_P AND INPUT of BLOCKS("COLUMN").IN_F WITH STREAMS("11");
+  CONNECT OUTPUT of BLOCKS("B-PUMP").OUT_P AND INPUT of BLOCKS("CV3").IN_F WITH STREAMS("6");
+  CONNECT OUTPUT of BLOCKS("COLUMN").OUT_LD AND INPUT of BLOCKS("D-PUMP").IN_F WITH STREAMS("1");
+  CONNECT OUTPUT of BLOCKS("D-PUMP").OUT_P AND INPUT of BLOCKS("CV2").IN_F WITH STREAMS("2");
+  CONNECT BLOCKS("COLUMN").Stage(1).P
+      VIA BLOCKS("COLUMN").OutputSignal4
+      AND BLOCKS("COLUMN_CondPC").PV;
+  CONNECT BLOCKS("COLUMN_CondPC").OP AND BLOCKS("COLUMN").Condenser(1).QR;
+  CONNECT OUTPUT of BLOCKS("CV3").OUT_P WITH STREAMS("B");
+  CONNECT OUTPUT of BLOCKS("CV2").OUT_P WITH STREAMS("D");
+  CONNECT INPUT of BLOCKS("CV1").IN_F WITH STREAMS("F");
+
+//
+//*********** PFS Data Section ***********************************************************
+//
+Graphics:
+TEXT CLSID {A0DFFFE6-908E-11CE-A964-0000C08C668E}
+# of PFS Objects = 15
+SIZE -5.09131 -0.603683 -0.820843 1.2007
+BLOCK
+ID: CV2
+Version: 1
+ICON: "VALVE3"
+Flag 0
+Section GLOBAL
+At -1.300000 0.852379
+Label At 0.200000 0.150000
+Scale 1.000000 Modifier 0
+BLOCK
+ID: CV3
+Version: 1
+ICON: "VALVE3"
+Flag 0
+Section GLOBAL
+At -1.300000 -0.499142
+Label At 0.200000 0.150000
+Annotation At -0.100000 -0.162500
+Scale 1.013490 Modifier 0
+BLOCK
+ID: CV1
+Version: 1
+ICON: "VALVE3"
+Flag 0
+Section GLOBAL
+At -4.400000 0.200000
+Label At 0.200000 0.150000
+Scale 1.000000 Modifier 0
+BLOCK
+ID: B-PUMP
+Version: 1
+ICON: "ICON1"
+Flag 0
+Section GLOBAL
+At -2.200000 -0.625183
+Label At -0.000442 0.324553
+Scale 0.559028 Modifier 0
+BLOCK
+ID: COLUMN
+Version: 1
+ICON: "FRACT1"
+Flag 0
+Section GLOBAL
+At -3.500000 0.200700
+Label At -0.501270 0.401897
+Annotation At -0.225000 -1.100000
+Scale 1.000000 Modifier 0
+BLOCK
+ID: D-PUMP
+Version: 1
+ICON: "ICON1"
+Flag 0
+Section GLOBAL
+At -2.200000 0.727124
+Label At -0.003934 0.273440
+Annotation At -0.287500 -0.450000
+Scale 0.555556 Modifier 0
+STREAM
+ID: 6
+Version: 2
+Flag 0
+GLOBAL 117
+TYPE 0 TERMINAL 0
+At -1.612194 -0.500884
+Label At -0.193845 0.000000
+ROUTE 0 0
+r r -1.612194 -0.500884 0
+x x -1.940031 -0.500884 0
+y 0 -1.940031 -0.499547 0
+t r -1.990031 -0.499547 0
+$ C 1.000000 0.0
+$ $ 0.0 0.0
+ROUTE 1 0
+r r -1.612194 -0.500884 0
+x x -1.451501 -0.500884 0
+y x -1.451501 -0.499547 0
+t l -1.401501 -0.499547 0
+$ C 1.000000 0.0
+$ $ 0.0 0.0
+At 0.000000 0.000000
+Label At 0.000000 0.000000
+ROUTE 0 1
+$ $ 0.0 0.0
+ROUTE 1 1
+$ $ 0.0 0.0
+At 0.000000 0.000000
+Label At 0.000000 0.000000
+ROUTE 0 2
+$ $ 0.0 0.0
+ROUTE 1 2
+$ $ 0.0 0.0
+STREAM
+ID: B
+Version: 2
+Flag 0
+GLOBAL 117
+TYPE 0 TERMINAL 2
+At -0.603683 -0.498433
+Label At -0.243260 0.000000
+ROUTE 0 0
+r l -0.603683 -0.498433 0
+x 0 -1.198318 -0.498433 0
+t r -1.198600 -0.498433 0
+$ C 1.000000 0.0
+$ $ 0.0 0.0
+ROUTE 1 0
+$ $ 0.0 0.0
+At 0.000000 0.000000
+Label At 0.000000 0.000000
+ROUTE 0 1
+$ $ 0.0 0.0
+ROUTE 1 1
+$ $ 0.0 0.0
+At 0.000000 0.000000
+Label At 0.000000 0.000000
+ROUTE 0 2
+$ $ 0.0 0.0
+ROUTE 1 2
+$ $ 0.0 0.0
+STREAM
+ID: D
+Version: 2
+Flag 0
+GLOBAL 117
+TYPE 0 TERMINAL 2
+At -0.603683 0.853079
+Label At -0.198133 0.000000
+ROUTE 0 0
+r l -0.603683 0.853079 0
+x 0 -0.999950 0.853079 0
+t r -1.199950 0.853079 0
+$ C 1.000000 0.0
+$ $ 0.0 0.0
+ROUTE 1 0
+$ $ 0.0 0.0
+At 0.000000 0.000000
+Label At 0.000000 0.000000
+ROUTE 0 1
+$ $ 0.0 0.0
+ROUTE 1 1
+$ $ 0.0 0.0
+At 0.000000 0.000000
+Label At 0.000000 0.000000
+ROUTE 0 2
+$ $ 0.0 0.0
+ROUTE 1 2
+$ $ 0.0 0.0
+STREAM
+ID: F
+Version: 2
+Flag 0
+GLOBAL 117
+TYPE 0 TERMINAL 1
+At -5.091309 0.199600
+Label At 0.195580 0.000000
+ROUTE 0 0
+$ $ 0.0 0.0
+ROUTE 1 0
+r r -5.091309 0.199600 0
+x x -4.700150 0.199600 0
+t l -4.500150 0.199600 0
+$ C 1.000000 0.0
+$ $ 0.0 0.0
+At 0.000000 0.000000
+Label At 0.000000 0.000000
+ROUTE 0 1
+$ $ 0.0 0.0
+ROUTE 1 1
+$ $ 0.0 0.0
+At 0.000000 0.000000
+Label At 0.000000 0.000000
+ROUTE 0 2
+$ $ 0.0 0.0
+ROUTE 1 2
+$ $ 0.0 0.0
+STREAM
+ID: 11
+Version: 2
+Flag 0
+GLOBAL 117
+TYPE 0 TERMINAL 0
+At -3.937500 0.200700
+Label At -0.075456 0.000000
+ROUTE 0 0
+r r -3.937500 0.200700 0
+x 0 -4.249950 0.200700 0
+t r -4.299950 0.200700 0
+$ C 1.000000 0.0
+$ $ 0.0 0.0
+ROUTE 1 0
+r r -3.937500 0.200700 0
+x x -3.775962 0.200700 0
+t l -3.725962 0.200700 0
+$ C 1.000000 0.0
+$ $ 0.0 0.0
+At 0.000000 0.000000
+Label At 0.000000 0.000000
+ROUTE 0 1
+$ $ 0.0 0.0
+ROUTE 1 1
+$ $ 0.0 0.0
+At 0.000000 0.000000
+Label At 0.000000 0.000000
+ROUTE 0 2
+$ $ 0.0 0.0
+ROUTE 1 2
+$ $ 0.0 0.0
+STREAM
+ID: 14
+Version: 2
+Flag 0
+GLOBAL 117
+TYPE 0 TERMINAL 0
+At -2.700280 -0.628499
+Label At -0.033570 0.000000
+ROUTE 0 0
+r r -2.700280 -0.628499 0
+x x -2.854423 -0.628499 0
+y 0 -2.854423 -0.625454 0
+t r -2.904423 -0.625454 0
+$ C 1.000000 0.0
+$ $ 0.0 0.0
+ROUTE 1 0
+r r -2.700280 -0.628499 0
+x x -2.389488 -0.628499 0
+y x -2.389488 -0.625454 0
+t l -2.339488 -0.625454 0
+$ C 1.000000 0.0
+$ $ 0.0 0.0
+At 0.000000 0.000000
+Label At 0.000000 0.000000
+ROUTE 0 1
+$ $ 0.0 0.0
+ROUTE 1 1
+$ $ 0.0 0.0
+At 0.000000 0.000000
+Label At 0.000000 0.000000
+ROUTE 0 2
+$ $ 0.0 0.0
+ROUTE 1 2
+$ $ 0.0 0.0
+STREAM
+ID: 1
+Version: 2
+Flag 0
+GLOBAL 117
+TYPE 0 TERMINAL 0
+At -2.812500 0.726854
+Label At -0.033860 0.000000
+ROUTE 0 0
+r r -2.812500 0.726854 0
+x 0 -3.002115 0.726854 0
+t r -3.052115 0.726854 0
+$ C 1.000000 0.0
+$ $ 0.0 0.0
+ROUTE 1 0
+r r -2.812500 0.726854 0
+x x -2.388621 0.726854 0
+t l -2.338621 0.726854 0
+$ C 1.000000 0.0
+$ $ 0.0 0.0
+At 0.000000 0.000000
+Label At 0.000000 0.000000
+ROUTE 0 1
+$ $ 0.0 0.0
+ROUTE 1 1
+$ $ 0.0 0.0
+At 0.000000 0.000000
+Label At 0.000000 0.000000
+ROUTE 0 2
+$ $ 0.0 0.0
+ROUTE 1 2
+$ $ 0.0 0.0
+STREAM
+ID: 2
+Version: 2
+Flag 0
+GLOBAL 117
+TYPE 0 TERMINAL 0
+At -1.612500 0.851979
+Label At -0.257522 0.000000
+ROUTE 0 0
+r r -1.612500 0.851979 0
+x 0 -1.941336 0.851979 0
+t r -1.991336 0.851979 0
+$ C 1.000000 0.0
+$ $ 0.0 0.0
+ROUTE 1 0
+r r -1.612500 0.851979 0
+x x -1.450150 0.851979 0
+t l -1.400150 0.851979 0
+$ C 1.000000 0.0
+$ $ 0.0 0.0
+At 0.000000 0.000000
+Label At 0.000000 0.000000
+ROUTE 0 1
+$ $ 0.0 0.0
+ROUTE 1 1
+$ $ 0.0 0.0
+At 0.000000 0.000000
+Label At 0.000000 0.000000
+ROUTE 0 2
+$ $ 0.0 0.0
+ROUTE 1 2
+$ $ 0.0 0.0
+LEGEND
+Version: 2
+Dim: -7.48144 -1.25 -6.69785 -1.41136
+Size: 0.00828639
+Font: 1 0 =
+# of PFS Objects = 0
+VIEWPORT -5.976936 -0.259325 4.720568 -5.198245
+LAYOUT
+TableFormat 1
+Pages 1 1 1 1
+PAGESETUP
+PAPERSIZE 
+PAPERSOURCE 
+ORIENTATION -1
+PRINTPAGENO 1 1
+LEFTMARGIN 10mm
+RIGHTMARGIN 10mm
+TOPMARGIN 10mm
+BOTTOMMARGIN 10mm
+VISIBILITY 0.030000
+PFDFLAG 255 255
+PFDMODE 0
+SCALE 0.008286
+
+ENDTEXT;  // END of PFS Data Section
+
+//
+//*********** Blocks Operation at top level**********************************************
+//
+  WITHIN BLOCKS("B-PUMP")
+    ComponentList : "Type1";
+    ValidPhases : "Liquid-Only";
+    UseCurves : True;
+    In_F.connection("14").F : 5.000000000000e+01;
+    In_F.connection("14").P : 2.300000000000e+00;
+    In_F.connection("14").T : 1.245325480000e+02;
+    In_F.connection("14").H : -2.778681046529e-01;
+    In_F.connection("14").z("METHANOL") : 1.000000000000e-03;
+    In_F.connection("14").z("WATER") : 9.990000000000e-01;
+    EffCalc : True;
+    ModelType : "Pump";
+    Out_P.F : 5.000000000000e+01;
+    Out_P.Z("METHANOL") : 1.000000000000e-03;
+    Out_P.Z("WATER") : 9.990000000000e-01;
+    Out_P.T : 1.249290320000e+02;
+    Out_P.h : -2.778338951474e-01;
+    Out_P.P : 7.300000000000e+00;
+
+    TIN :      1.245325600000e+02;
+    PIN :      2.300000000000e+00;
+    HIN :     -2.778681046529e-01;
+    MEFF :      1.000000000000e+00;
+    EFF :      2.956576360000e-01;
+    PRATIO :      3.173913043478e+00;
+    PDIFF :      5.000000000000e+00;
+    BPOWER :      4.751294990000e-01;
+    FPOWER :      1.404756640000e-01;
+    EPOWER :      4.751294990000e-01;
+    EPOWERR :      4.751294990000e-01;
+    EPOWERR2 :      4.751294990000e-01;
+    HEAD :      5.609892744563e-01;
+    H_DIFF :      9.502589980000e-03;
+    FM :      9.014653450000e+02;
+    FV_IN :      1.011424719865e+00;
+    F :      5.000000000000e+01;
+    RHO_IN :      4.943521650000e+01;
+    MW_IN :      1.802930610000e+01;
+    RHO_OUT :      4.941099910000e+01;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("B-PUMP").pliq_in(1)
+      x("METHANOL") : 1.000000000000e-03;
+      x("WATER") : 9.990000000000e-01;
+
+    T :      1.245325600000e+02;
+    P :      2.300000000000e+00;
+    H :     -2.778681046529e-01;
+    RHO :      4.943521650000e+01;
+    RHOM :      8.912826503983e+02;
+    MW :      1.802930610000e+01;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("B-PUMP").pliq_out(1)
+    x("METHANOL")  : 1.000000000000e-03;
+    x("WATER")  : 9.990000000000e-01;
+
+    T :      1.249290320000e+02;
+    P :      7.300000000000e+00;
+    H :     -2.778338951474e-01;
+    RHO :      4.941099910000e+01;
+    RHOM :      8.908460670095e+02;
+    MW :      1.802930690000e+01;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("B-PUMP").perf_curve(1)
+    BlockVersion : "20.0";
+     ExtrapolateAffL : "Yes";
+Fv_inRef : Fv_inU;
+
+    EFF :      2.956576360000e-01;
+    HEAD :      5.609892744563e-01;
+    FV_INU :      1.011424719865e+00;
+    HEADU :      5.609892744563e-01;
+    EFFU :      2.956576360000e-01;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("B-PUMP")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+        P_drop("11") : 2.461538500000e-01;
+    FeedStages("11") : 34;
+    FeedConven("11") : "ON-STAGE";
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+    BlockVersion : "20.0";
+    ComponentList :      "Type1";
+    LiqIDMethod : "Key components";
+     KeyComps : [];
+     FLOOD_CALC : "No";
+     TRAY_FLOOD_CALC_METH : "Fair";
+     PACK_FLOOD_CALC_METH : "Eckert";
+    ReboilerType :      "Kettle";
+    CondenserPresent :      "Yes";
+    NSTAGE :      40;
+    NPUMPAROUND :      0;
+    QReb :      4.365450928496e+00;
+    QRebR :      4.365450928496e+00, FIXED;
+    TReb :      1.245325480000e+02;
+    Backflow.In_F.F :      0;
+    Backflow.Out_P.F :      0;
+
+    BACKFLOW_C0 :      5.131200828592e-08;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(1)
+    BLOCKID :"COLUMN";
+     BlockVersion : "20.0";
+    ValidPhases : "Vapor-Liquid";
+    Componentlist : "Type1";
+    stagenumber : 1;
+    nstage : 40;
+    stagetype : 1;
+    nhypass : 0;
+    heatopt : "Constant duty";
+    SCOpt : "Reflux-and-Distillate";
+    DecOne : 0;
+    EqHeatCap : "No";
+    EnvHtTrans : "No";
+    efftype : "Vaporization";
+    y("METHANOL") : 9.995469810000e-01;
+    y("WATER") : 4.530194750000e-04;
+    x("METHANOL") : 9.990000000000e-01;
+    x("WATER") : 1.000000000000e-03;
+    pflash2(1).eff("METHANOL") : 1.000000000000e+00, FIXED;
+    pflash2(1).eff("WATER") : 1.000000000000e+00, FIXED;
+    delta_T_sub : 2.290250030000e+01,FIXED;
+    Tl_sub : 6.000000000000e+01;
+    hl_sub : -2.349685615242e-01;
+    pliqsub(1).Rhom : 7.499114197418e+02;
+    pliqsub(1).T : 6.000000000000e+01;
+    pliqsub(1).h : -2.349685615242e-01;
+    pliqsub(1).P : 2.000000000000e+00;
+    pliqsub(1).Mw : 3.202813310000e+01;
+    pliqsub(1).rho : 2.341414710000e+01;
+    pliqsub(1).x("METHANOL") : 9.990000000000e-01;
+    pliqsub(1).x("WATER") : 1.000000000000e-03;
+    vapout.T : 8.290250030000e+01;
+    liqout.T : 8.290250030000e+01;
+    vapout.V : 1.480168992611e+01;
+    vapin.T : 8.303147530000e+01;
+    vapin.V : 1.475031962136e+01;
+    vapout.h : -1.982933559619e-01;
+    pflash2(1).Mwl : 3.202813310000e+01;
+    pflash2(1).rhoml : 7.499114197418e+02;
+    pflash2(1).rhol : 2.341414710000e+01;
+    liqout.F : 0.000000000000e+00;
+    vapin.F : 1.006382360000e+02;
+    vapout.p : 2.000000000000e+00;
+    vapin.p : 2.007692310000e+00;
+    liqout.T : 8.290250030000e+01;
+    liqout.P : 2.000000000000e+00;
+    liqout.h : -2.323370247660e-01;
+    OUT_HS.Q : 0.000000000000e+00;
+    H_Type : "Elliptical";
+    Orientation : "Vertical";
+    pflash2(1).h : -2.322349978592e-01;
+    Mc("METHANOL") : 3.713550858158e+01;
+    Mc("WATER") : 3.711168434169e-02;
+    pflash2(1).LFactor : 0.000000000000e+00;
+    pflash2(1).VFactor : 0.000000000000e+00;
+    pflash2(1).ZFactor : 1.0;
+    E : -8.633442975996e+00,free;
+
+    QENV :      0.000000000000e+00;
+    QR :      0.000000000000e+00 , fixed;
+    T :      8.290250030000e+01;
+    V :      3.297940653804e+00;
+    LEVEL :      1.890012000000e+00;
+    VL :      1.648970326902e+00;
+    VV :      1.648970326902e+00;
+    P_DIFF :      7.692310000000e-03;
+    P_DIFFV :      7.692310000000e-03;
+    C1 :      0.000000000000e+00 , fixed;
+    FV_INP :      1.006382360000e+02 , initial;
+    Q :      0.000000000000e+00;
+    MV :      1.114041933816e-01;
+    ML :      3.706121607249e+01;
+    M :      3.717262026587e+01;
+    VF :      2.996942173696e-03;
+    LF :      9.970030578263e-01;
+    HT :      3.240024000000e+00 , fixed;
+    P :      2.000000000000e+00;
+    P_DIFFVP :      7.692310000000e-03;
+    C0 :      5.149071041379e-08 , fixed;
+    RHOVIN :      6.779514110000e-02;
+    DIAM :      1.080000000000e+00 , fixed;
+    RHOL :      2.341414710000e+01;
+    RHOV :      6.755985330000e-02;
+    MWL :      3.202813310000e+01;
+    RHOML :      7.499114197418e+02;
+    HL :     -2.323370247660e-01;
+    HV :     -1.982933559619e-01;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(2)
+    BLOCKID :"COLUMN";
+     BlockVersion : "20.0";
+    ValidPhases : "Vapor-Liquid";
+    Componentlist : "Type1";
+    stagenumber : 2;
+    nstage : 40;
+    stagetype : 0;
+    nhypass : 0;
+    heatopt : "Constant duty";
+    EqHeatCap : "No";
+    EnvHtTrans : "No";
+    efftype : "Vaporization";
+    y("METHANOL") : 9.990000000000e-01;
+    y("WATER") : 1.000000000000e-03;
+    x("METHANOL") : 9.977938620000e-01;
+    x("WATER") : 2.206138350000e-03;
+    pflash2(1).eff("METHANOL") : 1.000000000000e+00, FIXED;
+    pflash2(1).eff("WATER") : 1.000000000000e+00, FIXED;
+    vapout.T : 8.303147530000e+01;
+    liqout.T : 8.303147530000e+01;
+    vapout.V : 1.475031962136e+01;
+    vapin.T : 8.316294770000e+01;
+    vapin.V : 1.469944449344e+01;
+    vapout.h : -1.983098908912e-01;
+    pflash2(1).Mwl : 3.201121480000e+01;
+    pflash2(1).rhoml : 7.197670910005e+02;
+    pflash2(1).rhol : 2.248484150000e+01;
+    liqout.F : 5.454316580000e+01;
+    vapin.F : 1.045431660000e+02;
+    vapout.p : 2.007692310000e+00;
+    vapin.p : 2.015384620000e+00;
+    liqout.T : 8.303147530000e+01;
+    liqout.P : 2.007692310000e+00;
+    liqout.h : -2.323820671978e-01;
+    OUT_HS.Q : 0.000000000000e+00;
+    pflash2(1).h : -2.312355898054e-01;
+    Mc("METHANOL") : 3.543396715271e+00;
+    Mc("WATER") : 7.690068808996e-03;
+    pflash2(1).LFactor : 0.000000000000e+00;
+    pflash2(1).VFactor : 0.000000000000e+00;
+    pflash2(1).ZFactor : 1.0;
+    E : -8.215221428736e-01,free;
+
+    QENV :      0.000000000000e+00;
+    QR :      0.000000000000e+00 , fixed;
+    T :      8.303147530000e+01;
+    HT_WEIR :      5.000000000000e-02 , fixed;
+    STAGEAREA :      2.827433700000e+00 , fixed;
+    V :      1.915115092800e+00;
+    L_WEIR :      1.453320000000e+00 , fixed;
+    LEVEL :      5.397767244715e-02;
+    VL :      1.526182901246e-01;
+    VV :      1.762496802675e+00;
+    LEVEL_TRAY :      5.397767244715e-02;
+    P_DIFF :      7.692310000000e-03;
+    P_DIFFV :      3.882293862000e-03;
+    C1 :      1.000000000000e+00 , fixed;
+    FV_INP :      1.045431660000e+02 , initial;
+    Q :      0.000000000000e+00;
+    MV :      1.194887194257e-01;
+    ML :      3.431598063453e+00;
+    M :      3.551086782879e+00;
+    VF :      3.364849318855e-02;
+    LF :      9.663515068114e-01;
+    HT :      6.096000000000e-01 , fixed;
+    P :      2.007692310000e+00;
+    P_DIFFVP :      3.882293862000e-03;
+    C0 :      2.416549918973e-08 , fixed;
+    RHOVIN :      6.802978170000e-02;
+    DIAM :      2.000000000000e+00 , fixed;
+    QL_OUT :      2.425774973775e+00;
+    COF_WEEP_PT :      1.000000000000e-01 , fixed;
+    COF_WEEP_RATE :      5.299580883135e-01 , fixed;
+    FV_IN_NORM :      1.045431660000e+02 , fixed;
+    FL_WEEP :      0.000000000000e+00;
+    RATIO_FV_INX :      1.000000000000e+01;
+    RATIO_FV_IN :      1.000000000000e+00;
+    VL_HYD :      1.526182901246e-01;
+    RHOL :      2.248484150000e+01;
+    RHOV :      6.779514110000e-02;
+    MWL :      3.201121480000e+01;
+    RHOML :      7.197670910005e+02;
+    HL :     -2.323820671978e-01;
+    HV :     -1.983098908912e-01;
+    EFFO :      1.000000000000e+00 , fixed;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(3)
+    BLOCKID :"COLUMN";
+     BlockVersion : "20.0";
+    ValidPhases : "Vapor-Liquid";
+    Componentlist : "Type1";
+    stagenumber : 3;
+    nstage : 40;
+    stagetype : 0;
+    nhypass : 0;
+    heatopt : "Constant duty";
+    EqHeatCap : "No";
+    EnvHtTrans : "No";
+    efftype : "Vaporization";
+    y("METHANOL") : 9.983707230000e-01;
+    y("WATER") : 1.629276950000e-03;
+    x("METHANOL") : 9.964076060000e-01;
+    x("WATER") : 3.592394140000e-03;
+    pflash2(1).eff("METHANOL") : 1.000000000000e+00, FIXED;
+    pflash2(1).eff("WATER") : 1.000000000000e+00, FIXED;
+    vapout.T : 8.316294770000e+01;
+    liqout.T : 8.316294770000e+01;
+    vapout.V : 1.469944449344e+01;
+    vapin.T : 8.329732080000e+01;
+    vapin.V : 1.464907547868e+01;
+    vapout.h : -1.983297287869e-01;
+    pflash2(1).Mwl : 3.199176990000e+01;
+    pflash2(1).rhoml : 7.197014695109e+02;
+    pflash2(1).rhol : 2.249645680000e+01;
+    liqout.F : 5.452945910000e+01;
+    vapin.F : 1.045294590000e+02;
+    vapout.p : 2.015384620000e+00;
+    vapin.p : 2.023076920000e+00;
+    liqout.T : 8.316294770000e+01;
+    liqout.P : 2.015384620000e+00;
+    liqout.h : -2.324358692525e-01;
+    OUT_HS.Q : 0.000000000000e+00;
+    pflash2(1).h : -2.312849400612e-01;
+    Mc("METHANOL") : 3.540615054283e+00;
+    Mc("WATER") : 1.252891057490e-02;
+    pflash2(1).LFactor : 0.000000000000e+00;
+    pflash2(1).VFactor : 0.000000000000e+00;
+    pflash2(1).ZFactor : 1.0;
+    E : -8.221746581816e-01,free;
+
+    QENV :      0.000000000000e+00;
+    QR :      0.000000000000e+00 , fixed;
+    T :      8.316294770000e+01;
+    HT_WEIR :      5.000000000000e-02 , fixed;
+    STAGEAREA :      2.827433700000e+00 , fixed;
+    V :      1.915115092800e+00;
+    L_WEIR :      1.453320000000e+00 , fixed;
+    LEVEL :      5.397563697838e-02;
+    VL :      1.526125349716e-01;
+    VV :      1.762502557828e+00;
+    LEVEL_TRAY :      5.397563697838e-02;
+    P_DIFF :      7.692300000000e-03;
+    P_DIFFV :      3.882774883430e-03;
+    C1 :      1.000000000000e+00 , fixed;
+    FV_INP :      1.045294590000e+02 , initial;
+    Q :      0.000000000000e+00;
+    MV :      1.199026642548e-01;
+    ML :      3.433241300128e+00;
+    M :      3.553143964383e+00;
+    VF :      3.374551255358e-02;
+    LF :      9.662544874464e-01;
+    HT :      6.096000000000e-01 , fixed;
+    P :      2.015384620000e+00;
+    P_DIFFVP :      3.882774883430e-03;
+    C0 :      2.425795433166e-08 , fixed;
+    RHOVIN :      6.826369360000e-02;
+    DIAM :      2.000000000000e+00 , fixed;
+    QL_OUT :      2.423913222637e+00;
+    COF_WEEP_PT :      1.000000000000e-01 , fixed;
+    COF_WEEP_RATE :      5.302802018465e-01 , fixed;
+    FV_IN_NORM :      1.045294590000e+02 , fixed;
+    FL_WEEP :      0.000000000000e+00;
+    RATIO_FV_INX :      1.000000000000e+01;
+    RATIO_FV_IN :      1.000000000000e+00;
+    VL_HYD :      1.526125349716e-01;
+    RHOL :      2.249645680000e+01;
+    RHOV :      6.802978170000e-02;
+    MWL :      3.199176990000e+01;
+    RHOML :      7.197014695109e+02;
+    HL :     -2.324358692525e-01;
+    HV :     -1.983297287869e-01;
+    EFFO :      1.000000000000e+00 , fixed;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(4)
+    BLOCKID :"COLUMN";
+     BlockVersion : "20.0";
+    ValidPhases : "Vapor-Liquid";
+    Componentlist : "Type1";
+    stagenumber : 4;
+    nstage : 40;
+    stagetype : 0;
+    nhypass : 0;
+    heatopt : "Constant duty";
+    EqHeatCap : "No";
+    EnvHtTrans : "No";
+    efftype : "Vaporization";
+    y("METHANOL") : 9.976476360000e-01;
+    y("WATER") : 2.352363740000e-03;
+    x("METHANOL") : 9.948160910000e-01;
+    x("WATER") : 5.183908690000e-03;
+    pflash2(1).eff("METHANOL") : 1.000000000000e+00, FIXED;
+    pflash2(1).eff("WATER") : 1.000000000000e+00, FIXED;
+    vapout.T : 8.329732080000e+01;
+    liqout.T : 8.329732080000e+01;
+    vapout.V : 1.464907547868e+01;
+    vapin.T : 8.343505140000e+01;
+    vapin.V : 1.459922547839e+01;
+    vapout.h : -1.983533301972e-01;
+    pflash2(1).Mwl : 3.196944590000e+01;
+    pflash2(1).rhoml : 7.196488449270e+02;
+    pflash2(1).rhol : 2.251051980000e+01;
+    liqout.F : 5.451295530000e+01;
+    vapin.F : 1.045129550000e+02;
+    vapout.p : 2.023076920000e+00;
+    vapin.p : 2.030769230000e+00;
+    liqout.T : 8.329732080000e+01;
+    liqout.P : 2.023076920000e+00;
+    liqout.h : -2.324996497076e-01;
+    OUT_HS.Q : 0.000000000000e+00;
+    pflash2(1).h : -2.313441793916e-01;
+    Mc("METHANOL") : 3.537455513427e+00;
+    Mc("WATER") : 1.809094972504e-02;
+    pflash2(1).LFactor : 0.000000000000e+00;
+    pflash2(1).VFactor : 0.000000000000e+00;
+    pflash2(1).ZFactor : 1.0;
+    E : -8.229424215747e-01,free;
+
+    QENV :      0.000000000000e+00;
+    QR :      0.000000000000e+00 , fixed;
+    T :      8.329732080000e+01;
+    HT_WEIR :      5.000000000000e-02 , fixed;
+    STAGEAREA :      2.827433700000e+00 , fixed;
+    V :      1.915115092800e+00;
+    L_WEIR :      1.453320000000e+00 , fixed;
+    LEVEL :      5.397317912613e-02;
+    VL :      1.526055855573e-01;
+    VV :      1.762509507243e+00;
+    LEVEL_TRAY :      5.397317912613e-02;
+    P_DIFF :      7.692310000000e-03;
+    P_DIFFV :      3.883236895070e-03;
+    C1 :      1.000000000000e+00 , fixed;
+    FV_INP :      1.045129550000e+02 , initial;
+    Q :      0.000000000000e+00;
+    MV :      1.203154089695e-01;
+    ML :      3.435231055279e+00;
+    M :      3.555546464249e+00;
+    VF :      3.383879529610e-02;
+    LF :      9.661612047039e-01;
+    HT :      6.096000000000e-01 , fixed;
+    P :      2.023076920000e+00;
+    P_DIFFVP :      3.883236895070e-03;
+    C0 :      2.435136999041e-08 , fixed;
+    RHOVIN :      6.849678440000e-02;
+    DIAM :      2.000000000000e+00 , fixed;
+    QL_OUT :      2.421665771574e+00;
+    COF_WEEP_PT :      1.000000000000e-01 , fixed;
+    COF_WEEP_RATE :      5.306504921313e-01 , fixed;
+    FV_IN_NORM :      1.045129550000e+02 , fixed;
+    FL_WEEP :      0.000000000000e+00;
+    RATIO_FV_INX :      1.000000000000e+01;
+    RATIO_FV_IN :      1.000000000000e+00;
+    VL_HYD :      1.526055855573e-01;
+    RHOL :      2.251051980000e+01;
+    RHOV :      6.826369360000e-02;
+    MWL :      3.196944590000e+01;
+    RHOML :      7.196488449270e+02;
+    HL :     -2.324996497076e-01;
+    HV :     -1.983533301972e-01;
+    EFFO :      1.000000000000e+00 , fixed;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(5)
+    BLOCKID :"COLUMN";
+     BlockVersion : "20.0";
+    ValidPhases : "Vapor-Liquid";
+    Componentlist : "Type1";
+    stagenumber : 5;
+    nstage : 40;
+    stagetype : 0;
+    nhypass : 0;
+    heatopt : "Constant duty";
+    EqHeatCap : "No";
+    EnvHtTrans : "No";
+    efftype : "Vaporization";
+    y("METHANOL") : 9.968177130000e-01;
+    y("WATER") : 3.182286660000e-03;
+    x("METHANOL") : 9.929908670000e-01;
+    x("WATER") : 7.009133180000e-03;
+    pflash2(1).eff("METHANOL") : 1.000000000000e+00, FIXED;
+    pflash2(1).eff("WATER") : 1.000000000000e+00, FIXED;
+    vapout.T : 8.343505140000e+01;
+    liqout.T : 8.343505140000e+01;
+    vapout.V : 1.459922547839e+01;
+    vapin.T : 8.357665740000e+01;
+    vapin.V : 1.454990978074e+01;
+    vapout.h : -1.983812155412e-01;
+    pflash2(1).Mwl : 3.194384370000e+01;
+    pflash2(1).rhoml : 7.196110545804e+02;
+    pflash2(1).rhol : 2.252737840000e+01;
+    liqout.F : 5.449327050000e+01;
+    vapin.F : 1.044932700000e+02;
+    vapout.p : 2.030769230000e+00;
+    vapin.p : 2.038461540000e+00;
+    liqout.T : 8.343505140000e+01;
+    liqout.P : 2.030769230000e+00;
+    liqout.h : -2.325747876952e-01;
+    OUT_HS.Q : 0.000000000000e+00;
+    pflash2(1).h : -2.314146746384e-01;
+    Mc("METHANOL") : 3.533864504767e+00;
+    Mc("WATER") : 2.447889987396e-02;
+    pflash2(1).LFactor : 0.000000000000e+00;
+    pflash2(1).VFactor : 0.000000000000e+00;
+    pflash2(1).ZFactor : 1.0;
+    E : -8.238417967831e-01,free;
+
+    QENV :      0.000000000000e+00;
+    QR :      0.000000000000e+00 , fixed;
+    T :      8.343505140000e+01;
+    HT_WEIR :      5.000000000000e-02 , fixed;
+    STAGEAREA :      2.827433700000e+00 , fixed;
+    V :      1.915115092800e+00;
+    L_WEIR :      1.453320000000e+00 , fixed;
+    LEVEL :      5.397024056665e-02;
+    VL :      1.525972769753e-01;
+    VV :      1.762517815825e+00;
+    LEVEL_TRAY :      5.397024056665e-02;
+    P_DIFF :      7.692310000000e-03;
+    P_DIFFV :      3.883644291263e-03;
+    C1 :      1.000000000000e+00 , fixed;
+    FV_INP :      1.044932700000e+02 , initial;
+    Q :      0.000000000000e+00;
+    MV :      1.207268028317e-01;
+    ML :      3.437616601231e+00;
+    M :      3.558343404063e+00;
+    VF :      3.392781109711e-02;
+    LF :      9.660721889029e-01;
+    HT :      6.096000000000e-01 , fixed;
+    P :      2.030769230000e+00;
+    P_DIFFVP :      3.883644291263e-03;
+    C0 :      2.444567812055e-08 , fixed;
+    RHOVIN :      6.872894850000e-02;
+    DIAM :      2.000000000000e+00 , fixed;
+    QL_OUT :      2.418979675860e+00;
+    COF_WEEP_PT :      1.000000000000e-01 , fixed;
+    COF_WEEP_RATE :      5.310757953652e-01 , fixed;
+    FV_IN_NORM :      1.044932700000e+02 , fixed;
+    FL_WEEP :      0.000000000000e+00;
+    RATIO_FV_INX :      1.000000000000e+01;
+    RATIO_FV_IN :      1.000000000000e+00;
+    VL_HYD :      1.525972769753e-01;
+    RHOL :      2.252737840000e+01;
+    RHOV :      6.849678440000e-02;
+    MWL :      3.194384370000e+01;
+    RHOML :      7.196110545804e+02;
+    HL :     -2.325747876952e-01;
+    HV :     -1.983812155412e-01;
+    EFFO :      1.000000000000e+00 , fixed;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(6)
+    BLOCKID :"COLUMN";
+     BlockVersion : "20.0";
+    ValidPhases : "Vapor-Liquid";
+    Componentlist : "Type1";
+    stagenumber : 6;
+    nstage : 40;
+    stagetype : 0;
+    nhypass : 0;
+    heatopt : "Constant duty";
+    EqHeatCap : "No";
+    EnvHtTrans : "No";
+    efftype : "Vaporization";
+    y("METHANOL") : 9.958662350000e-01;
+    y("WATER") : 4.133764680000e-03;
+    x("METHANOL") : 9.908997730000e-01;
+    x("WATER") : 9.100227190000e-03;
+    pflash2(1).eff("METHANOL") : 1.000000000000e+00, FIXED;
+    pflash2(1).eff("WATER") : 1.000000000000e+00, FIXED;
+    vapout.T : 8.357665740000e+01;
+    liqout.T : 8.357665740000e+01;
+    vapout.V : 1.454990978074e+01;
+    vapin.T : 8.372272480000e+01;
+    vapin.V : 1.450114617204e+01;
+    vapout.h : -1.984139726458e-01;
+    pflash2(1).Mwl : 3.191451220000e+01;
+    pflash2(1).rhoml : 7.195902106649e+02;
+    pflash2(1).rhol : 2.254742940000e+01;
+    liqout.F : 5.446997150000e+01;
+    vapin.F : 1.044699710000e+02;
+    vapout.p : 2.038461540000e+00;
+    vapin.p : 2.046153850000e+00;
+    liqout.T : 8.357665740000e+01;
+    liqout.P : 2.038461540000e+00;
+    liqout.h : -2.326628419607e-01;
+    OUT_HS.Q : 0.000000000000e+00;
+    pflash2(1).h : -2.314979708925e-01;
+    Mc("METHANOL") : 3.529781152098e+00;
+    Mc("WATER") : 3.180966483901e-02;
+    pflash2(1).LFactor : 0.000000000000e+00;
+    pflash2(1).VFactor : 0.000000000000e+00;
+    pflash2(1).ZFactor : 1.0;
+    E : -8.248914359740e-01,free;
+
+    QENV :      0.000000000000e+00;
+    QR :      0.000000000000e+00 , fixed;
+    T :      8.357665740000e+01;
+    HT_WEIR :      5.000000000000e-02 , fixed;
+    STAGEAREA :      2.827433700000e+00 , fixed;
+    V :      1.915115092800e+00;
+    L_WEIR :      1.453320000000e+00 , fixed;
+    LEVEL :      5.396675536468e-02;
+    VL :      1.525874227978e-01;
+    VV :      1.762527670002e+00;
+    LEVEL_TRAY :      5.396675536468e-02;
+    P_DIFF :      7.692310000000e-03;
+    P_DIFFV :      3.884000553947e-03;
+    C1 :      1.000000000000e+00 , fixed;
+    FV_INP :      1.044699710000e+02 , initial;
+    Q :      0.000000000000e+00;
+    MV :      1.211366734614e-01;
+    ML :      3.440454142861e+00;
+    M :      3.561590816322e+00;
+    VF :      3.401195693404e-02;
+    LF :      9.659880430660e-01;
+    HT :      6.096000000000e-01 , fixed;
+    P :      2.038461540000e+00;
+    P_DIFFVP :      3.884000553947e-03;
+    C0 :      2.454107535053e-08 , fixed;
+    RHOVIN :      6.896006620000e-02;
+    DIAM :      2.000000000000e+00 , fixed;
+    QL_OUT :      2.415795190382e+00;
+    COF_WEEP_PT :      1.000000000000e-01 , fixed;
+    COF_WEEP_RATE :      5.315638883555e-01 , fixed;
+    FV_IN_NORM :      1.044699710000e+02 , fixed;
+    FL_WEEP :      0.000000000000e+00;
+    RATIO_FV_INX :      1.000000000000e+01;
+    RATIO_FV_IN :      1.000000000000e+00;
+    VL_HYD :      1.525874227978e-01;
+    RHOL :      2.254742940000e+01;
+    RHOV :      6.872894850000e-02;
+    MWL :      3.191451220000e+01;
+    RHOML :      7.195902106649e+02;
+    HL :     -2.326628419607e-01;
+    HV :     -1.984139726458e-01;
+    EFFO :      1.000000000000e+00 , fixed;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(7)
+    BLOCKID :"COLUMN";
+     BlockVersion : "20.0";
+    ValidPhases : "Vapor-Liquid";
+    Componentlist : "Type1";
+    stagenumber : 7;
+    nstage : 40;
+    stagetype : 0;
+    nhypass : 0;
+    heatopt : "Constant duty";
+    EqHeatCap : "No";
+    EnvHtTrans : "No";
+    efftype : "Vaporization";
+    y("METHANOL") : 9.947765940000e-01;
+    y("WATER") : 5.223406380000e-03;
+    x("METHANOL") : 9.885065030000e-01;
+    x("WATER") : 1.149349700000e-02;
+    pflash2(1).eff("METHANOL") : 1.000000000000e+00, FIXED;
+    pflash2(1).eff("WATER") : 1.000000000000e+00, FIXED;
+    vapout.T : 8.372272480000e+01;
+    liqout.T : 8.372272480000e+01;
+    vapout.V : 1.450114617204e+01;
+    vapin.T : 8.387391680000e+01;
+    vapin.V : 1.445295527432e+01;
+    vapout.h : -1.984522651186e-01;
+    pflash2(1).Mwl : 3.188094210000e+01;
+    pflash2(1).rhoml : 7.195887388211e+02;
+    pflash2(1).rhol : 2.257112530000e+01;
+    liqout.F : 5.444257100000e+01;
+    vapin.F : 1.044425710000e+02;
+    vapout.p : 2.046153850000e+00;
+    vapin.p : 2.053846150000e+00;
+    liqout.T : 8.372272480000e+01;
+    liqout.P : 2.046153850000e+00;
+    liqout.h : -2.327655726349e-01;
+    OUT_HS.Q : 0.000000000000e+00;
+    pflash2(1).h : -2.315958131673e-01;
+    Mc("METHANOL") : 3.525136338719e+00;
+    Mc("WATER") : 4.021627247023e-02;
+    pflash2(1).LFactor : 0.000000000000e+00;
+    pflash2(1).VFactor : 0.000000000000e+00;
+    pflash2(1).ZFactor : 1.0;
+    E : -8.261125992178e-01,free;
+
+    QENV :      0.000000000000e+00;
+    QR :      0.000000000000e+00 , fixed;
+    T :      8.372272480000e+01;
+    HT_WEIR :      5.000000000000e-02 , fixed;
+    STAGEAREA :      2.827433700000e+00 , fixed;
+    V :      1.915115092800e+00;
+    L_WEIR :      1.453320000000e+00 , fixed;
+    LEVEL :      5.396264912526e-02;
+    VL :      1.525758126780e-01;
+    VV :      1.762539280122e+00;
+    LEVEL_TRAY :      5.396264912526e-02;
+    P_DIFF :      7.692300000000e-03;
+    P_DIFFV :      3.884288110683e-03;
+    C1 :      1.000000000000e+00 , fixed;
+    FV_INP :      1.044425710000e+02 , initial;
+    Q :      0.000000000000e+00;
+    MV :      1.215448254373e-01;
+    ML :      3.443807785705e+00;
+    M :      3.565352611143e+00;
+    VF :      3.409054831139e-02;
+    LF :      9.659094516886e-01;
+    HT :      6.096000000000e-01 , fixed;
+    P :      2.046153850000e+00;
+    P_DIFFVP :      3.884288110683e-03;
+    C0 :      2.463764838201e-08 , fixed;
+    RHOVIN :      6.919000170000e-02;
+    DIAM :      2.000000000000e+00 , fixed;
+    QL_OUT :      2.412045047661e+00;
+    COF_WEEP_PT :      1.000000000000e-01 , fixed;
+    COF_WEEP_RATE :      5.321236162591e-01 , fixed;
+    FV_IN_NORM :      1.044425710000e+02 , fixed;
+    FL_WEEP :      0.000000000000e+00;
+    RATIO_FV_INX :      1.000000000000e+01;
+    RATIO_FV_IN :      1.000000000000e+00;
+    VL_HYD :      1.525758126780e-01;
+    RHOL :      2.257112530000e+01;
+    RHOV :      6.896006620000e-02;
+    MWL :      3.188094210000e+01;
+    RHOML :      7.195887388211e+02;
+    HL :     -2.327655726349e-01;
+    HV :     -1.984522651186e-01;
+    EFFO :      1.000000000000e+00 , fixed;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(8)
+    BLOCKID :"COLUMN";
+     BlockVersion : "20.0";
+    ValidPhases : "Vapor-Liquid";
+    Componentlist : "Type1";
+    stagenumber : 8;
+    nstage : 40;
+    stagetype : 0;
+    nhypass : 0;
+    heatopt : "Constant duty";
+    EqHeatCap : "No";
+    EnvHtTrans : "No";
+    efftype : "Vaporization";
+    y("METHANOL") : 9.935300760000e-01;
+    y("WATER") : 6.469924290000e-03;
+    x("METHANOL") : 9.857701250000e-01;
+    x("WATER") : 1.422987530000e-02;
+    pflash2(1).eff("METHANOL") : 1.000000000000e+00, FIXED;
+    pflash2(1).eff("WATER") : 1.000000000000e+00, FIXED;
+    vapout.T : 8.387391680000e+01;
+    liqout.T : 8.387391680000e+01;
+    vapout.V : 1.445295527432e+01;
+    vapin.T : 8.403098270000e+01;
+    vapin.V : 1.440536093318e+01;
+    vapout.h : -1.984968403034e-01;
+    pflash2(1).Mwl : 3.184255920000e+01;
+    pflash2(1).rhoml : 7.196094158262e+02;
+    pflash2(1).rhol : 2.259898180000e+01;
+    liqout.F : 5.441052120000e+01;
+    vapin.F : 1.044105210000e+02;
+    vapout.p : 2.053846150000e+00;
+    vapin.p : 2.061538460000e+00;
+    liqout.T : 8.387391680000e+01;
+    liqout.P : 2.053846150000e+00;
+    liqout.h : -2.328849646798e-01;
+    OUT_HS.Q : 0.000000000000e+00;
+    pflash2(1).h : -2.317101697376e-01;
+    Mc("METHANOL") : 3.519851562498e+00;
+    Mc("WATER") : 4.985007507303e-02;
+    pflash2(1).LFactor : 0.000000000000e+00;
+    pflash2(1).VFactor : 0.000000000000e+00;
+    pflash2(1).ZFactor : 1.0;
+    E : -8.275295072825e-01,free;
+
+    QENV :      0.000000000000e+00;
+    QR :      0.000000000000e+00 , fixed;
+    T :      8.387391680000e+01;
+    HT_WEIR :      5.000000000000e-02 , fixed;
+    STAGEAREA :      2.827433700000e+00 , fixed;
+    V :      1.915115092800e+00;
+    L_WEIR :      1.453320000000e+00 , fixed;
+    LEVEL :      5.395783804305e-02;
+    VL :      1.525622096621e-01;
+    VV :      1.762552883138e+00;
+    LEVEL_TRAY :      5.395783804305e-02;
+    P_DIFF :      7.692310000000e-03;
+    P_DIFFV :      3.884528205493e-03;
+    C1 :      1.000000000000e+00 , fixed;
+    FV_INP :      1.044105210000e+02 , initial;
+    Q :      0.000000000000e+00;
+    MV :      1.219510369807e-01;
+    ML :      3.447750599521e+00;
+    M :      3.569701636502e+00;
+    VF :      3.416280950028e-02;
+    LF :      9.658371904997e-01;
+    HT :      6.096000000000e-01 , fixed;
+    P :      2.053846150000e+00;
+    P_DIFFVP :      3.884528205493e-03;
+    C0 :      2.473575628795e-08 , fixed;
+    RHOVIN :      6.941860080000e-02;
+    DIAM :      2.000000000000e+00 , fixed;
+    QL_OUT :      2.407653658095e+00;
+    COF_WEEP_PT :      1.000000000000e-01 , fixed;
+    COF_WEEP_RATE :      5.327650360465e-01 , fixed;
+    FV_IN_NORM :      1.044105210000e+02 , fixed;
+    FL_WEEP :      0.000000000000e+00;
+    RATIO_FV_INX :      1.000000000000e+01;
+    RATIO_FV_IN :      1.000000000000e+00;
+    VL_HYD :      1.525622096621e-01;
+    RHOL :      2.259898180000e+01;
+    RHOV :      6.919000170000e-02;
+    MWL :      3.184255920000e+01;
+    RHOML :      7.196094158262e+02;
+    HL :     -2.328849646798e-01;
+    HV :     -1.984968403034e-01;
+    EFFO :      1.000000000000e+00 , fixed;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(9)
+    BLOCKID :"COLUMN";
+     BlockVersion : "20.0";
+    ValidPhases : "Vapor-Liquid";
+    Componentlist : "Type1";
+    stagenumber : 9;
+    nstage : 40;
+    stagetype : 0;
+    nhypass : 0;
+    heatopt : "Constant duty";
+    EqHeatCap : "No";
+    EnvHtTrans : "No";
+    efftype : "Vaporization";
+    y("METHANOL") : 9.921056330000e-01;
+    y("WATER") : 7.894366590000e-03;
+    x("METHANOL") : 9.826445570000e-01;
+    x("WATER") : 1.735544270000e-02;
+    pflash2(1).eff("METHANOL") : 1.000000000000e+00, FIXED;
+    pflash2(1).eff("WATER") : 1.000000000000e+00, FIXED;
+    vapout.T : 8.403098270000e+01;
+    liqout.T : 8.403098270000e+01;
+    vapout.V : 1.440536093318e+01;
+    vapin.T : 8.419476920000e+01;
+    vapin.V : 1.435839046877e+01;
+    vapout.h : -1.985485389098e-01;
+    pflash2(1).Mwl : 3.179871730000e+01;
+    pflash2(1).rhoml : 7.196554497828e+02;
+    pflash2(1).rhol : 2.263158740000e+01;
+    liqout.F : 5.437320810000e+01;
+    vapin.F : 1.043732080000e+02;
+    vapout.p : 2.061538460000e+00;
+    vapin.p : 2.069230770000e+00;
+    liqout.T : 8.403098270000e+01;
+    liqout.P : 2.061538460000e+00;
+    liqout.h : -2.330232530090e-01;
+    OUT_HS.Q : 0.000000000000e+00;
+    pflash2(1).h : -2.318432572757e-01;
+    Mc("METHANOL") : 3.513837786510e+00;
+    Mc("WATER") : 6.088325573748e-02;
+    pflash2(1).LFactor : 0.000000000000e+00;
+    pflash2(1).VFactor : 0.000000000000e+00;
+    pflash2(1).ZFactor : 1.0;
+    E : -8.291697788804e-01,free;
+
+    QENV :      0.000000000000e+00;
+    QR :      0.000000000000e+00 , fixed;
+    T :      8.403098270000e+01;
+    HT_WEIR :      5.000000000000e-02 , fixed;
+    STAGEAREA :      2.827433700000e+00 , fixed;
+    V :      1.915115092800e+00;
+    L_WEIR :      1.453320000000e+00 , fixed;
+    LEVEL :      5.395222781388e-02;
+    VL :      1.525463471110e-01;
+    VV :      1.762568745689e+00;
+    LEVEL_TRAY :      5.395222781388e-02;
+    P_DIFF :      7.692310000000e-03;
+    P_DIFFV :      3.884680555648e-03;
+    C1 :      1.000000000000e+00 , fixed;
+    FV_INP :      1.043732080000e+02 , initial;
+    Q :      0.000000000000e+00;
+    MV :      1.223550561395e-01;
+    ML :      3.452365987194e+00;
+    M :      3.574721043334e+00;
+    VF :      3.422786132297e-02;
+    LF :      9.657721386770e-01;
+    HT :      6.096000000000e-01 , fixed;
+    P :      2.061538460000e+00;
+    P_DIFFVP :      3.884680555648e-03;
+    C0 :      2.483539501306e-08 , fixed;
+    RHOVIN :      6.964568920000e-02;
+    DIAM :      2.000000000000e+00 , fixed;
+    QL_OUT :      2.402536204774e+00;
+    COF_WEEP_PT :      1.000000000000e-01 , fixed;
+    COF_WEEP_RATE :      5.334995760977e-01 , fixed;
+    FV_IN_NORM :      1.043732080000e+02 , fixed;
+    FL_WEEP :      0.000000000000e+00;
+    RATIO_FV_INX :      1.000000000000e+01;
+    RATIO_FV_IN :      1.000000000000e+00;
+    VL_HYD :      1.525463471110e-01;
+    RHOL :      2.263158740000e+01;
+    RHOV :      6.941860080000e-02;
+    MWL :      3.179871730000e+01;
+    RHOML :      7.196554497828e+02;
+    HL :     -2.330232530090e-01;
+    HV :     -1.985485389098e-01;
+    EFFO :      1.000000000000e+00 , fixed;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(10)
+    BLOCKID :"COLUMN";
+     BlockVersion : "20.0";
+    ValidPhases : "Vapor-Liquid";
+    Componentlist : "Type1";
+    stagenumber : 10;
+    nstage : 40;
+    stagetype : 0;
+    nhypass : 0;
+    heatopt : "Constant duty";
+    EqHeatCap : "No";
+    EnvHtTrans : "No";
+    efftype : "Vaporization";
+    y("METHANOL") : 9.904796340000e-01;
+    y("WATER") : 9.520365570000e-03;
+    x("METHANOL") : 9.790780080000e-01;
+    x("WATER") : 2.092199170000e-02;
+    pflash2(1).eff("METHANOL") : 1.000000000000e+00, FIXED;
+    pflash2(1).eff("WATER") : 1.000000000000e+00, FIXED;
+    vapout.T : 8.419476920000e+01;
+    liqout.T : 8.419476920000e+01;
+    vapout.V : 1.435839046877e+01;
+    vapin.T : 8.436623080000e+01;
+    vapin.V : 1.431207518585e+01;
+    vapout.h : -1.986083050612e-01;
+    pflash2(1).Mwl : 3.174868970000e+01;
+    pflash2(1).rhoml : 7.197305309802e+02;
+    pflash2(1).rhol : 2.266961370000e+01;
+    liqout.F : 5.432994490000e+01;
+    vapin.F : 1.043299450000e+02;
+    vapout.p : 2.069230770000e+00;
+    vapin.p : 2.076923080000e+00;
+    liqout.T : 8.419476920000e+01;
+    liqout.P : 2.069230770000e+00;
+    liqout.h : -2.331829492841e-01;
+    OUT_HS.Q : 0.000000000000e+00;
+    pflash2(1).h : -2.319975676645e-01;
+    Mc("METHANOL") : 3.506994060701e+00;
+    Mc("WATER") : 7.351168671625e-02;
+    pflash2(1).LFactor : 0.000000000000e+00;
+    pflash2(1).VFactor : 0.000000000000e+00;
+    pflash2(1).ZFactor : 1.0;
+    E : -8.310649061702e-01,free;
+
+    QENV :      0.000000000000e+00;
+    QR :      0.000000000000e+00 , fixed;
+    T :      8.419476920000e+01;
+    HT_WEIR :      5.000000000000e-02 , fixed;
+    STAGEAREA :      2.827433700000e+00 , fixed;
+    V :      1.915115092800e+00;
+    L_WEIR :      1.453320000000e+00 , fixed;
+    LEVEL :      5.394571251685e-02;
+    VL :      1.525279255406e-01;
+    VV :      1.762587167259e+00;
+    LEVEL_TRAY :      5.394571251685e-02;
+    P_DIFF :      7.692310000000e-03;
+    P_DIFFV :      3.884743167217e-03;
+    C1 :      1.000000000000e+00 , fixed;
+    FV_INP :      1.043299450000e+02 , initial;
+    Q :      0.000000000000e+00;
+    MV :      1.227565980389e-01;
+    ML :      3.457749150469e+00;
+    M :      3.580505748508e+00;
+    VF :      3.428470910570e-02;
+    LF :      9.657152908943e-01;
+    HT :      6.096000000000e-01 , fixed;
+    P :      2.069230770000e+00;
+    P_DIFFVP :      3.884743167217e-03;
+    C0 :      2.493683486286e-08 , fixed;
+    RHOVIN :      6.987106950000e-02;
+    DIAM :      2.000000000000e+00 , fixed;
+    QL_OUT :      2.396597737349e+00;
+    COF_WEEP_PT :      1.000000000000e-01 , fixed;
+    COF_WEEP_RATE :      5.343402313702e-01 , fixed;
+    FV_IN_NORM :      1.043299450000e+02 , fixed;
+    FL_WEEP :      0.000000000000e+00;
+    RATIO_FV_INX :      1.000000000000e+01;
+    RATIO_FV_IN :      1.000000000000e+00;
+    VL_HYD :      1.525279255406e-01;
+    RHOL :      2.266961370000e+01;
+    RHOV :      6.964568920000e-02;
+    MWL :      3.174868970000e+01;
+    RHOML :      7.197305309802e+02;
+    HL :     -2.331829492841e-01;
+    HV :     -1.986083050612e-01;
+    EFFO :      1.000000000000e+00 , fixed;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(11)
+    BLOCKID :"COLUMN";
+     BlockVersion : "20.0";
+    ValidPhases : "Vapor-Liquid";
+    Componentlist : "Type1";
+    stagenumber : 11;
+    nstage : 40;
+    stagetype : 0;
+    nhypass : 0;
+    heatopt : "Constant duty";
+    EqHeatCap : "No";
+    EnvHtTrans : "No";
+    efftype : "Vaporization";
+    y("METHANOL") : 9.886255990000e-01;
+    y("WATER") : 1.137440120000e-02;
+    x("METHANOL") : 9.750123710000e-01;
+    x("WATER") : 2.498762930000e-02;
+    pflash2(1).eff("METHANOL") : 1.000000000000e+00, FIXED;
+    pflash2(1).eff("WATER") : 1.000000000000e+00, FIXED;
+    vapout.T : 8.436623080000e+01;
+    liqout.T : 8.436623080000e+01;
+    vapout.V : 1.431207518585e+01;
+    vapin.T : 8.454644390000e+01;
+    vapin.V : 1.426645076600e+01;
+    vapout.h : -1.986771959244e-01;
+    pflash2(1).Mwl : 3.169166150000e+01;
+    pflash2(1).rhoml : 7.198389134844e+02;
+    pflash2(1).rhol : 2.271382690000e+01;
+    liqout.F : 5.427996510000e+01;
+    vapin.F : 1.042799650000e+02;
+    vapout.p : 2.076923080000e+00;
+    vapin.p : 2.084615380000e+00;
+    liqout.T : 8.436623080000e+01;
+    liqout.P : 2.076923080000e+00;
+    liqout.h : -2.333668733147e-01;
+    OUT_HS.Q : 0.000000000000e+00;
+    pflash2(1).h : -2.321758993505e-01;
+    Mc("METHANOL") : 3.499205883055e+00;
+    Mc("WATER") : 8.795818419098e-02;
+    pflash2(1).LFactor : 0.000000000000e+00;
+    pflash2(1).VFactor : 0.000000000000e+00;
+    pflash2(1).ZFactor : 1.0;
+    E : -8.332507978573e-01,free;
+
+    QENV :      0.000000000000e+00;
+    QR :      0.000000000000e+00 , fixed;
+    T :      8.436623080000e+01;
+    HT_WEIR :      5.000000000000e-02 , fixed;
+    STAGEAREA :      2.827433700000e+00 , fixed;
+    V :      1.915115092800e+00;
+    L_WEIR :      1.453320000000e+00 , fixed;
+    LEVEL :      5.393817346450e-02;
+    VL :      1.525066093700e-01;
+    VV :      1.762608483430e+00;
+    LEVEL_TRAY :      5.393817346450e-02;
+    P_DIFF :      7.692300000000e-03;
+    P_DIFFV :      3.884691992216e-03;
+    C1 :      1.000000000000e+00 , fixed;
+    FV_INP :      1.042799650000e+02 , initial;
+    Q :      0.000000000000e+00;
+    MV :      1.231553398470e-01;
+    ML :      3.464008726335e+00;
+    M :      3.587164066182e+00;
+    VF :      3.433222946451e-02;
+    LF :      9.656677705355e-01;
+    HT :      6.096000000000e-01 , fixed;
+    P :      2.076923080000e+00;
+    P_DIFFVP :      3.884691992216e-03;
+    C0 :      2.504023950194e-08 , fixed;
+    RHOVIN :      7.009451870000e-02;
+    DIAM :      2.000000000000e+00 , fixed;
+    QL_OUT :      2.389732269202e+00;
+    COF_WEEP_PT :      1.000000000000e-01 , fixed;
+    COF_WEEP_RATE :      5.353017606855e-01 , fixed;
+    FV_IN_NORM :      1.042799650000e+02 , fixed;
+    FL_WEEP :      0.000000000000e+00;
+    RATIO_FV_INX :      1.000000000000e+01;
+    RATIO_FV_IN :      1.000000000000e+00;
+    VL_HYD :      1.525066093700e-01;
+    RHOL :      2.271382690000e+01;
+    RHOV :      6.987106950000e-02;
+    MWL :      3.169166150000e+01;
+    RHOML :      7.198389134844e+02;
+    HL :     -2.333668733147e-01;
+    HV :     -1.986771959244e-01;
+    EFFO :      1.000000000000e+00 , fixed;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(12)
+    BLOCKID :"COLUMN";
+     BlockVersion : "20.0";
+    ValidPhases : "Vapor-Liquid";
+    Componentlist : "Type1";
+    stagenumber : 12;
+    nstage : 40;
+    stagetype : 0;
+    nhypass : 0;
+    heatopt : "Constant duty";
+    EqHeatCap : "No";
+    EnvHtTrans : "No";
+    efftype : "Vaporization";
+    y("METHANOL") : 9.865139230000e-01;
+    y("WATER") : 1.348607710000e-02;
+    x("METHANOL") : 9.703825850000e-01;
+    x("WATER") : 2.961741500000e-02;
+    pflash2(1).eff("METHANOL") : 1.000000000000e+00, FIXED;
+    pflash2(1).eff("WATER") : 1.000000000000e+00, FIXED;
+    vapout.T : 8.454644390000e+01;
+    liqout.T : 8.454644390000e+01;
+    vapout.V : 1.426645076600e+01;
+    vapin.T : 8.473661950000e+01;
+    vapin.V : 1.422155768992e+01;
+    vapout.h : -1.987563942706e-01;
+    pflash2(1).Mwl : 3.162672010000e+01;
+    pflash2(1).rhoml : 7.199855090020e+02;
+    pflash2(1).rhol : 2.276510200000e+01;
+    liqout.F : 5.422241620000e+01;
+    vapin.F : 1.042224160000e+02;
+    vapout.p : 2.084615380000e+00;
+    vapin.p : 2.092307690000e+00;
+    liqout.T : 8.454644390000e+01;
+    liqout.P : 2.084615380000e+00;
+    liqout.h : -2.335781811107e-01;
+    OUT_HS.Q : 0.000000000000e+00;
+    pflash2(1).h : -2.323813857201e-01;
+    Mc("METHANOL") : 3.490343504242e+00;
+    Mc("WATER") : 1.044762262226e-01;
+    pflash2(1).LFactor : 0.000000000000e+00;
+    pflash2(1).VFactor : 0.000000000000e+00;
+    pflash2(1).ZFactor : 1.0;
+    E : -8.357684182139e-01,free;
+
+    QENV :      0.000000000000e+00;
+    QR :      0.000000000000e+00 , fixed;
+    T :      8.454644390000e+01;
+    HT_WEIR :      5.000000000000e-02 , fixed;
+    STAGEAREA :      2.827433700000e+00 , fixed;
+    V :      1.915115092800e+00;
+    L_WEIR :      1.453320000000e+00 , fixed;
+    LEVEL :      5.392947792524e-02;
+    VL :      1.524820233092e-01;
+    VV :      1.762633069491e+00;
+    LEVEL_TRAY :      5.392947792524e-02;
+    P_DIFF :      7.692310000000e-03;
+    P_DIFFV :      3.884540532373e-03;
+    C1 :      1.000000000000e+00 , fixed;
+    FV_INP :      1.042224160000e+02 , initial;
+    Q :      0.000000000000e+00;
+    MV :      1.235509166507e-01;
+    ML :      3.471268813801e+00;
+    M :      3.594819730452e+00;
+    VF :      3.436915503831e-02;
+    LF :      9.656308449617e-01;
+    HT :      6.096000000000e-01 , fixed;
+    P :      2.084615380000e+00;
+    P_DIFFVP :      3.884540532373e-03;
+    C0 :      2.514605148892e-08 , fixed;
+    RHOVIN :      7.031578550000e-02;
+    DIAM :      2.000000000000e+00 , fixed;
+    QL_OUT :      2.381821798997e+00;
+    COF_WEEP_PT :      1.000000000000e-01 , fixed;
+    COF_WEEP_RATE :      5.364009339685e-01 , fixed;
+    FV_IN_NORM :      1.042224160000e+02 , fixed;
+    FL_WEEP :      0.000000000000e+00;
+    RATIO_FV_INX :      1.000000000000e+01;
+    RATIO_FV_IN :      1.000000000000e+00;
+    VL_HYD :      1.524820233092e-01;
+    RHOL :      2.276510200000e+01;
+    RHOV :      7.009451870000e-02;
+    MWL :      3.162672010000e+01;
+    RHOML :      7.199855090020e+02;
+    HL :     -2.335781811107e-01;
+    HV :     -1.987563942706e-01;
+    EFFO :      1.000000000000e+00 , fixed;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(13)
+    BLOCKID :"COLUMN";
+     BlockVersion : "20.0";
+    ValidPhases : "Vapor-Liquid";
+    Componentlist : "Type1";
+    stagenumber : 13;
+    nstage : 40;
+    stagetype : 0;
+    nhypass : 0;
+    heatopt : "Constant duty";
+    EqHeatCap : "No";
+    EnvHtTrans : "No";
+    efftype : "Vaporization";
+    y("METHANOL") : 9.841115970000e-01;
+    y("WATER") : 1.588840350000e-02;
+    x("METHANOL") : 9.651159760000e-01;
+    x("WATER") : 3.488402380000e-02;
+    pflash2(1).eff("METHANOL") : 1.000000000000e+00, FIXED;
+    pflash2(1).eff("WATER") : 1.000000000000e+00, FIXED;
+    vapout.T : 8.473661950000e+01;
+    liqout.T : 8.473661950000e+01;
+    vapout.V : 1.422155768992e+01;
+    vapin.T : 8.493811880000e+01;
+    vapin.V : 1.417744185092e+01;
+    vapout.h : -1.988472176856e-01;
+    pflash2(1).Mwl : 3.155284600000e+01;
+    pflash2(1).rhoml : 7.201760056481e+02;
+    pflash2(1).rhol : 2.282443890000e+01;
+    liqout.F : 5.415635300000e+01;
+    vapin.F : 1.041563530000e+02;
+    vapout.p : 2.092307690000e+00;
+    vapin.p : 2.100000000000e+00;
+    liqout.T : 8.473661950000e+01;
+    liqout.P : 2.092307690000e+00;
+    liqout.h : -2.338204000511e-01;
+    OUT_HS.Q : 0.000000000000e+00;
+    pflash2(1).h : -2.326175303729e-01;
+    Mc("METHANOL") : 3.480259996785e+00;
+    Mc("WATER") : 1.233541905077e-01;
+    pflash2(1).LFactor : 0.000000000000e+00;
+    pflash2(1).VFactor : 0.000000000000e+00;
+    pflash2(1).ZFactor : 1.0;
+    E : -8.386645338156e-01,free;
+
+    QENV :      0.000000000000e+00;
+    QR :      0.000000000000e+00 , fixed;
+    T :      8.473661950000e+01;
+    HT_WEIR :      5.000000000000e-02 , fixed;
+    STAGEAREA :      2.827433700000e+00 , fixed;
+    V :      1.915115092800e+00;
+    L_WEIR :      1.453320000000e+00 , fixed;
+    LEVEL :      5.391947780823e-02;
+    VL :      1.524537486414e-01;
+    VV :      1.762661344159e+00;
+    LEVEL_TRAY :      5.391947780823e-02;
+    P_DIFF :      7.692310000000e-03;
+    P_DIFFV :      3.884239317162e-03;
+    C1 :      1.000000000000e+00 , fixed;
+    FV_INP :      1.041563530000e+02 , initial;
+    Q :      0.000000000000e+00;
+    MV :      1.239429169850e-01;
+    ML :      3.479671270941e+00;
+    M :      3.603614187926e+00;
+    VF :      3.439405844284e-02;
+    LF :      9.656059415572e-01;
+    HT :      6.096000000000e-01 , fixed;
+    P :      2.092307690000e+00;
+    P_DIFFVP :      3.884239317162e-03;
+    C0 :      2.525434788476e-08 , fixed;
+    RHOVIN :      7.053458660000e-02;
+    DIAM :      2.000000000000e+00 , fixed;
+    QL_OUT :      2.372735349039e+00;
+    COF_WEEP_PT :      1.000000000000e-01 , fixed;
+    COF_WEEP_RATE :      5.376567996434e-01 , fixed;
+    FV_IN_NORM :      1.041563530000e+02 , fixed;
+    FL_WEEP :      0.000000000000e+00;
+    RATIO_FV_INX :      1.000000000000e+01;
+    RATIO_FV_IN :      1.000000000000e+00;
+    VL_HYD :      1.524537486414e-01;
+    RHOL :      2.282443890000e+01;
+    RHOV :      7.031578550000e-02;
+    MWL :      3.155284600000e+01;
+    RHOML :      7.201760056481e+02;
+    HL :     -2.338204000511e-01;
+    HV :     -1.988472176856e-01;
+    EFFO :      1.000000000000e+00 , fixed;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(14)
+    BLOCKID :"COLUMN";
+     BlockVersion : "20.0";
+    ValidPhases : "Vapor-Liquid";
+    Componentlist : "Type1";
+    stagenumber : 14;
+    nstage : 40;
+    stagetype : 0;
+    nhypass : 0;
+    heatopt : "Constant duty";
+    EqHeatCap : "No";
+    EnvHtTrans : "No";
+    efftype : "Vaporization";
+    y("METHANOL") : 9.813819180000e-01;
+    y("WATER") : 1.861808190000e-02;
+    x("METHANOL") : 9.591315790000e-01;
+    x("WATER") : 4.086842110000e-02;
+    pflash2(1).eff("METHANOL") : 1.000000000000e+00, FIXED;
+    pflash2(1).eff("WATER") : 1.000000000000e+00, FIXED;
+    vapout.T : 8.493811880000e+01;
+    liqout.T : 8.493811880000e+01;
+    vapout.V : 1.417744185092e+01;
+    vapin.T : 8.515246930000e+01;
+    vapin.V : 1.413415497362e+01;
+    vapout.h : -1.989511311308e-01;
+    pflash2(1).Mwl : 3.146890360000e+01;
+    pflash2(1).rhoml : 7.204169901774e+02;
+    pflash2(1).rhol : 2.289298030000e+01;
+    liqout.F : 5.408073220000e+01;
+    vapin.F : 1.040807320000e+02;
+    vapout.p : 2.100000000000e+00;
+    vapin.p : 2.107692310000e+00;
+    liqout.T : 8.493811880000e+01;
+    liqout.P : 2.100000000000e+00;
+    liqout.h : -2.340974598664e-01;
+    OUT_HS.Q : 0.000000000000e+00;
+    pflash2(1).h : -2.328882386256e-01;
+    Mc("METHANOL") : 3.468788965766e+00;
+    Mc("WATER") : 1.449201830355e-01;
+    pflash2(1).LFactor : 0.000000000000e+00;
+    pflash2(1).VFactor : 0.000000000000e+00;
+    pflash2(1).ZFactor : 1.0;
+    E : -8.419925326607e-01,free;
+
+    QENV :      0.000000000000e+00;
+    QR :      0.000000000000e+00 , fixed;
+    T :      8.493811880000e+01;
+    HT_WEIR :      5.000000000000e-02 , fixed;
+    STAGEAREA :      2.827433700000e+00 , fixed;
+    V :      1.915115092800e+00;
+    L_WEIR :      1.453320000000e+00 , fixed;
+    LEVEL :      5.390800845927e-02;
+    VL :      1.524213198176e-01;
+    VV :      1.762693772982e+00;
+    LEVEL_TRAY :      5.390800845927e-02;
+    P_DIFF :      7.692310000000e-03;
+    P_DIFFV :      3.883775360027e-03;
+    C1 :      1.000000000000e+00 , fixed;
+    FV_INP :      1.040807320000e+02 , initial;
+    Q :      0.000000000000e+00;
+    MV :      1.243308765797e-01;
+    ML :      3.489378271885e+00;
+    M :      3.613709148465e+00;
+    VF :      3.440533575662e-02;
+    LF :      9.655946642434e-01;
+    HT :      6.096000000000e-01 , fixed;
+    P :      2.100000000000e+00;
+    P_DIFFVP :      3.883775360027e-03;
+    C0 :      2.536548438398e-08 , fixed;
+    RHOVIN :      7.075060390000e-02;
+    DIAM :      2.000000000000e+00 , fixed;
+    QL_OUT :      2.362328167469e+00;
+    COF_WEEP_PT :      1.000000000000e-01 , fixed;
+    COF_WEEP_RATE :      5.390909837736e-01 , fixed;
+    FV_IN_NORM :      1.040807320000e+02 , fixed;
+    FL_WEEP :      0.000000000000e+00;
+    RATIO_FV_INX :      1.000000000000e+01;
+    RATIO_FV_IN :      1.000000000000e+00;
+    VL_HYD :      1.524213198176e-01;
+    RHOL :      2.289298030000e+01;
+    RHOV :      7.053458660000e-02;
+    MWL :      3.146890360000e+01;
+    RHOML :      7.204169901774e+02;
+    HL :     -2.340974598664e-01;
+    HV :     -1.989511311308e-01;
+    EFFO :      1.000000000000e+00 , fixed;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(15)
+    BLOCKID :"COLUMN";
+     BlockVersion : "20.0";
+    ValidPhases : "Vapor-Liquid";
+    Componentlist : "Type1";
+    stagenumber : 15;
+    nstage : 40;
+    stagetype : 0;
+    nhypass : 0;
+    heatopt : "Constant duty";
+    EqHeatCap : "No";
+    EnvHtTrans : "No";
+    efftype : "Vaporization";
+    y("METHANOL") : 9.782842210000e-01;
+    y("WATER") : 2.171577860000e-02;
+    x("METHANOL") : 9.523394740000e-01;
+    x("WATER") : 4.766052580000e-02;
+    pflash2(1).eff("METHANOL") : 1.000000000000e+00, FIXED;
+    pflash2(1).eff("WATER") : 1.000000000000e+00, FIXED;
+    vapout.T : 8.515246930000e+01;
+    liqout.T : 8.515246930000e+01;
+    vapout.V : 1.413415497362e+01;
+    vapin.T : 8.538138140000e+01;
+    vapin.V : 1.409175522587e+01;
+    vapout.h : -1.990697578286e-01;
+    pflash2(1).Mwl : 3.137363150000e+01;
+    pflash2(1).rhoml : 7.207161138347e+02;
+    pflash2(1).rhol : 2.297203350000e+01;
+    liqout.F : 5.399440680000e+01;
+    vapin.F : 1.039944070000e+02;
+    vapout.p : 2.107692310000e+00;
+    vapin.p : 2.115384620000e+00;
+    liqout.T : 8.515246930000e+01;
+    liqout.P : 2.107692310000e+00;
+    liqout.h : -2.344137252955e-01;
+    OUT_HS.Q : 0.000000000000e+00;
+    pflash2(1).h : -2.331978508131e-01;
+    Mc("METHANOL") : 3.455742162474e+00;
+    Mc("WATER") : 1.695475327854e-01;
+    pflash2(1).LFactor : 0.000000000000e+00;
+    pflash2(1).VFactor : 0.000000000000e+00;
+    pflash2(1).ZFactor : 1.0;
+    E : -8.458134130196e-01,free;
+
+    QENV :      0.000000000000e+00;
+    QR :      0.000000000000e+00 , fixed;
+    T :      8.515246930000e+01;
+    HT_WEIR :      5.000000000000e-02 , fixed;
+    STAGEAREA :      2.827433700000e+00 , fixed;
+    V :      1.915115092800e+00;
+    L_WEIR :      1.453320000000e+00 , fixed;
+    LEVEL :      5.389488732426e-02;
+    VL :      1.523842206783e-01;
+    VV :      1.762730872122e+00;
+    LEVEL_TRAY :      5.389488732426e-02;
+    P_DIFF :      7.692310000000e-03;
+    P_DIFFV :      3.883121398941e-03;
+    C1 :      1.000000000000e+00 , fixed;
+    FV_INP :      1.039944070000e+02 , initial;
+    Q :      0.000000000000e+00;
+    MV :      1.247142737158e-01;
+    ML :      3.500575422294e+00;
+    M :      3.625289696010e+00;
+    VF :      3.440118836656e-02;
+    LF :      9.655988116334e-01;
+    HT :      6.096000000000e-01 , fixed;
+    P :      2.107692310000e+00;
+    P_DIFFVP :      3.883121398941e-03;
+    C0 :      2.547976945396e-08 , fixed;
+    RHOVIN :      7.096348070000e-02;
+    DIAM :      2.000000000000e+00 , fixed;
+    QL_OUT :      2.350440887177e+00;
+    COF_WEEP_PT :      1.000000000000e-01 , fixed;
+    COF_WEEP_RATE :      5.407280378110e-01 , fixed;
+    FV_IN_NORM :      1.039944070000e+02 , fixed;
+    FL_WEEP :      0.000000000000e+00;
+    RATIO_FV_INX :      1.000000000000e+01;
+    RATIO_FV_IN :      1.000000000000e+00;
+    VL_HYD :      1.523842206783e-01;
+    RHOL :      2.297203350000e+01;
+    RHOV :      7.075060390000e-02;
+    MWL :      3.137363150000e+01;
+    RHOML :      7.207161138347e+02;
+    HL :     -2.344137252955e-01;
+    HV :     -1.990697578286e-01;
+    EFFO :      1.000000000000e+00 , fixed;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(16)
+    BLOCKID :"COLUMN";
+     BlockVersion : "20.0";
+    ValidPhases : "Vapor-Liquid";
+    Componentlist : "Type1";
+    stagenumber : 16;
+    nstage : 40;
+    stagetype : 0;
+    nhypass : 0;
+    heatopt : "Constant duty";
+    EqHeatCap : "No";
+    EnvHtTrans : "No";
+    efftype : "Vaporization";
+    y("METHANOL") : 9.747736260000e-01;
+    y("WATER") : 2.522637420000e-02;
+    x("METHANOL") : 9.446401710000e-01;
+    x("WATER") : 5.535982920000e-02;
+    pflash2(1).eff("METHANOL") : 1.000000000000e+00, FIXED;
+    pflash2(1).eff("WATER") : 1.000000000000e+00, FIXED;
+    vapout.T : 8.538138140000e+01;
+    liqout.T : 8.538138140000e+01;
+    vapout.V : 1.409175522587e+01;
+    vapin.T : 8.562676580000e+01;
+    vapin.V : 1.405030780150e+01;
+    vapout.h : -1.992048880547e-01;
+    pflash2(1).Mwl : 3.126563430000e+01;
+    pflash2(1).rhoml : 7.210822690837e+02;
+    pflash2(1).rhol : 2.306309420000e+01;
+    liqout.F : 5.389612390000e+01;
+    vapin.F : 1.038961240000e+02;
+    vapout.p : 2.115384620000e+00;
+    vapin.p : 2.123076920000e+00;
+    liqout.T : 8.538138140000e+01;
+    liqout.P : 2.115384620000e+00;
+    liqout.h : -2.347740274871e-01;
+    OUT_HS.Q : 0.000000000000e+00;
+    pflash2(1).h : -2.335511744958e-01;
+    Mc("METHANOL") : 3.440906674688e+00;
+    Mc("WATER") : 1.976610159405e-01;
+    pflash2(1).LFactor : 0.000000000000e+00;
+    pflash2(1).VFactor : 0.000000000000e+00;
+    pflash2(1).ZFactor : 1.0;
+    E : -8.501968779602e-01,free;
+
+    QENV :      0.000000000000e+00;
+    QR :      0.000000000000e+00 , fixed;
+    T :      8.538138140000e+01;
+    HT_WEIR :      5.000000000000e-02 , fixed;
+    STAGEAREA :      2.827433700000e+00 , fixed;
+    V :      1.915115092800e+00;
+    L_WEIR :      1.453320000000e+00 , fixed;
+    LEVEL :      5.387991295865e-02;
+    VL :      1.523418816524e-01;
+    VV :      1.762773211148e+00;
+    LEVEL_TRAY :      5.387991295865e-02;
+    P_DIFF :      7.692300000000e-03;
+    P_DIFFV :      3.882235062345e-03;
+    C1 :      1.000000000000e+00 , fixed;
+    FV_INP :      1.038961240000e+02 , initial;
+    Q :      0.000000000000e+00;
+    MV :      1.250925227478e-01;
+    ML :      3.513475167153e+00;
+    M :      3.638567689901e+00;
+    VF :      3.437960577041e-02;
+    LF :      9.656203942296e-01;
+    HT :      6.096000000000e-01 , fixed;
+    P :      2.115384620000e+00;
+    P_DIFFVP :      3.882235062345e-03;
+    C0 :      2.559746037617e-08 , fixed;
+    RHOVIN :      7.117281800000e-02;
+    DIAM :      2.000000000000e+00 , fixed;
+    QL_OUT :      2.336899092230e+00;
+    COF_WEEP_PT :      1.000000000000e-01 , fixed;
+    COF_WEEP_RATE :      5.425958110180e-01 , fixed;
+    FV_IN_NORM :      1.038961240000e+02 , fixed;
+    FL_WEEP :      0.000000000000e+00;
+    RATIO_FV_INX :      1.000000000000e+01;
+    RATIO_FV_IN :      1.000000000000e+00;
+    VL_HYD :      1.523418816524e-01;
+    RHOL :      2.306309420000e+01;
+    RHOV :      7.096348070000e-02;
+    MWL :      3.126563430000e+01;
+    RHOML :      7.210822690837e+02;
+    HL :     -2.347740274871e-01;
+    HV :     -1.992048880547e-01;
+    EFFO :      1.000000000000e+00 , fixed;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(17)
+    BLOCKID :"COLUMN";
+     BlockVersion : "20.0";
+    ValidPhases : "Vapor-Liquid";
+    Componentlist : "Type1";
+    stagenumber : 17;
+    nstage : 40;
+    stagetype : 0;
+    nhypass : 0;
+    heatopt : "Constant duty";
+    EqHeatCap : "No";
+    EnvHtTrans : "No";
+    efftype : "Vaporization";
+    y("METHANOL") : 9.708008340000e-01;
+    y("WATER") : 2.919916640000e-02;
+    x("METHANOL") : 9.359240830000e-01;
+    x("WATER") : 6.407591680000e-02;
+    pflash2(1).eff("METHANOL") : 1.000000000000e+00, FIXED;
+    pflash2(1).eff("WATER") : 1.000000000000e+00, FIXED;
+    vapout.T : 8.562676580000e+01;
+    liqout.T : 8.562676580000e+01;
+    vapout.V : 1.405030780150e+01;
+    vapin.T : 8.589075050000e+01;
+    vapin.V : 1.400988543961e+01;
+    vapout.h : -1.993584883489e-01;
+    pflash2(1).Mwl : 3.114337480000e+01;
+    pflash2(1).rhoml : 7.215258269019e+02;
+    pflash2(1).rhol : 2.316787540000e+01;
+    liqout.F : 5.378452380000e+01;
+    vapin.F : 1.037845240000e+02;
+    vapout.p : 2.123076920000e+00;
+    vapin.p : 2.130769230000e+00;
+    liqout.T : 8.562676580000e+01;
+    liqout.P : 2.123076920000e+00;
+    liqout.h : -2.351836874452e-01;
+    OUT_HS.Q : 0.000000000000e+00;
+    pflash2(1).h : -2.339535093301e-01;
+    Mc("METHANOL") : 3.424042028054e+00;
+    Mc("WATER") : 2.297438709455e-01;
+    pflash2(1).LFactor : 0.000000000000e+00;
+    pflash2(1).VFactor : 0.000000000000e+00;
+    pflash2(1).ZFactor : 1.0;
+    E : -8.552226272303e-01,free;
+
+    QENV :      0.000000000000e+00;
+    QR :      0.000000000000e+00 , fixed;
+    T :      8.562676580000e+01;
+    HT_WEIR :      5.000000000000e-02 , fixed;
+    STAGEAREA :      2.827433700000e+00 , fixed;
+    V :      1.915115092800e+00;
+    L_WEIR :      1.453320000000e+00 , fixed;
+    LEVEL :      5.386286403573e-02;
+    VL :      1.522936769531e-01;
+    VV :      1.762821415847e+00;
+    LEVEL_TRAY :      5.386286403573e-02;
+    P_DIFF :      7.692310000000e-03;
+    P_DIFFV :      3.881107724497e-03;
+    C1 :      1.000000000000e+00 , fixed;
+    FV_INP :      1.037845240000e+02 , initial;
+    Q :      0.000000000000e+00;
+    MV :      1.254649677966e-01;
+    ML :      3.528320931858e+00;
+    M :      3.653785899655e+00;
+    VF :      3.433834692077e-02;
+    LF :      9.656616530792e-01;
+    HT :      6.096000000000e-01 , fixed;
+    P :      2.123076920000e+00;
+    P_DIFFVP :      3.881107724497e-03;
+    C0 :      2.571908413418e-08 , fixed;
+    RHOVIN :      7.137817110000e-02;
+    DIAM :      2.000000000000e+00 , fixed;
+    QL_OUT :      2.321512994670e+00;
+    COF_WEEP_PT :      1.000000000000e-01 , fixed;
+    COF_WEEP_RATE :      5.447258785840e-01 , fixed;
+    FV_IN_NORM :      1.037845240000e+02 , fixed;
+    FL_WEEP :      0.000000000000e+00;
+    RATIO_FV_INX :      1.000000000000e+01;
+    RATIO_FV_IN :      1.000000000000e+00;
+    VL_HYD :      1.522936769531e-01;
+    RHOL :      2.316787540000e+01;
+    RHOV :      7.117281800000e-02;
+    MWL :      3.114337480000e+01;
+    RHOML :      7.215258269019e+02;
+    HL :     -2.351836874452e-01;
+    HV :     -1.993584883489e-01;
+    EFFO :      1.000000000000e+00 , fixed;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(18)
+    BLOCKID :"COLUMN";
+     BlockVersion : "20.0";
+    ValidPhases : "Vapor-Liquid";
+    Componentlist : "Type1";
+    stagenumber : 18;
+    nstage : 40;
+    stagetype : 0;
+    nhypass : 0;
+    heatopt : "Constant duty";
+    EqHeatCap : "No";
+    EnvHtTrans : "No";
+    efftype : "Vaporization";
+    y("METHANOL") : 9.663120040000e-01;
+    y("WATER") : 3.368799650000e-02;
+    x("METHANOL") : 9.260711790000e-01;
+    x("WATER") : 7.392882150000e-02;
+    pflash2(1).eff("METHANOL") : 1.000000000000e+00, FIXED;
+    pflash2(1).eff("WATER") : 1.000000000000e+00, FIXED;
+    vapout.T : 8.589075050000e+01;
+    liqout.T : 8.589075050000e+01;
+    vapout.V : 1.400988543961e+01;
+    vapin.T : 8.617569630000e+01;
+    vapin.V : 1.397056884805e+01;
+    vapout.h : -1.995327048650e-01;
+    pflash2(1).Mwl : 3.100516930000e+01;
+    pflash2(1).rhoml : 7.220588810087e+02;
+    pflash2(1).rhol : 2.328833860000e+01;
+    liqout.F : 5.365814350000e+01;
+    vapin.F : 1.036581440000e+02;
+    vapout.p : 2.130769230000e+00;
+    vapin.p : 2.138461540000e+00;
+    liqout.T : 8.589075050000e+01;
+    liqout.P : 2.130769230000e+00;
+    liqout.h : -2.356485340327e-01;
+    OUT_HS.Q : 0.000000000000e+00;
+    pflash2(1).h : -2.344106666782e-01;
+    Mc("METHANOL") : 3.404876863510e+00;
+    Mc("WATER") : 2.663456127002e-01;
+    pflash2(1).LFactor : 0.000000000000e+00;
+    pflash2(1).VFactor : 0.000000000000e+00;
+    pflash2(1).ZFactor : 1.0;
+    E : -8.609817745734e-01,free;
+
+    QENV :      0.000000000000e+00;
+    QR :      0.000000000000e+00 , fixed;
+    T :      8.589075050000e+01;
+    HT_WEIR :      5.000000000000e-02 , fixed;
+    STAGEAREA :      2.827433700000e+00 , fixed;
+    V :      1.915115092800e+00;
+    L_WEIR :      1.453320000000e+00 , fixed;
+    LEVEL :      5.384349894941e-02;
+    VL :      1.522389234555e-01;
+    VV :      1.762876169345e+00;
+    LEVEL_TRAY :      5.384349894941e-02;
+    P_DIFF :      7.692310000000e-03;
+    P_DIFFV :      3.879663294358e-03;
+    C1 :      1.000000000000e+00 , fixed;
+    FV_INP :      1.036581440000e+02 , initial;
+    Q :      0.000000000000e+00;
+    MV :      1.258308768436e-01;
+    ML :      3.545391597531e+00;
+    M :      3.671222474374e+00;
+    VF :      3.427492551103e-02;
+    LF :      9.657250744890e-01;
+    HT :      6.096000000000e-01 , fixed;
+    P :      2.130769230000e+00;
+    P_DIFFVP :      3.879663294358e-03;
+    C0 :      2.584476990680e-08 , fixed;
+    RHOVIN :      7.157904670000e-02;
+    DIAM :      2.000000000000e+00 , fixed;
+    QL_OUT :      2.304077779941e+00;
+    COF_WEEP_PT :      1.000000000000e-01 , fixed;
+    COF_WEEP_RATE :      5.471539934472e-01 , fixed;
+    FV_IN_NORM :      1.036581440000e+02 , fixed;
+    FL_WEEP :      0.000000000000e+00;
+    RATIO_FV_INX :      1.000000000000e+01;
+    RATIO_FV_IN :      1.000000000000e+00;
+    VL_HYD :      1.522389234555e-01;
+    RHOL :      2.328833860000e+01;
+    RHOV :      7.137817110000e-02;
+    MWL :      3.100516930000e+01;
+    RHOML :      7.220588810087e+02;
+    HL :     -2.356485340327e-01;
+    HV :     -1.995327048650e-01;
+    EFFO :      1.000000000000e+00 , fixed;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(19)
+    BLOCKID :"COLUMN";
+     BlockVersion : "20.0";
+    ValidPhases : "Vapor-Liquid";
+    Componentlist : "Type1";
+    stagenumber : 19;
+    nstage : 40;
+    stagetype : 0;
+    nhypass : 0;
+    heatopt : "Constant duty";
+    EqHeatCap : "No";
+    EnvHtTrans : "No";
+    efftype : "Vaporization";
+    y("METHANOL") : 9.612487430000e-01;
+    y("WATER") : 3.875125650000e-02;
+    x("METHANOL") : 9.149509030000e-01;
+    x("WATER") : 8.504909660000e-02;
+    pflash2(1).eff("METHANOL") : 1.000000000000e+00, FIXED;
+    pflash2(1).eff("WATER") : 1.000000000000e+00, FIXED;
+    vapout.T : 8.617569630000e+01;
+    liqout.T : 8.617569630000e+01;
+    vapout.V : 1.397056884805e+01;
+    vapin.T : 8.648420950000e+01;
+    vapin.V : 1.393244711740e+01;
+    vapout.h : -1.997298646265e-01;
+    pflash2(1).Mwl : 3.084918650000e+01;
+    pflash2(1).rhoml : 7.226955597702e+02;
+    pflash2(1).rhol : 2.342672990000e+01;
+    liqout.F : 5.351542640000e+01;
+    vapin.F : 1.035154260000e+02;
+    vapout.p : 2.138461540000e+00;
+    vapin.p : 2.146153850000e+00;
+    liqout.T : 8.617569630000e+01;
+    liqout.P : 2.138461540000e+00;
+    liqout.h : -2.361749056463e-01;
+    OUT_HS.Q : 0.000000000000e+00;
+    pflash2(1).h : -2.349289736951e-01;
+    Mc("METHANOL") : 3.383105527817e+00;
+    Mc("WATER") : 3.080905976104e-01;
+    pflash2(1).LFactor : 0.000000000000e+00;
+    pflash2(1).VFactor : 0.000000000000e+00;
+    pflash2(1).ZFactor : 1.0;
+    E : -8.675784578009e-01,free;
+
+    QENV :      0.000000000000e+00;
+    QR :      0.000000000000e+00 , fixed;
+    T :      8.617569630000e+01;
+    HT_WEIR :      5.000000000000e-02 , fixed;
+    STAGEAREA :      2.827433700000e+00 , fixed;
+    V :      1.915115092800e+00;
+    L_WEIR :      1.453320000000e+00 , fixed;
+    LEVEL :      5.382155595390e-02;
+    VL :      1.521768810905e-01;
+    VV :      1.762938211710e+00;
+    LEVEL_TRAY :      5.382155595390e-02;
+    P_DIFF :      7.692310000000e-03;
+    P_DIFFV :      3.877856624367e-03;
+    C1 :      1.000000000000e+00 , fixed;
+    FV_INP :      1.035154260000e+02 , initial;
+    Q :      0.000000000000e+00;
+    MV :      1.261894365852e-01;
+    ML :      3.565006690331e+00;
+    M :      3.691196126917e+00;
+    VF :      3.418659758147e-02;
+    LF :      9.658134024185e-01;
+    HT :      6.096000000000e-01 , fixed;
+    P :      2.138461540000e+00;
+    P_DIFFVP :      3.877856624367e-03;
+    C0 :      2.597489362105e-08 , fixed;
+    RHOVIN :      7.177490010000e-02;
+    DIAM :      2.000000000000e+00 , fixed;
+    QL_OUT :      2.284374585289e+00;
+    COF_WEEP_PT :      1.000000000000e-01 , fixed;
+    COF_WEEP_RATE :      5.499205692183e-01 , fixed;
+    FV_IN_NORM :      1.035154260000e+02 , fixed;
+    FL_WEEP :      0.000000000000e+00;
+    RATIO_FV_INX :      1.000000000000e+01;
+    RATIO_FV_IN :      1.000000000000e+00;
+    VL_HYD :      1.521768810905e-01;
+    RHOL :      2.342672990000e+01;
+    RHOV :      7.157904670000e-02;
+    MWL :      3.084918650000e+01;
+    RHOML :      7.226955597702e+02;
+    HL :     -2.361749056463e-01;
+    HV :     -1.997298646265e-01;
+    EFFO :      1.000000000000e+00 , fixed;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(20)
+    BLOCKID :"COLUMN";
+     BlockVersion : "20.0";
+    ValidPhases : "Vapor-Liquid";
+    Componentlist : "Type1";
+    stagenumber : 20;
+    nstage : 40;
+    stagetype : 0;
+    nhypass : 0;
+    heatopt : "Constant duty";
+    EqHeatCap : "No";
+    EnvHtTrans : "No";
+    efftype : "Vaporization";
+    y("METHANOL") : 9.555482810000e-01;
+    y("WATER") : 4.445171920000e-02;
+    x("METHANOL") : 9.024225470000e-01;
+    x("WATER") : 9.757745310000e-02;
+    pflash2(1).eff("METHANOL") : 1.000000000000e+00, FIXED;
+    pflash2(1).eff("WATER") : 1.000000000000e+00, FIXED;
+    vapout.T : 8.648420950000e+01;
+    liqout.T : 8.648420950000e+01;
+    vapout.V : 1.393244711740e+01;
+    vapin.T : 8.681914770000e+01;
+    vapin.V : 1.389561774528e+01;
+    vapout.h : -1.999524671528e-01;
+    pflash2(1).Mwl : 3.067345280000e+01;
+    pflash2(1).rhoml : 7.234523864920e+02;
+    pflash2(1).rhol : 2.358561950000e+01;
+    liqout.F : 5.335473930000e+01;
+    vapin.F : 1.033547390000e+02;
+    vapout.p : 2.146153850000e+00;
+    vapin.p : 2.153846150000e+00;
+    liqout.T : 8.648420950000e+01;
+    liqout.P : 2.146153850000e+00;
+    liqout.h : -2.367696343061e-01;
+    OUT_HS.Q : 0.000000000000e+00;
+    pflash2(1).h : -2.355152603308e-01;
+    Mc("METHANOL") : 3.358384663566e+00;
+    Mc("WATER") : 3.556871513520e-01;
+    pflash2(1).LFactor : 0.000000000000e+00;
+    pflash2(1).VFactor : 0.000000000000e+00;
+    pflash2(1).ZFactor : 1.0;
+    E : -8.751316034503e-01,free;
+
+    QENV :      0.000000000000e+00;
+    QR :      0.000000000000e+00 , fixed;
+    T :      8.648420950000e+01;
+    HT_WEIR :      5.000000000000e-02 , fixed;
+    STAGEAREA :      2.827433700000e+00 , fixed;
+    V :      1.915115092800e+00;
+    L_WEIR :      1.453320000000e+00 , fixed;
+    LEVEL :      5.379675423254e-02;
+    VL :      1.521067558677e-01;
+    VV :      1.763008336932e+00;
+    LEVEL_TRAY :      5.379675423254e-02;
+    P_DIFF :      7.692300000000e-03;
+    P_DIFFV :      3.875611617514e-03;
+    C1 :      1.000000000000e+00 , fixed;
+    FV_INP :      1.033547390000e+02 , initial;
+    Q :      0.000000000000e+00;
+    MV :      1.265397472588e-01;
+    ML :      3.587532067275e+00;
+    M :      3.714071814534e+00;
+    VF :      3.407035554984e-02;
+    LF :      9.659296444502e-01;
+    HT :      6.096000000000e-01 , fixed;
+    P :      2.146153850000e+00;
+    P_DIFFVP :      3.875611617514e-03;
+    C0 :      2.610965787229e-08 , fixed;
+    RHOVIN :      7.196513450000e-02;
+    DIAM :      2.000000000000e+00 , fixed;
+    QL_OUT :      2.262172477598e+00;
+    COF_WEEP_PT :      1.000000000000e-01 , fixed;
+    COF_WEEP_RATE :      5.530711625657e-01 , fixed;
+    FV_IN_NORM :      1.033547390000e+02 , fixed;
+    FL_WEEP :      0.000000000000e+00;
+    RATIO_FV_INX :      1.000000000000e+01;
+    RATIO_FV_IN :      1.000000000000e+00;
+    VL_HYD :      1.521067558677e-01;
+    RHOL :      2.358561950000e+01;
+    RHOV :      7.177490010000e-02;
+    MWL :      3.067345280000e+01;
+    RHOML :      7.234523864920e+02;
+    HL :     -2.367696343061e-01;
+    HV :     -1.999524671528e-01;
+    EFFO :      1.000000000000e+00 , fixed;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(21)
+    BLOCKID :"COLUMN";
+     BlockVersion : "20.0";
+    ValidPhases : "Vapor-Liquid";
+    Componentlist : "Type1";
+    stagenumber : 21;
+    nstage : 40;
+    stagetype : 0;
+    nhypass : 0;
+    heatopt : "Constant duty";
+    EqHeatCap : "No";
+    EnvHtTrans : "No";
+    efftype : "Vaporization";
+    y("METHANOL") : 9.491438940000e-01;
+    y("WATER") : 5.085610600000e-02;
+    x("METHANOL") : 8.883362700000e-01;
+    x("WATER") : 1.116637300000e-01;
+    pflash2(1).eff("METHANOL") : 1.000000000000e+00, FIXED;
+    pflash2(1).eff("WATER") : 1.000000000000e+00, FIXED;
+    vapout.T : 8.681914770000e+01;
+    liqout.T : 8.681914770000e+01;
+    vapout.V : 1.389561774528e+01;
+    vapin.T : 8.718361560000e+01;
+    vapin.V : 1.386018636795e+01;
+    vapout.h : -2.002031677127e-01;
+    pflash2(1).Mwl : 3.047586630000e+01;
+    pflash2(1).rhoml : 7.243486591892e+02;
+    pflash2(1).rhol : 2.376794320000e+01;
+    liqout.F : 5.317440180000e+01;
+    vapin.F : 1.031744020000e+02;
+    vapout.p : 2.153846150000e+00;
+    vapin.p : 2.161538460000e+00;
+    liqout.T : 8.681914770000e+01;
+    liqout.P : 2.153846150000e+00;
+    liqout.h : -2.374399908090e-01;
+    OUT_HS.Q : 0.000000000000e+00;
+    pflash2(1).h : -2.361768085222e-01;
+    Mc("METHANOL") : 3.330329916099e+00;
+    Mc("WATER") : 4.099368129093e-01;
+    pflash2(1).LFactor : 0.000000000000e+00;
+    pflash2(1).VFactor : 0.000000000000e+00;
+    pflash2(1).ZFactor : 1.0;
+    E : -8.837767454058e-01,free;
+
+    QENV :      0.000000000000e+00;
+    QR :      0.000000000000e+00 , fixed;
+    T :      8.681914770000e+01;
+    HT_WEIR :      5.000000000000e-02 , fixed;
+    STAGEAREA :      2.827433700000e+00 , fixed;
+    V :      1.915115092800e+00;
+    L_WEIR :      1.453320000000e+00 , fixed;
+    LEVEL :      5.376879646778e-02;
+    VL :      1.520277071414e-01;
+    VV :      1.763087385659e+00;
+    LEVEL_TRAY :      5.376879646778e-02;
+    P_DIFF :      7.692310000000e-03;
+    P_DIFFV :      3.872879149341e-03;
+    C1 :      1.000000000000e+00 , fixed;
+    FV_INP :      1.031744020000e+02 , initial;
+    Q :      0.000000000000e+00;
+    MV :      1.268808208442e-01;
+    ML :      3.613385908164e+00;
+    M :      3.740266729008e+00;
+    VF :      3.392293385392e-02;
+    LF :      9.660770661461e-01;
+    HT :      6.096000000000e-01 , fixed;
+    P :      2.153846150000e+00;
+    P_DIFFVP :      3.872879149341e-03;
+    C0 :      2.624946967524e-08 , fixed;
+    RHOVIN :      7.214910200000e-02;
+    DIAM :      2.000000000000e+00 , fixed;
+    QL_OUT :      2.237231945253e+00;
+    COF_WEEP_PT :      1.000000000000e-01 , fixed;
+    COF_WEEP_RATE :      5.566569308647e-01 , fixed;
+    FV_IN_NORM :      1.031744020000e+02 , fixed;
+    FL_WEEP :      0.000000000000e+00;
+    RATIO_FV_INX :      1.000000000000e+01;
+    RATIO_FV_IN :      1.000000000000e+00;
+    VL_HYD :      1.520277071414e-01;
+    RHOL :      2.376794320000e+01;
+    RHOV :      7.196513450000e-02;
+    MWL :      3.047586630000e+01;
+    RHOML :      7.243486591892e+02;
+    HL :     -2.374399908090e-01;
+    HV :     -2.002031677127e-01;
+    EFFO :      1.000000000000e+00 , fixed;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(22)
+    BLOCKID :"COLUMN";
+     BlockVersion : "20.0";
+    ValidPhases : "Vapor-Liquid";
+    Componentlist : "Type1";
+    stagenumber : 22;
+    nstage : 40;
+    stagetype : 0;
+    nhypass : 0;
+    heatopt : "Constant duty";
+    EqHeatCap : "No";
+    EnvHtTrans : "No";
+    efftype : "Vaporization";
+    y("METHANOL") : 9.419657210000e-01;
+    y("WATER") : 5.803427930000e-02;
+    x("METHANOL") : 8.725351310000e-01;
+    x("WATER") : 1.274648690000e-01;
+    pflash2(1).eff("METHANOL") : 1.000000000000e+00, FIXED;
+    pflash2(1).eff("WATER") : 1.000000000000e+00, FIXED;
+    vapout.T : 8.718361560000e+01;
+    liqout.T : 8.718361560000e+01;
+    vapout.V : 1.386018636795e+01;
+    vapin.T : 8.758094400000e+01;
+    vapin.V : 1.382626575623e+01;
+    vapout.h : -2.004847442478e-01;
+    pflash2(1).Mwl : 3.025422560000e+01;
+    pflash2(1).rhoml : 7.254068862954e+02;
+    pflash2(1).rhol : 2.397704360000e+01;
+    liqout.F : 5.297273100000e+01;
+    vapin.F : 1.029727310000e+02;
+    vapout.p : 2.161538460000e+00;
+    vapin.p : 2.169230770000e+00;
+    liqout.T : 8.718361560000e+01;
+    liqout.P : 2.161538460000e+00;
+    liqout.h : -2.381935846640e-01;
+    OUT_HS.Q : 0.000000000000e+00;
+    pflash2(1).h : -2.369212570299e-01;
+    Mc("METHANOL") : 3.298513422096e+00;
+    Mc("WATER") : 4.717428461858e-01;
+    pflash2(1).LFactor : 0.000000000000e+00;
+    pflash2(1).VFactor : 0.000000000000e+00;
+    pflash2(1).ZFactor : 1.0;
+    E : -8.936678138899e-01,free;
+
+    QENV :      0.000000000000e+00;
+    QR :      0.000000000000e+00 , fixed;
+    T :      8.718361560000e+01;
+    HT_WEIR :      5.000000000000e-02 , fixed;
+    STAGEAREA :      2.827433700000e+00 , fixed;
+    V :      1.915115092800e+00;
+    L_WEIR :      1.453320000000e+00 , fixed;
+    LEVEL :      5.373737345411e-02;
+    VL :      1.519388606536e-01;
+    VV :      1.763176232146e+00;
+    LEVEL_TRAY :      5.373737345411e-02;
+    P_DIFF :      7.692310000000e-03;
+    P_DIFFV :      3.869534578866e-03;
+    C1 :      1.000000000000e+00 , fixed;
+    FV_INP :      1.029727310000e+02 , initial;
+    Q :      0.000000000000e+00;
+    MV :      1.272115818171e-01;
+    ML :      3.643044686426e+00;
+    M :      3.770256268243e+00;
+    VF :      3.374083159508e-02;
+    LF :      9.662591684049e-01;
+    HT :      6.096000000000e-01 , fixed;
+    P :      2.161538460000e+00;
+    P_DIFFVP :      3.869534578866e-03;
+    C0 :      2.639422701994e-08 , fixed;
+    RHOVIN :      7.232610870000e-02;
+    DIAM :      2.000000000000e+00 , fixed;
+    QL_OUT :      2.209310367188e+00;
+    COF_WEEP_PT :      1.000000000000e-01 , fixed;
+    COF_WEEP_RATE :      5.607349672173e-01 , fixed;
+    FV_IN_NORM :      1.029727310000e+02 , fixed;
+    FL_WEEP :      0.000000000000e+00;
+    RATIO_FV_INX :      1.000000000000e+01;
+    RATIO_FV_IN :      1.000000000000e+00;
+    VL_HYD :      1.519388606536e-01;
+    RHOL :      2.397704360000e+01;
+    RHOV :      7.214910200000e-02;
+    MWL :      3.025422560000e+01;
+    RHOML :      7.254068862954e+02;
+    HL :     -2.381935846640e-01;
+    HV :     -2.004847442478e-01;
+    EFFO :      1.000000000000e+00 , fixed;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(23)
+    BLOCKID :"COLUMN";
+     BlockVersion : "20.0";
+    ValidPhases : "Vapor-Liquid";
+    Componentlist : "Type1";
+    stagenumber : 23;
+    nstage : 40;
+    stagetype : 0;
+    nhypass : 0;
+    heatopt : "Constant duty";
+    EqHeatCap : "No";
+    EnvHtTrans : "No";
+    efftype : "Vaporization";
+    y("METHANOL") : 9.339421020000e-01;
+    y("WATER") : 6.605789840000e-02;
+    x("METHANOL") : 8.548585850000e-01;
+    x("WATER") : 1.451414150000e-01;
+    pflash2(1).eff("METHANOL") : 1.000000000000e+00, FIXED;
+    pflash2(1).eff("WATER") : 1.000000000000e+00, FIXED;
+    vapout.T : 8.758094400000e+01;
+    liqout.T : 8.758094400000e+01;
+    vapout.V : 1.382626575623e+01;
+    vapin.T : 8.801464020000e+01;
+    vapin.V : 1.379397385754e+01;
+    vapout.h : -2.008000429448e-01;
+    pflash2(1).Mwl : 3.000627880000e+01;
+    pflash2(1).rhoml : 7.266532078486e+02;
+    pflash2(1).rhol : 2.421670520000e+01;
+    liqout.F : 5.274810920000e+01;
+    vapin.F : 1.027481090000e+02;
+    vapout.p : 2.169230770000e+00;
+    vapin.p : 2.176923080000e+00;
+    liqout.T : 8.758094400000e+01;
+    liqout.P : 2.169230770000e+00;
+    liqout.h : -2.390381903401e-01;
+    OUT_HS.Q : 0.000000000000e+00;
+    pflash2(1).h : -2.377564337647e-01;
+    Mc("METHANOL") : 3.262462760713e+00;
+    Mc("WATER") : 5.421164150088e-01;
+    pflash2(1).LFactor : 0.000000000000e+00;
+    pflash2(1).VFactor : 0.000000000000e+00;
+    pflash2(1).ZFactor : 1.0;
+    E : -9.049786094416e-01,free;
+
+    QENV :      0.000000000000e+00;
+    QR :      0.000000000000e+00 , fixed;
+    T :      8.758094400000e+01;
+    HT_WEIR :      5.000000000000e-02 , fixed;
+    STAGEAREA :      2.827433700000e+00 , fixed;
+    V :      1.915115092800e+00;
+    L_WEIR :      1.453320000000e+00 , fixed;
+    LEVEL :      5.370217181919e-02;
+    VL :      1.518393303648e-01;
+    VV :      1.763275762435e+00;
+    LEVEL_TRAY :      5.370217181919e-02;
+    P_DIFF :      7.692310000000e-03;
+    P_DIFFV :      3.865475148871e-03;
+    C1 :      1.000000000000e+00 , fixed;
+    FV_INP :      1.027481090000e+02 , initial;
+    Q :      0.000000000000e+00;
+    MV :      1.275308744620e-01;
+    ML :      3.677048301209e+00;
+    M :      3.804579175671e+00;
+    VF :      3.352036285051e-02;
+    LF :      9.664796371495e-01;
+    HT :      6.096000000000e-01 , fixed;
+    P :      2.169230770000e+00;
+    P_DIFFVP :      3.865475148871e-03;
+    C0 :      2.654394010710e-08 , fixed;
+    RHOVIN :      7.249542520000e-02;
+    DIAM :      2.000000000000e+00 , fixed;
+    QL_OUT :      2.178170348293e+00;
+    COF_WEEP_PT :      1.000000000000e-01 , fixed;
+    COF_WEEP_RATE :      5.653684121605e-01 , fixed;
+    FV_IN_NORM :      1.027481090000e+02 , fixed;
+    FL_WEEP :      0.000000000000e+00;
+    RATIO_FV_INX :      1.000000000000e+01;
+    RATIO_FV_IN :      1.000000000000e+00;
+    VL_HYD :      1.518393303648e-01;
+    RHOL :      2.421670520000e+01;
+    RHOV :      7.232610870000e-02;
+    MWL :      3.000627880000e+01;
+    RHOML :      7.266532078486e+02;
+    HL :     -2.390381903401e-01;
+    HV :     -2.008000429448e-01;
+    EFFO :      1.000000000000e+00 , fixed;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(24)
+    BLOCKID :"COLUMN";
+     BlockVersion : "20.0";
+    ValidPhases : "Vapor-Liquid";
+    Componentlist : "Type1";
+    stagenumber : 24;
+    nstage : 40;
+    stagetype : 0;
+    nhypass : 0;
+    heatopt : "Constant duty";
+    EqHeatCap : "No";
+    EnvHtTrans : "No";
+    efftype : "Vaporization";
+    y("METHANOL") : 9.250016830000e-01;
+    y("WATER") : 7.499831660000e-02;
+    x("METHANOL") : 8.351481110000e-01;
+    x("WATER") : 1.648518890000e-01;
+    pflash2(1).eff("METHANOL") : 1.000000000000e+00, FIXED;
+    pflash2(1).eff("WATER") : 1.000000000000e+00, FIXED;
+    vapout.T : 8.801464020000e+01;
+    liqout.T : 8.801464020000e+01;
+    vapout.V : 1.379397385754e+01;
+    vapin.T : 8.848829650000e+01;
+    vapin.V : 1.376343021413e+01;
+    vapout.h : -2.011518932432e-01;
+    pflash2(1).Mwl : 2.972980230000e+01;
+    pflash2(1).rhoml : 7.281177700338e+02;
+    pflash2(1).rhol : 2.449117430000e+01;
+    liqout.F : 5.249908060000e+01;
+    vapin.F : 1.024990810000e+02;
+    vapout.p : 2.176923080000e+00;
+    vapin.p : 2.184615380000e+00;
+    liqout.T : 8.801464020000e+01;
+    liqout.P : 2.176923080000e+00;
+    liqout.h : -2.399814659131e-01;
+    OUT_HS.Q : 0.000000000000e+00;
+    pflash2(1).h : -2.386900817870e-01;
+    Mc("METHANOL") : 3.221662830351e+00;
+    Mc("WATER") : 6.221777219067e-01;
+    pflash2(1).LFactor : 0.000000000000e+00;
+    pflash2(1).VFactor : 0.000000000000e+00;
+    pflash2(1).ZFactor : 1.0;
+    E : -9.179035216312e-01,free;
+
+    QENV :      0.000000000000e+00;
+    QR :      0.000000000000e+00 , fixed;
+    T :      8.801464020000e+01;
+    HT_WEIR :      5.000000000000e-02 , fixed;
+    STAGEAREA :      2.827433700000e+00 , fixed;
+    V :      1.915115092800e+00;
+    L_WEIR :      1.453320000000e+00 , fixed;
+    LEVEL :      5.366288599737e-02;
+    VL :      1.517282523082e-01;
+    VV :      1.763386840492e+00;
+    LEVEL_TRAY :      5.366288599737e-02;
+    P_DIFF :      7.692300000000e-03;
+    P_DIFFV :      3.860557365265e-03;
+    C1 :      1.000000000000e+00 , fixed;
+    FV_INP :      1.024990810000e+02 , initial;
+    Q :      0.000000000000e+00;
+    MV :      1.278374787935e-01;
+    ML :      3.716003073515e+00;
+    M :      3.843840552309e+00;
+    VF :      3.325774757144e-02;
+    LF :      9.667422524286e-01;
+    HT :      6.096000000000e-01 , fixed;
+    P :      2.176923080000e+00;
+    P_DIFFVP :      3.860557365265e-03;
+    C0 :      2.669826000474e-08 , fixed;
+    RHOVIN :      7.265630620000e-02;
+    DIAM :      2.000000000000e+00 , fixed;
+    QL_OUT :      2.143591808091e+00;
+    COF_WEEP_PT :      1.000000000000e-01 , fixed;
+    COF_WEEP_RATE :      5.706261356471e-01 , fixed;
+    FV_IN_NORM :      1.024990810000e+02 , fixed;
+    FL_WEEP :      0.000000000000e+00;
+    RATIO_FV_INX :      1.000000000000e+01;
+    RATIO_FV_IN :      1.000000000000e+00;
+    VL_HYD :      1.517282523082e-01;
+    RHOL :      2.449117430000e+01;
+    RHOV :      7.249542520000e-02;
+    MWL :      2.972980230000e+01;
+    RHOML :      7.281177700338e+02;
+    HL :     -2.399814659131e-01;
+    HV :     -2.011518932432e-01;
+    EFFO :      1.000000000000e+00 , fixed;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(25)
+    BLOCKID :"COLUMN";
+     BlockVersion : "20.0";
+    ValidPhases : "Vapor-Liquid";
+    Componentlist : "Type1";
+    stagenumber : 25;
+    nstage : 40;
+    stagetype : 0;
+    nhypass : 0;
+    heatopt : "Constant duty";
+    EqHeatCap : "No";
+    EnvHtTrans : "No";
+    efftype : "Vaporization";
+    y("METHANOL") : 9.150765790000e-01;
+    y("WATER") : 8.492342130000e-02;
+    x("METHANOL") : 8.132559130000e-01;
+    x("WATER") : 1.867440870000e-01;
+    pflash2(1).eff("METHANOL") : 1.000000000000e+00, FIXED;
+    pflash2(1).eff("WATER") : 1.000000000000e+00, FIXED;
+    vapout.T : 8.848829650000e+01;
+    liqout.T : 8.848829650000e+01;
+    vapout.V : 1.376343021413e+01;
+    vapin.T : 8.900543460000e+01;
+    vapin.V : 1.373474993288e+01;
+    vapout.h : -2.015429826499e-01;
+    pflash2(1).Mwl : 2.942272310000e+01;
+    pflash2(1).rhoml : 7.298348980790e+02;
+    pflash2(1).rhol : 2.480514450000e+01;
+    liqout.F : 5.222448950000e+01;
+    vapin.F : 1.022244890000e+02;
+    vapout.p : 2.184615380000e+00;
+    vapin.p : 2.192307690000e+00;
+    liqout.T : 8.848829650000e+01;
+    liqout.P : 2.184615380000e+00;
+    liqout.h : -2.410305197321e-01;
+    OUT_HS.Q : 0.000000000000e+00;
+    pflash2(1).h : -2.397294343643e-01;
+    Mc("METHANOL") : 3.175562710586e+00;
+    Mc("WATER") : 7.131473052346e-01;
+    pflash2(1).LFactor : 0.000000000000e+00;
+    pflash2(1).VFactor : 0.000000000000e+00;
+    pflash2(1).ZFactor : 1.0;
+    E : -9.326566314791e-01,free;
+
+    QENV :      0.000000000000e+00;
+    QR :      0.000000000000e+00 , fixed;
+    T :      8.848829650000e+01;
+    HT_WEIR :      5.000000000000e-02 , fixed;
+    STAGEAREA :      2.827433700000e+00 , fixed;
+    V :      1.915115092800e+00;
+    L_WEIR :      1.453320000000e+00 , fixed;
+    LEVEL :      5.361923656515e-02;
+    VL :      1.516048364326e-01;
+    VV :      1.763510256367e+00;
+    LEVEL_TRAY :      5.361923656515e-02;
+    P_DIFF :      7.692310000000e-03;
+    P_DIFFV :      3.854655017608e-03;
+    C1 :      1.000000000000e+00 , fixed;
+    FV_INP :      1.022244890000e+02 , initial;
+    Q :      0.000000000000e+00;
+    MV :      1.281301411735e-01;
+    ML :      3.760579874609e+00;
+    M :      3.888710015783e+00;
+    VF :      3.294926611999e-02;
+    LF :      9.670507338800e-01;
+    HT :      6.096000000000e-01 , fixed;
+    P :      2.184615380000e+00;
+    P_DIFFVP :      3.854655017608e-03;
+    C0 :      2.685681067996e-08 , fixed;
+    RHOVIN :      7.280802380000e-02;
+    DIAM :      2.000000000000e+00 , fixed;
+    QL_OUT :      2.105389448548e+00;
+    COF_WEEP_PT :      1.000000000000e-01 , fixed;
+    COF_WEEP_RATE :      5.765816488957e-01 , fixed;
+    FV_IN_NORM :      1.022244890000e+02 , fixed;
+    FL_WEEP :      0.000000000000e+00;
+    RATIO_FV_INX :      1.000000000000e+01;
+    RATIO_FV_IN :      1.000000000000e+00;
+    VL_HYD :      1.516048364326e-01;
+    RHOL :      2.480514450000e+01;
+    RHOV :      7.265630620000e-02;
+    MWL :      2.942272310000e+01;
+    RHOML :      7.298348980790e+02;
+    HL :     -2.410305197321e-01;
+    HV :     -2.015429826499e-01;
+    EFFO :      1.000000000000e+00 , fixed;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(26)
+    BLOCKID :"COLUMN";
+     BlockVersion : "20.0";
+    ValidPhases : "Vapor-Liquid";
+    Componentlist : "Type1";
+    stagenumber : 26;
+    nstage : 40;
+    stagetype : 0;
+    nhypass : 0;
+    heatopt : "Constant duty";
+    EqHeatCap : "No";
+    EnvHtTrans : "No";
+    efftype : "Vaporization";
+    y("METHANOL") : 9.041069840000e-01;
+    y("WATER") : 9.589301600000e-02;
+    x("METHANOL") : 7.890578900000e-01;
+    x("WATER") : 2.109421100000e-01;
+    pflash2(1).eff("METHANOL") : 1.000000000000e+00, FIXED;
+    pflash2(1).eff("WATER") : 1.000000000000e+00, FIXED;
+    vapout.T : 8.900543460000e+01;
+    liqout.T : 8.900543460000e+01;
+    vapout.V : 1.373474993288e+01;
+    vapin.T : 8.956925390000e+01;
+    vapin.V : 1.370803443073e+01;
+    vapout.h : -2.019756716827e-01;
+    pflash2(1).Mwl : 2.908330030000e+01;
+    pflash2(1).rhoml : 7.318428911764e+02;
+    pflash2(1).rhol : 2.516368100000e+01;
+    liqout.F : 5.192366990000e+01;
+    vapin.F : 1.019236700000e+02;
+    vapout.p : 2.192307690000e+00;
+    vapin.p : 2.200000000000e+00;
+    liqout.T : 8.900543460000e+01;
+    liqout.P : 2.192307690000e+00;
+    liqout.h : -2.421912673267e-01;
+    OUT_HS.Q : 0.000000000000e+00;
+    pflash2(1).h : -2.408805806206e-01;
+    Mc("METHANOL") : 3.123591190136e+00;
+    Mc("WATER") : 8.163199980673e-01;
+    pflash2(1).LFactor : 0.000000000000e+00;
+    pflash2(1).VFactor : 0.000000000000e+00;
+    pflash2(1).ZFactor : 1.0;
+    E : -9.494679467627e-01,free;
+
+    QENV :      0.000000000000e+00;
+    QR :      0.000000000000e+00 , fixed;
+    T :      8.900543460000e+01;
+    HT_WEIR :      5.000000000000e-02 , fixed;
+    STAGEAREA :      2.827433700000e+00 , fixed;
+    V :      1.915115092800e+00;
+    L_WEIR :      1.453320000000e+00 , fixed;
+    LEVEL :      5.357099697588e-02;
+    VL :      1.514684421922e-01;
+    VV :      1.763646650608e+00;
+    LEVEL_TRAY :      5.357099697588e-02;
+    P_DIFF :      7.692310000000e-03;
+    P_DIFFV :      3.847558606322e-03;
+    C1 :      1.000000000000e+00 , fixed;
+    FV_INP :      1.019236700000e+02 , initial;
+    Q :      0.000000000000e+00;
+    MV :      1.284076273122e-01;
+    ML :      3.811503560891e+00;
+    M :      3.939911188204e+00;
+    VF :      3.259150300055e-02;
+    LF :      9.674084969994e-01;
+    HT :      6.096000000000e-01 , fixed;
+    P :      2.192307690000e+00;
+    P_DIFFVP :      3.847558606322e-03;
+    C0 :      2.701839365146e-08 , fixed;
+    RHOVIN :      7.294991890000e-02;
+    DIAM :      2.000000000000e+00 , fixed;
+    QL_OUT :      2.063436978874e+00;
+    COF_WEEP_PT :      1.000000000000e-01 , fixed;
+    COF_WEEP_RATE :      5.833107668321e-01 , fixed;
+    FV_IN_NORM :      1.019236700000e+02 , fixed;
+    FL_WEEP :      0.000000000000e+00;
+    RATIO_FV_INX :      1.000000000000e+01;
+    RATIO_FV_IN :      1.000000000000e+00;
+    VL_HYD :      1.514684421922e-01;
+    RHOL :      2.516368100000e+01;
+    RHOV :      7.280802380000e-02;
+    MWL :      2.908330030000e+01;
+    RHOML :      7.318428911764e+02;
+    HL :     -2.421912673267e-01;
+    HV :     -2.019756716827e-01;
+    EFFO :      1.000000000000e+00 , fixed;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(27)
+    BLOCKID :"COLUMN";
+     BlockVersion : "20.0";
+    ValidPhases : "Vapor-Liquid";
+    Componentlist : "Type1";
+    stagenumber : 27;
+    nstage : 40;
+    stagetype : 0;
+    nhypass : 0;
+    heatopt : "Constant duty";
+    EqHeatCap : "No";
+    EnvHtTrans : "No";
+    efftype : "Vaporization";
+    y("METHANOL") : 8.920477600000e-01;
+    y("WATER") : 1.079522400000e-01;
+    x("METHANOL") : 7.624723980000e-01;
+    x("WATER") : 2.375276020000e-01;
+    pflash2(1).eff("METHANOL") : 1.000000000000e+00, FIXED;
+    pflash2(1).eff("WATER") : 1.000000000000e+00, FIXED;
+    vapout.T : 8.956925390000e+01;
+    liqout.T : 8.956925390000e+01;
+    vapout.V : 1.370803443073e+01;
+    vapin.T : 9.018224640000e+01;
+    vapin.V : 1.368335698011e+01;
+    vapout.h : -2.024517321954e-01;
+    pflash2(1).Mwl : 2.871038880000e+01;
+    pflash2(1).rhoml : 7.341830988386e+02;
+    pflash2(1).rhol : 2.557203610000e+01;
+    liqout.F : 5.159670010000e+01;
+    vapin.F : 1.015967000000e+02;
+    vapout.p : 2.200000000000e+00;
+    vapin.p : 2.207692310000e+00;
+    liqout.T : 8.956925390000e+01;
+    liqout.P : 2.200000000000e+00;
+    liqout.h : -2.434675023565e-01;
+    OUT_HS.Q : 0.000000000000e+00;
+    pflash2(1).h : -2.421475444319e-01;
+    Mc("METHANOL") : 3.065186184860e+00;
+    Mc("WATER") : 9.330095346143e-01;
+    pflash2(1).LFactor : 0.000000000000e+00;
+    pflash2(1).VFactor : 0.000000000000e+00;
+    pflash2(1).ZFactor : 1.0;
+    E : -9.685746009491e-01,free;
+
+    QENV :      0.000000000000e+00;
+    QR :      0.000000000000e+00 , fixed;
+    T :      8.956925390000e+01;
+    HT_WEIR :      5.000000000000e-02 , fixed;
+    STAGEAREA :      2.827433700000e+00 , fixed;
+    V :      1.915115092800e+00;
+    L_WEIR :      1.453320000000e+00 , fixed;
+    LEVEL :      5.351803175266e-02;
+    VL :      1.513186865351e-01;
+    VV :      1.763796406265e+00;
+    LEVEL_TRAY :      5.351803175266e-02;
+    P_DIFF :      7.692310000000e-03;
+    P_DIFFV :      3.839077708913e-03;
+    C1 :      1.000000000000e+00 , fixed;
+    FV_INP :      1.015967000000e+02 , initial;
+    Q :      0.000000000000e+00;
+    MV :      1.286688047931e-01;
+    ML :      3.869526914681e+00;
+    M :      3.998195719474e+00;
+    VF :      3.218171740978e-02;
+    LF :      9.678182825902e-01;
+    HT :      6.096000000000e-01 , fixed;
+    P :      2.200000000000e+00;
+    P_DIFFVP :      3.839077708913e-03;
+    C0 :      2.718157482117e-08 , fixed;
+    RHOVIN :      7.308148150000e-02;
+    DIAM :      2.000000000000e+00 , fixed;
+    QL_OUT :      2.017700111881e+00;
+    COF_WEEP_PT :      1.000000000000e-01 , fixed;
+    COF_WEEP_RATE :      5.908872331259e-01 , fixed;
+    FV_IN_NORM :      1.015967000000e+02 , fixed;
+    FL_WEEP :      0.000000000000e+00;
+    RATIO_FV_INX :      1.000000000000e+01;
+    RATIO_FV_IN :      1.000000000000e+00;
+    VL_HYD :      1.513186865351e-01;
+    RHOL :      2.557203610000e+01;
+    RHOV :      7.294991890000e-02;
+    MWL :      2.871038880000e+01;
+    RHOML :      7.341830988386e+02;
+    HL :     -2.434675023565e-01;
+    HV :     -2.024517321954e-01;
+    EFFO :      1.000000000000e+00 , fixed;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(28)
+    BLOCKID :"COLUMN";
+     BlockVersion : "20.0";
+    ValidPhases : "Vapor-Liquid";
+    Componentlist : "Type1";
+    stagenumber : 28;
+    nstage : 40;
+    stagetype : 0;
+    nhypass : 0;
+    heatopt : "Constant duty";
+    EqHeatCap : "No";
+    EnvHtTrans : "No";
+    efftype : "Vaporization";
+    y("METHANOL") : 8.788775580000e-01;
+    y("WATER") : 1.211224420000e-01;
+    x("METHANOL") : 7.334864080000e-01;
+    x("WATER") : 2.665135920000e-01;
+    pflash2(1).eff("METHANOL") : 1.000000000000e+00, FIXED;
+    pflash2(1).eff("WATER") : 1.000000000000e+00, FIXED;
+    vapout.T : 9.018224640000e+01;
+    liqout.T : 9.018224640000e+01;
+    vapout.V : 1.368335698011e+01;
+    vapin.T : 9.084563320000e+01;
+    vapin.V : 1.366074221815e+01;
+    vapout.h : -2.029719843821e-01;
+    pflash2(1).Mwl : 2.830380580000e+01;
+    pflash2(1).rhoml : 7.368977043649e+02;
+    pflash2(1).rhol : 2.603528690000e+01;
+    liqout.F : 5.124472980000e+01;
+    vapin.F : 1.012447300000e+02;
+    vapout.p : 2.207692310000e+00;
+    vapin.p : 2.215384620000e+00;
+    liqout.T : 9.018224640000e+01;
+    liqout.P : 2.207692310000e+00;
+    liqout.h : -2.448596028895e-01;
+    OUT_HS.Q : 0.000000000000e+00;
+    pflash2(1).h : -2.435309953245e-01;
+    Mc("METHANOL") : 2.999845707547e+00;
+    Mc("WATER") : 1.064446280184e+00;
+    pflash2(1).LFactor : 0.000000000000e+00;
+    pflash2(1).VFactor : 0.000000000000e+00;
+    pflash2(1).ZFactor : 1.0;
+    E : -9.902038715482e-01,free;
+
+    QENV :      0.000000000000e+00;
+    QR :      0.000000000000e+00 , fixed;
+    T :      9.018224640000e+01;
+    HT_WEIR :      5.000000000000e-02 , fixed;
+    STAGEAREA :      2.827433700000e+00 , fixed;
+    V :      1.915115092800e+00;
+    L_WEIR :      1.453320000000e+00 , fixed;
+    LEVEL :      5.346034900104e-02;
+    VL :      1.511555923793e-01;
+    VV :      1.763959500421e+00;
+    LEVEL_TRAY :      5.346034900104e-02;
+    P_DIFF :      7.692310000000e-03;
+    P_DIFFV :      3.828999016803e-03;
+    C1 :      1.000000000000e+00 , fixed;
+    FV_INP :      1.012447300000e+02 , initial;
+    Q :      0.000000000000e+00;
+    MV :      1.289127735967e-01;
+    ML :      3.935379214135e+00;
+    M :      4.064291987732e+00;
+    VF :      3.171838391185e-02;
+    LF :      9.682816160881e-01;
+    HT :      6.096000000000e-01 , fixed;
+    P :      2.207692310000e+00;
+    P_DIFFVP :      3.828999016803e-03;
+    C0 :      2.734422863205e-08 , fixed;
+    RHOVIN :      7.320246470000e-02;
+    DIAM :      2.000000000000e+00 , fixed;
+    QL_OUT :      1.968279819494e+00;
+    COF_WEEP_PT :      1.000000000000e-01 , fixed;
+    COF_WEEP_RATE :      5.993753037975e-01 , fixed;
+    FV_IN_NORM :      1.012447300000e+02 , fixed;
+    FL_WEEP :      0.000000000000e+00;
+    RATIO_FV_INX :      1.000000000000e+01;
+    RATIO_FV_IN :      1.000000000000e+00;
+    VL_HYD :      1.511555923793e-01;
+    RHOL :      2.603528690000e+01;
+    RHOV :      7.308148150000e-02;
+    MWL :      2.830380580000e+01;
+    RHOML :      7.368977043649e+02;
+    HL :     -2.448596028895e-01;
+    HV :     -2.029719843821e-01;
+    EFFO :      1.000000000000e+00 , fixed;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(29)
+    BLOCKID :"COLUMN";
+     BlockVersion : "20.0";
+    ValidPhases : "Vapor-Liquid";
+    Componentlist : "Type1";
+    stagenumber : 29;
+    nstage : 40;
+    stagetype : 0;
+    nhypass : 0;
+    heatopt : "Constant duty";
+    EqHeatCap : "No";
+    EnvHtTrans : "No";
+    efftype : "Vaporization";
+    y("METHANOL") : 8.646110560000e-01;
+    y("WATER") : 1.353889440000e-01;
+    x("METHANOL") : 7.021901700000e-01;
+    x("WATER") : 2.978098300000e-01;
+    pflash2(1).eff("METHANOL") : 1.000000000000e+00, FIXED;
+    pflash2(1).eff("WATER") : 1.000000000000e+00, FIXED;
+    vapout.T : 9.084563320000e+01;
+    liqout.T : 9.084563320000e+01;
+    vapout.V : 1.366074221815e+01;
+    vapin.T : 9.155858390000e+01;
+    vapin.V : 1.364013763925e+01;
+    vapout.h : -2.035358119458e-01;
+    pflash2(1).Mwl : 2.786481720000e+01;
+    pflash2(1).rhoml : 7.400254975497e+02;
+    pflash2(1).rhol : 2.655770150000e+01;
+    liqout.F : 5.087037490000e+01;
+    vapin.F : 1.008703750000e+02;
+    vapout.p : 2.215384620000e+00;
+    vapin.p : 2.223076920000e+00;
+    liqout.T : 9.084563320000e+01;
+    liqout.P : 2.215384620000e+00;
+    liqout.h : -2.463628282121e-01;
+    OUT_HS.Q : 0.000000000000e+00;
+    pflash2(1).h : -2.450265422842e-01;
+    Mc("METHANOL") : 2.927210124963e+00;
+    Mc("WATER") : 1.211604927938e+00;
+    pflash2(1).LFactor : 0.000000000000e+00;
+    pflash2(1).VFactor : 0.000000000000e+00;
+    pflash2(1).ZFactor : 1.0;
+    E : -1.014543813218e+00,free;
+
+    QENV :      0.000000000000e+00;
+    QR :      0.000000000000e+00 , fixed;
+    T :      9.084563320000e+01;
+    HT_WEIR :      5.000000000000e-02 , fixed;
+    STAGEAREA :      2.827433700000e+00 , fixed;
+    V :      1.915115092800e+00;
+    L_WEIR :      1.453320000000e+00 , fixed;
+    LEVEL :      5.339816903551e-02;
+    VL :      1.509797826493e-01;
+    VV :      1.764135310151e+00;
+    LEVEL_TRAY :      5.339816903551e-02;
+    P_DIFF :      7.692300000000e-03;
+    P_DIFFV :      3.817103537904e-03;
+    C1 :      1.000000000000e+00 , fixed;
+    FV_INP :      1.008703750000e+02 , initial;
+    Q :      0.000000000000e+00;
+    MV :      1.291390527673e-01;
+    ML :      4.009676000135e+00;
+    M :      4.138815052902e+00;
+    VF :      3.120193850575e-02;
+    LF :      9.687980614942e-01;
+    HT :      6.096000000000e-01 , fixed;
+    P :      2.215384620000e+00;
+    P_DIFFVP :      3.817103537904e-03;
+    C0 :      2.750346973249e-08 , fixed;
+    RHOVIN :      7.331304320000e-02;
+    DIAM :      2.000000000000e+00 , fixed;
+    QL_OUT :      1.915466024046e+00;
+    COF_WEEP_PT :      1.000000000000e-01 , fixed;
+    COF_WEEP_RATE :      6.088179971983e-01 , fixed;
+    FV_IN_NORM :      1.008703750000e+02 , fixed;
+    FL_WEEP :      0.000000000000e+00;
+    RATIO_FV_INX :      1.000000000000e+01;
+    RATIO_FV_IN :      1.000000000000e+00;
+    VL_HYD :      1.509797826493e-01;
+    RHOL :      2.655770150000e+01;
+    RHOV :      7.320246470000e-02;
+    MWL :      2.786481720000e+01;
+    RHOML :      7.400254975497e+02;
+    HL :     -2.463628282121e-01;
+    HV :     -2.035358119458e-01;
+    EFFO :      1.000000000000e+00 , fixed;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(30)
+    BLOCKID :"COLUMN";
+     BlockVersion : "20.0";
+    ValidPhases : "Vapor-Liquid";
+    Componentlist : "Type1";
+    stagenumber : 30;
+    nstage : 40;
+    stagetype : 0;
+    nhypass : 0;
+    heatopt : "Constant duty";
+    EqHeatCap : "No";
+    EnvHtTrans : "No";
+    efftype : "Vaporization";
+    y("METHANOL") : 8.493145510000e-01;
+    y("WATER") : 1.506854490000e-01;
+    x("METHANOL") : 6.688197960000e-01;
+    x("WATER") : 3.311802040000e-01;
+    pflash2(1).eff("METHANOL") : 1.000000000000e+00, FIXED;
+    pflash2(1).eff("WATER") : 1.000000000000e+00, FIXED;
+    vapout.T : 9.155858390000e+01;
+    liqout.T : 9.155858390000e+01;
+    vapout.V : 1.364013763925e+01;
+    vapin.T : 9.231722470000e+01;
+    vapin.V : 1.362137807727e+01;
+    vapout.h : -2.041405474763e-01;
+    pflash2(1).Mwl : 2.739673500000e+01;
+    pflash2(1).rhoml : 7.435947513755e+02;
+    pflash2(1).rhol : 2.714172880000e+01;
+    liqout.F : 5.047814390000e+01;
+    vapin.F : 1.004781440000e+02;
+    vapout.p : 2.223076920000e+00;
+    vapin.p : 2.230769230000e+00;
+    liqout.T : 9.155858390000e+01;
+    liqout.P : 2.223076920000e+00;
+    liqout.h : -2.479652417574e-01;
+    OUT_HS.Q : 0.000000000000e+00;
+    pflash2(1).h : -2.466226399585e-01;
+    Mc("METHANOL") : 2.847185916058e+00;
+    Mc("WATER") : 1.374936882577e+00;
+    pflash2(1).LFactor : 0.000000000000e+00;
+    pflash2(1).VFactor : 0.000000000000e+00;
+    pflash2(1).ZFactor : 1.0;
+    E : -1.041696815645e+00,free;
+
+    QENV :      0.000000000000e+00;
+    QR :      0.000000000000e+00 , fixed;
+    T :      9.155858390000e+01;
+    HT_WEIR :      5.000000000000e-02 , fixed;
+    STAGEAREA :      2.827433700000e+00 , fixed;
+    V :      1.915115092800e+00;
+    L_WEIR :      1.453320000000e+00 , fixed;
+    LEVEL :      5.333200713970e-02;
+    VL :      1.507927142754e-01;
+    VV :      1.764322378525e+00;
+    LEVEL_TRAY :      5.333200713970e-02;
+    P_DIFF :      7.692310000000e-03;
+    P_DIFFV :      3.803247525099e-03;
+    C1 :      1.000000000000e+00 , fixed;
+    FV_INP :      1.004781440000e+02 , initial;
+    Q :      0.000000000000e+00;
+    MV :      1.293478427555e-01;
+    ML :      4.092774955880e+00;
+    M :      4.222122798635e+00;
+    VF :      3.063573679034e-02;
+    LF :      9.693642632097e-01;
+    HT :      6.096000000000e-01 , fixed;
+    P :      2.223076920000e+00;
+    P_DIFFVP :      3.803247525099e-03;
+    C0 :      2.765603416318e-08 , fixed;
+    RHOVIN :      7.341401100000e-02;
+    DIAM :      2.000000000000e+00 , fixed;
+    QL_OUT :      1.859798403851e+00;
+    COF_WEEP_PT :      1.000000000000e-01 , fixed;
+    COF_WEEP_RATE :      6.192198522926e-01 , fixed;
+    FV_IN_NORM :      1.004781440000e+02 , fixed;
+    FL_WEEP :      0.000000000000e+00;
+    RATIO_FV_INX :      1.000000000000e+01;
+    RATIO_FV_IN :      1.000000000000e+00;
+    VL_HYD :      1.507927142754e-01;
+    RHOL :      2.714172880000e+01;
+    RHOV :      7.331304320000e-02;
+    MWL :      2.739673500000e+01;
+    RHOML :      7.435947513755e+02;
+    HL :     -2.479652417574e-01;
+    HV :     -2.041405474763e-01;
+    EFFO :      1.000000000000e+00 , fixed;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(31)
+    BLOCKID :"COLUMN";
+     BlockVersion : "20.0";
+    ValidPhases : "Vapor-Liquid";
+    Componentlist : "Type1";
+    stagenumber : 31;
+    nstage : 40;
+    stagetype : 0;
+    nhypass : 0;
+    heatopt : "Constant duty";
+    EqHeatCap : "No";
+    EnvHtTrans : "No";
+    efftype : "Vaporization";
+    y("METHANOL") : 8.331242860000e-01;
+    y("WATER") : 1.668757140000e-01;
+    x("METHANOL") : 6.338031160000e-01;
+    x("WATER") : 3.661968840000e-01;
+    pflash2(1).eff("METHANOL") : 1.000000000000e+00, FIXED;
+    pflash2(1).eff("WATER") : 1.000000000000e+00, FIXED;
+    vapout.T : 9.231722470000e+01;
+    liqout.T : 9.231722470000e+01;
+    vapout.V : 1.362137807727e+01;
+    vapin.T : 9.311353090000e+01;
+    vapin.V : 1.360414646984e+01;
+    vapout.h : -2.047807460401e-01;
+    pflash2(1).Mwl : 2.690556030000e+01;
+    pflash2(1).rhoml : 7.476124409511e+02;
+    pflash2(1).rhol : 2.778654050000e+01;
+    liqout.F : 5.007480660000e+01;
+    vapin.F : 1.000748070000e+02;
+    vapout.p : 2.230769230000e+00;
+    vapin.p : 2.238461540000e+00;
+    liqout.T : 9.231722470000e+01;
+    liqout.P : 2.230769230000e+00;
+    liqout.h : -2.496454996378e-01;
+    OUT_HS.Q : 0.000000000000e+00;
+    pflash2(1).h : -2.482983390409e-01;
+    Mc("METHANOL") : 2.760115160381e+00;
+    Mc("WATER") : 1.553992732100e+00;
+    pflash2(1).LFactor : 0.000000000000e+00;
+    pflash2(1).VFactor : 0.000000000000e+00;
+    pflash2(1).ZFactor : 1.0;
+    E : -1.071613042128e+00,free;
+
+    QENV :      0.000000000000e+00;
+    QR :      0.000000000000e+00 , fixed;
+    T :      9.231722470000e+01;
+    HT_WEIR :      5.000000000000e-02 , fixed;
+    STAGEAREA :      2.827433700000e+00 , fixed;
+    V :      1.915115092800e+00;
+    L_WEIR :      1.453320000000e+00 , fixed;
+    LEVEL :      5.326276060883e-02;
+    VL :      1.505969243004e-01;
+    VV :      1.764518168500e+00;
+    LEVEL_TRAY :      5.326276060883e-02;
+    P_DIFF :      7.692310000000e-03;
+    P_DIFFV :      3.787311534371e-03;
+    C1 :      1.000000000000e+00 , fixed;
+    FV_INP :      1.000748070000e+02 , initial;
+    Q :      0.000000000000e+00;
+    MV :      1.295403562319e-01;
+    ML :      4.184567536249e+00;
+    M :      4.314107892481e+00;
+    VF :      3.002714801308e-02;
+    LF :      9.699728519869e-01;
+    HT :      6.096000000000e-01 , fixed;
+    P :      2.230769230000e+00;
+    P_DIFFVP :      3.787311534371e-03;
+    C0 :      2.779775833461e-08 , fixed;
+    RHOVIN :      7.350700040000e-02;
+    DIAM :      2.000000000000e+00 , fixed;
+    QL_OUT :      1.802124542996e+00;
+    COF_WEEP_PT :      1.000000000000e-01 , fixed;
+    COF_WEEP_RATE :      6.305240259204e-01 , fixed;
+    FV_IN_NORM :      1.000748070000e+02 , fixed;
+    FL_WEEP :      0.000000000000e+00;
+    RATIO_FV_INX :      1.000000000000e+01;
+    RATIO_FV_IN :      1.000000000000e+00;
+    VL_HYD :      1.505969243004e-01;
+    RHOL :      2.778654050000e+01;
+    RHOV :      7.341401100000e-02;
+    MWL :      2.690556030000e+01;
+    RHOML :      7.476124409511e+02;
+    HL :     -2.496454996378e-01;
+    HV :     -2.047807460401e-01;
+    EFFO :      1.000000000000e+00 , fixed;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(32)
+    BLOCKID :"COLUMN";
+     BlockVersion : "20.0";
+    ValidPhases : "Vapor-Liquid";
+    Componentlist : "Type1";
+    stagenumber : 32;
+    nstage : 40;
+    stagetype : 0;
+    nhypass : 0;
+    heatopt : "Constant duty";
+    EqHeatCap : "No";
+    EnvHtTrans : "No";
+    efftype : "Vaporization";
+    y("METHANOL") : 8.162650640000e-01;
+    y("WATER") : 1.837349360000e-01;
+    x("METHANOL") : 5.977971180000e-01;
+    x("WATER") : 4.022028820000e-01;
+    pflash2(1).eff("METHANOL") : 1.000000000000e+00, FIXED;
+    pflash2(1).eff("WATER") : 1.000000000000e+00, FIXED;
+    vapout.T : 9.311353090000e+01;
+    liqout.T : 9.311353090000e+01;
+    vapout.V : 1.360414646984e+01;
+    vapin.T : 9.393438110000e+01;
+    vapin.V : 1.358794138902e+01;
+    vapout.h : -2.054474541655e-01;
+    pflash2(1).Mwl : 2.640050840000e+01;
+    pflash2(1).rhoml : 7.520502257453e+02;
+    pflash2(1).rhol : 2.848620240000e+01;
+    liqout.F : 4.966953690000e+01;
+    vapin.F : 9.966953690000e+01;
+    vapout.p : 2.238461540000e+00;
+    vapin.p : 2.246153850000e+00;
+    liqout.T : 9.311353090000e+01;
+    liqout.P : 2.238461540000e+00;
+    liqout.h : -2.513711034929e-01;
+    OUT_HS.Q : 0.000000000000e+00;
+    pflash2(1).h : -2.500214740065e-01;
+    Mc("METHANOL") : 2.666977908202e+00;
+    Mc("WATER") : 1.746958431658e+00;
+    pflash2(1).LFactor : 0.000000000000e+00;
+    pflash2(1).VFactor : 0.000000000000e+00;
+    pflash2(1).ZFactor : 1.0;
+    E : -1.104007561011e+00,free;
+
+    QENV :      0.000000000000e+00;
+    QR :      0.000000000000e+00 , fixed;
+    T :      9.311353090000e+01;
+    HT_WEIR :      5.000000000000e-02 , fixed;
+    STAGEAREA :      2.827433700000e+00 , fixed;
+    V :      1.915115092800e+00;
+    L_WEIR :      1.453320000000e+00 , fixed;
+    LEVEL :      5.319177581500e-02;
+    VL :      1.503962195022e-01;
+    VV :      1.764718873298e+00;
+    LEVEL_TRAY :      5.319177581500e-02;
+    P_DIFF :      7.692310000000e-03;
+    P_DIFFV :      3.769366881086e-03;
+    C1 :      1.000000000000e+00 , fixed;
+    FV_INP :      9.966953690000e+01 , initial;
+    Q :      0.000000000000e+00;
+    MV :      1.297191909254e-01;
+    ML :      4.284217148934e+00;
+    M :      4.413936339859e+00;
+    VF :      2.938855047681e-02;
+    LF :      9.706114495232e-01;
+    HT :      6.096000000000e-01 , fixed;
+    P :      2.238461540000e+00;
+    P_DIFFVP :      3.769366881086e-03;
+    C0 :      2.792475869765e-08 , fixed;
+    RHOVIN :      7.359466540000e-02;
+    DIAM :      2.000000000000e+00 , fixed;
+    QL_OUT :      1.743634907965e+00;
+    COF_WEEP_PT :      1.000000000000e-01 , fixed;
+    COF_WEEP_RATE :      6.425861935295e-01 , fixed;
+    FV_IN_NORM :      9.966953690000e+01 , fixed;
+    FL_WEEP :      0.000000000000e+00;
+    RATIO_FV_INX :      1.000000000000e+01;
+    RATIO_FV_IN :      1.000000000000e+00;
+    VL_HYD :      1.503962195022e-01;
+    RHOL :      2.848620240000e+01;
+    RHOV :      7.350700040000e-02;
+    MWL :      2.640050840000e+01;
+    RHOML :      7.520502257453e+02;
+    HL :     -2.513711034929e-01;
+    HV :     -2.054474541655e-01;
+    EFFO :      1.000000000000e+00 , fixed;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(33)
+    BLOCKID :"COLUMN";
+     BlockVersion : "20.0";
+    ValidPhases : "Vapor-Liquid";
+    Componentlist : "Type1";
+    stagenumber : 33;
+    nstage : 40;
+    stagetype : 0;
+    nhypass : 0;
+    heatopt : "Constant duty";
+    EqHeatCap : "No";
+    EnvHtTrans : "No";
+    efftype : "Vaporization";
+    y("METHANOL") : 7.990636700000e-01;
+    y("WATER") : 2.009363300000e-01;
+    x("METHANOL") : 5.616962220000e-01;
+    x("WATER") : 4.383037780000e-01;
+    pflash2(1).eff("METHANOL") : 1.000000000000e+00, FIXED;
+    pflash2(1).eff("WATER") : 1.000000000000e+00, FIXED;
+    vapout.T : 9.393438110000e+01;
+    liqout.T : 9.393438110000e+01;
+    vapout.V : 1.358794138902e+01;
+    vapin.T : 9.476126520000e+01;
+    vapin.V : 1.357206952889e+01;
+    vapout.h : -2.061276797934e-01;
+    pflash2(1).Mwl : 2.589412550000e+01;
+    pflash2(1).rhoml : 7.568297894858e+02;
+    pflash2(1).rhol : 2.922785670000e+01;
+    liqout.F : 4.927359220000e+01;
+    vapin.F : 9.927359220000e+01;
+    vapout.p : 2.246153850000e+00;
+    vapin.p : 2.253846150000e+00;
+    liqout.T : 9.393438110000e+01;
+    liqout.P : 2.246153850000e+00;
+    liqout.h : -2.530981392336e-01;
+    OUT_HS.Q : 0.000000000000e+00;
+    pflash2(1).h : -2.517483123814e-01;
+    Mc("METHANOL") : 2.569578549533e+00;
+    Mc("WATER") : 1.950208324765e+00;
+    pflash2(1).LFactor : 0.000000000000e+00;
+    pflash2(1).VFactor : 0.000000000000e+00;
+    pflash2(1).ZFactor : 1.0;
+    E : -1.138278882242e+00,free;
+
+    QENV :      0.000000000000e+00;
+    QR :      0.000000000000e+00 , fixed;
+    T :      9.393438110000e+01;
+    HT_WEIR :      5.000000000000e-02 , fixed;
+    STAGEAREA :      2.827433700000e+00 , fixed;
+    V :      1.915115092800e+00;
+    L_WEIR :      1.453320000000e+00 , fixed;
+    LEVEL :      5.312085444021e-02;
+    VL :      1.501956940171e-01;
+    VV :      1.764919398783e+00;
+    LEVEL_TRAY :      5.312085444021e-02;
+    P_DIFF :      7.692300000000e-03;
+    P_DIFFV :      3.749688852740e-03;
+    C1 :      1.000000000000e+00 , fixed;
+    FV_INP :      9.927359220000e+01 , initial;
+    Q :      0.000000000000e+00;
+    MV :      1.298886526114e-01;
+    ML :      4.389898221688e+00;
+    M :      4.519786874299e+00;
+    VF :      2.873778260431e-02;
+    LF :      9.712622173957e-01;
+    HT :      6.096000000000e-01 , fixed;
+    P :      2.246153850000e+00;
+    P_DIFFVP :      3.749688852740e-03;
+    C0 :      2.803375311286e-08 , fixed;
+    RHOVIN :      7.368073070000e-02;
+    DIAM :      2.000000000000e+00 , fixed;
+    QL_OUT :      1.685843498747e+00;
+    COF_WEEP_PT :      1.000000000000e-01 , fixed;
+    COF_WEEP_RATE :      6.551525441552e-01 , fixed;
+    FV_IN_NORM :      9.927359220000e+01 , fixed;
+    FL_WEEP :      0.000000000000e+00;
+    RATIO_FV_INX :      1.000000000000e+01;
+    RATIO_FV_IN :      1.000000000000e+00;
+    VL_HYD :      1.501956940171e-01;
+    RHOL :      2.922785670000e+01;
+    RHOV :      7.359466540000e-02;
+    MWL :      2.589412550000e+01;
+    RHOML :      7.568297894858e+02;
+    HL :     -2.530981392336e-01;
+    HV :     -2.061276797934e-01;
+    EFFO :      1.000000000000e+00 , fixed;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(34)
+    BLOCKID :"COLUMN";
+     BlockVersion : "20.0";
+    ValidPhases : "Vapor-Liquid";
+    Componentlist : "Type1";
+    stagenumber : 34;
+    nstage : 40;
+    stagetype : 0;
+    nhypass : 0;
+    heatopt : "Constant duty";
+    EqHeatCap : "No";
+    EnvHtTrans : "No";
+    efftype : "Vaporization";
+    y("METHANOL") : 7.819480370000e-01;
+    y("WATER") : 2.180519630000e-01;
+    x("METHANOL") : 5.265852410000e-01;
+    x("WATER") : 4.734147590000e-01;
+    pflash2(1).eff("METHANOL") : 1.000000000000e+00, FIXED;
+    pflash2(1).eff("WATER") : 1.000000000000e+00, FIXED;
+    vapout.T : 9.476126520000e+01;
+    liqout.T : 9.476126520000e+01;
+    vapout.V : 1.357206952889e+01;
+    vapin.T : 9.630123480000e+01;
+    vapin.V : 1.358252153319e+01;
+    vapout.h : -2.068044295399e-01;
+    pflash2(1).Mwl : 2.540162800000e+01;
+    pflash2(1).rhoml : 7.618136691878e+02;
+    pflash2(1).rhol : 2.999074190000e+01;
+    liqout.F : 1.683340360000e+02;
+    vapin.F : 1.183340360000e+02;
+    vapout.p : 2.253846150000e+00;
+    vapin.p : 2.261538460000e+00;
+    liqout.T : 9.476126520000e+01;
+    liqout.P : 2.253846150000e+00;
+    liqout.h : -2.547737719560e-01;
+    OUT_HS.Q : 0.000000000000e+00;
+    pflash2(1).h : -2.535236355177e-01;
+    Mc("METHANOL") : 2.644416149866e+00;
+    Mc("WATER") : 2.314729282722e+00;
+    pflash2(1).LFactor : 0.000000000000e+00;
+    pflash2(1).VFactor : 0.000000000000e+00;
+    pflash2(1).ZFactor : 1.0;
+    E : -1.257692216609e+00,free;
+
+    QENV :      0.000000000000e+00;
+    QR :      0.000000000000e+00 , fixed;
+    T :      9.476126520000e+01;
+    HT_WEIR :      5.000000000000e-02 , fixed;
+    STAGEAREA :      2.827433700000e+00 , fixed;
+    V :      1.915115092800e+00;
+    L_WEIR :      1.453320000000e+00 , fixed;
+    LEVEL :      5.695854586649e-02;
+    VL :      1.610465120859e-01;
+    VV :      1.754068580714e+00;
+    LEVEL_TRAY :      5.695854586649e-02;
+    P_DIFF :      7.692310000000e-03;
+    P_DIFFV :      3.437028161199e-03;
+    C1 :      1.000000000000e+00 , fixed;
+    FV_INP :      1.183340360000e+02 , initial;
+    Q :      0.000000000000e+00;
+    MV :      1.292410547249e-01;
+    ML :      4.829904377864e+00;
+    M :      4.959145432589e+00;
+    VF :      2.606115438269e-02;
+    LF :      9.739388456173e-01;
+    HT :      6.096000000000e-01 , fixed;
+    P :      2.253846150000e+00;
+    P_DIFFVP :      3.437028161199e-03;
+    C0 :      1.807103249923e-08 , fixed;
+    RHOVIN :      7.362403200000e-02;
+    DIAM :      2.000000000000e+00 , fixed;
+    QL_OUT :      5.612866682701e+00;
+    COF_WEEP_PT :      1.000000000000e-01 , fixed;
+    COF_WEEP_RATE :      6.678549185903e-01 , fixed;
+    FV_IN_NORM :      1.183340360000e+02 , fixed;
+    FL_WEEP :      0.000000000000e+00;
+    RATIO_FV_INX :      1.000000000000e+01;
+    RATIO_FV_IN :      1.000000000000e+00;
+    VL_HYD :      1.610465120859e-01;
+    RHOL :      2.999074190000e+01;
+    RHOV :      7.368073070000e-02;
+    MWL :      2.540162800000e+01;
+    RHOML :      7.618136691878e+02;
+    HL :     -2.547737719560e-01;
+    HV :     -2.068044295399e-01;
+    EFFO :      1.000000000000e+00 , fixed;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(35)
+    BLOCKID :"COLUMN";
+     BlockVersion : "20.0";
+    ValidPhases : "Vapor-Liquid";
+    Componentlist : "Type1";
+    stagenumber : 35;
+    nstage : 40;
+    stagetype : 0;
+    nhypass : 0;
+    heatopt : "Constant duty";
+    EqHeatCap : "No";
+    EnvHtTrans : "No";
+    efftype : "Vaporization";
+    y("METHANOL") : 7.486621870000e-01;
+    y("WATER") : 2.513378130000e-01;
+    x("METHANOL") : 4.611129500000e-01;
+    x("WATER") : 5.388870500000e-01;
+    pflash2(1).eff("METHANOL") : 1.000000000000e+00, FIXED;
+    pflash2(1).eff("WATER") : 1.000000000000e+00, FIXED;
+    vapout.T : 9.630123480000e+01;
+    liqout.T : 9.630123480000e+01;
+    vapout.V : 1.358252153319e+01;
+    vapin.T : 1.003605930000e+02;
+    vapin.V : 1.368521159954e+01;
+    vapout.h : -2.081247461309e-01;
+    pflash2(1).Mwl : 2.448325600000e+01;
+    pflash2(1).rhoml : 7.721907886351e+02;
+    pflash2(1).rhol : 3.153954640000e+01;
+    liqout.F : 1.660662730000e+02;
+    vapin.F : 1.160662730000e+02;
+    vapout.p : 2.261538460000e+00;
+    vapin.p : 2.269230770000e+00;
+    liqout.T : 9.630123480000e+01;
+    liqout.P : 2.261538460000e+00;
+    liqout.h : -2.578947479096e-01;
+    OUT_HS.Q : 0.000000000000e+00;
+    pflash2(1).h : -2.566539954681e-01;
+    Mc("METHANOL") : 2.426938812425e+00;
+    Mc("WATER") : 2.755710834749e+00;
+    pflash2(1).LFactor : 0.000000000000e+00;
+    pflash2(1).VFactor : 0.000000000000e+00;
+    pflash2(1).ZFactor : 1.0;
+    E : -1.330580849703e+00,free;
+
+    QENV :      0.000000000000e+00;
+    QR :      0.000000000000e+00 , fixed;
+    T :      9.630123480000e+01;
+    HT_WEIR :      5.000000000000e-02 , fixed;
+    STAGEAREA :      2.827433700000e+00 , fixed;
+    V :      1.915115092800e+00;
+    L_WEIR :      1.453320000000e+00 , fixed;
+    LEVEL :      5.666826228150e-02;
+    VL :      1.602257544951e-01;
+    VV :      1.754889338305e+00;
+    LEVEL_TRAY :      5.666826228150e-02;
+    P_DIFF :      7.692310000000e-03;
+    P_DIFFV :      3.401046451886e-03;
+    C1 :      1.000000000000e+00 , fixed;
+    FV_INP :      1.160662730000e+02 , initial;
+    Q :      0.000000000000e+00;
+    MV :      1.292020287998e-01;
+    ML :      5.053447618375e+00;
+    M :      5.182649647174e+00;
+    VF :      2.492972467669e-02;
+    LF :      9.750702753233e-01;
+    HT :      6.096000000000e-01 , fixed;
+    P :      2.261538460000e+00;
+    P_DIFFVP :      3.401046451886e-03;
+    C0 :      1.844797045939e-08 , fixed;
+    RHOVIN :      7.307157750000e-02;
+    DIAM :      2.000000000000e+00 , fixed;
+    QL_OUT :      5.265334855926e+00;
+    COF_WEEP_PT :      1.000000000000e-01 , fixed;
+    COF_WEEP_RATE :      6.929062948163e-01 , fixed;
+    FV_IN_NORM :      1.160662730000e+02 , fixed;
+    FL_WEEP :      0.000000000000e+00;
+    RATIO_FV_INX :      1.000000000000e+01;
+    RATIO_FV_IN :      1.000000000000e+00;
+    VL_HYD :      1.602257544951e-01;
+    RHOL :      3.153954640000e+01;
+    RHOV :      7.362403200000e-02;
+    MWL :      2.448325600000e+01;
+    RHOML :      7.721907886351e+02;
+    HL :     -2.578947479096e-01;
+    HV :     -2.081247461309e-01;
+    EFFO :      1.000000000000e+00 , fixed;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(36)
+    BLOCKID :"COLUMN";
+     BlockVersion : "20.0";
+    ValidPhases : "Vapor-Liquid";
+    Componentlist : "Type1";
+    stagenumber : 36;
+    nstage : 40;
+    stagetype : 0;
+    nhypass : 0;
+    heatopt : "Constant duty";
+    EqHeatCap : "No";
+    EnvHtTrans : "No";
+    efftype : "Vaporization";
+    y("METHANOL") : 6.593242500000e-01;
+    y("WATER") : 3.406757500000e-01;
+    x("METHANOL") : 3.121811500000e-01;
+    x("WATER") : 6.878188500000e-01;
+    pflash2(1).eff("METHANOL") : 1.000000000000e+00, FIXED;
+    pflash2(1).eff("WATER") : 1.000000000000e+00, FIXED;
+    vapout.T : 1.003605930000e+02;
+    liqout.T : 1.003605930000e+02;
+    vapout.V : 1.368521159954e+01;
+    vapin.T : 1.093043300000e+02;
+    vapin.V : 1.396556408357e+01;
+    vapout.h : -2.116787494108e-01;
+    pflash2(1).Mwl : 2.239420750000e+01;
+    pflash2(1).rhoml : 8.014742555977e+02;
+    pflash2(1).rhol : 3.578935560000e+01;
+    liqout.F : 1.616667210000e+02;
+    vapin.F : 1.116667210000e+02;
+    vapout.p : 2.269230770000e+00;
+    vapin.p : 2.276923080000e+00;
+    liqout.T : 1.003605930000e+02;
+    liqout.P : 2.269230770000e+00;
+    liqout.h : -2.649049403544e-01;
+    OUT_HS.Q : 0.000000000000e+00;
+    pflash2(1).h : -2.637263634670e-01;
+    Mc("METHANOL") : 1.854339514567e+00;
+    Mc("WATER") : 3.942865167834e+00;
+    pflash2(1).LFactor : 0.000000000000e+00;
+    pflash2(1).VFactor : 0.000000000000e+00;
+    pflash2(1).ZFactor : 1.0;
+    E : -1.529310292973e+00,free;
+
+    QENV :      0.000000000000e+00;
+    QR :      0.000000000000e+00 , fixed;
+    T :      1.003605930000e+02;
+    HT_WEIR :      5.000000000000e-02 , fixed;
+    STAGEAREA :      2.827433700000e+00 , fixed;
+    V :      1.915115092800e+00;
+    L_WEIR :      1.453320000000e+00 , fixed;
+    LEVEL :      5.602060096070e-02;
+    VL :      1.583945350505e-01;
+    VV :      1.756720557749e+00;
+    LEVEL_TRAY :      5.602060096070e-02;
+    P_DIFF :      7.692310000000e-03;
+    P_DIFFV :      3.289215405477e-03;
+    C1 :      1.000000000000e+00 , fixed;
+    FV_INP :      1.116667210000e+02 , initial;
+    Q :      0.000000000000e+00;
+    MV :      1.283663423814e-01;
+    ML :      5.668838340020e+00;
+    M :      5.797204682401e+00;
+    VF :      2.214279974815e-02;
+    LF :      9.778572002519e-01;
+    HT :      6.096000000000e-01 , fixed;
+    P :      2.269230770000e+00;
+    P_DIFFVP :      3.289215405477e-03;
+    C0 :      1.888799753933e-08 , fixed;
+    RHOVIN :      7.160469810000e-02;
+    DIAM :      2.000000000000e+00 , fixed;
+    QL_OUT :      4.517173284897e+00;
+    COF_WEEP_PT :      1.000000000000e-01 , fixed;
+    COF_WEEP_RATE :      7.575442086977e-01 , fixed;
+    FV_IN_NORM :      1.116667210000e+02 , fixed;
+    FL_WEEP :      0.000000000000e+00;
+    RATIO_FV_INX :      1.000000000000e+01;
+    RATIO_FV_IN :      1.000000000000e+00;
+    VL_HYD :      1.583945350505e-01;
+    RHOL :      3.578935560000e+01;
+    RHOV :      7.307157750000e-02;
+    MWL :      2.239420750000e+01;
+    RHOML :      8.014742555977e+02;
+    HL :     -2.649049403544e-01;
+    HV :     -2.116787494108e-01;
+    EFFO :      1.000000000000e+00 , fixed;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(37)
+    BLOCKID :"COLUMN";
+     BlockVersion : "20.0";
+    ValidPhases : "Vapor-Liquid";
+    Componentlist : "Type1";
+    stagenumber : 37;
+    nstage : 40;
+    stagetype : 0;
+    nhypass : 0;
+    heatopt : "Constant duty";
+    EqHeatCap : "No";
+    EnvHtTrans : "No";
+    efftype : "Vaporization";
+    y("METHANOL") : 4.515159220000e-01;
+    y("WATER") : 5.484840780000e-01;
+    x("METHANOL") : 1.218903970000e-01;
+    x("WATER") : 8.781096030000e-01;
+    pflash2(1).eff("METHANOL") : 1.000000000000e+00, FIXED;
+    pflash2(1).eff("WATER") : 1.000000000000e+00, FIXED;
+    vapout.T : 1.093043300000e+02;
+    liqout.T : 1.093043300000e+02;
+    vapout.V : 1.396556408357e+01;
+    vapin.T : 1.191940710000e+02;
+    vapin.V : 1.427845624044e+01;
+    vapout.h : -2.200069703603e-01;
+    pflash2(1).Mwl : 1.972502200000e+01;
+    pflash2(1).rhoml : 8.527463558925e+02;
+    pflash2(1).rhol : 4.323170620000e+01;
+    liqout.F : 1.586172340000e+02;
+    vapin.F : 1.086172340000e+02;
+    vapout.p : 2.276923080000e+00;
+    vapin.p : 2.284615380000e+00;
+    liqout.T : 1.093043300000e+02;
+    liqout.P : 2.276923080000e+00;
+    liqout.h : -2.733953734271e-01;
+    OUT_HS.Q : 0.000000000000e+00;
+    pflash2(1).h : -2.724177939355e-01;
+    Mc("METHANOL") : 8.799188192047e-01;
+    Mc("WATER") : 5.998419521984e+00;
+    pflash2(1).LFactor : 0.000000000000e+00;
+    pflash2(1).VFactor : 0.000000000000e+00;
+    pflash2(1).ZFactor : 1.0;
+    E : -1.874217813824e+00,free;
+
+    QENV :      0.000000000000e+00;
+    QR :      0.000000000000e+00 , fixed;
+    T :      1.093043300000e+02;
+    HT_WEIR :      5.000000000000e-02 , fixed;
+    STAGEAREA :      2.827433700000e+00 , fixed;
+    V :      1.915115092800e+00;
+    L_WEIR :      1.453320000000e+00 , fixed;
+    LEVEL :      5.524115906602e-02;
+    VL :      1.561907147703e-01;
+    VV :      1.758924378030e+00;
+    LEVEL_TRAY :      5.524115906602e-02;
+    P_DIFF :      7.692300000000e-03;
+    P_DIFFV :      3.072711089938e-03;
+    C1 :      1.000000000000e+00 , fixed;
+    FV_INP :      1.086172340000e+02 , initial;
+    Q :      0.000000000000e+00;
+    MV :      1.259472490695e-01;
+    ML :      6.752391092119e+00;
+    M :      6.878338341189e+00;
+    VF :      1.831070860754e-02;
+    LF :      9.816892913925e-01;
+    HT :      6.096000000000e-01 , fixed;
+    P :      2.276923080000e+00;
+    P_DIFFVP :      3.072711089938e-03;
+    C0 :      1.824074596503e-08 , fixed;
+    RHOVIN :      7.003558250000e-02;
+    DIAM :      2.000000000000e+00 , fixed;
+    QL_OUT :      3.669002404536e+00;
+    COF_WEEP_PT :      1.000000000000e-01 , fixed;
+    COF_WEEP_RATE :      8.600549190769e-01 , fixed;
+    FV_IN_NORM :      1.086172340000e+02 , fixed;
+    FL_WEEP :      0.000000000000e+00;
+    RATIO_FV_INX :      1.000000000000e+01;
+    RATIO_FV_IN :      1.000000000000e+00;
+    VL_HYD :      1.561907147703e-01;
+    RHOL :      4.323170620000e+01;
+    RHOV :      7.160469810000e-02;
+    MWL :      1.972502200000e+01;
+    RHOML :      8.527463558925e+02;
+    HL :     -2.733953734271e-01;
+    HV :     -2.200069703603e-01;
+    EFFO :      1.000000000000e+00 , fixed;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(38)
+    BLOCKID :"COLUMN";
+     BlockVersion : "20.0";
+    ValidPhases : "Vapor-Liquid";
+    Componentlist : "Type1";
+    stagenumber : 38;
+    nstage : 40;
+    stagetype : 0;
+    nhypass : 0;
+    heatopt : "Constant duty";
+    EqHeatCap : "No";
+    EnvHtTrans : "No";
+    efftype : "Vaporization";
+    y("METHANOL") : 1.775401270000e-01;
+    y("WATER") : 8.224598730000e-01;
+    x("METHANOL") : 2.888944480000e-02;
+    x("WATER") : 9.711105550000e-01;
+    pflash2(1).eff("METHANOL") : 1.000000000000e+00, FIXED;
+    pflash2(1).eff("WATER") : 1.000000000000e+00, FIXED;
+    vapout.T : 1.191940710000e+02;
+    liqout.T : 1.191940710000e+02;
+    vapout.V : 1.427845624044e+01;
+    vapin.T : 1.234489730000e+02;
+    vapin.V : 1.438486966496e+01;
+    vapout.h : -2.311452877338e-01;
+    pflash2(1).Mwl : 1.842050880000e+01;
+    pflash2(1).rhoml : 8.828499762707e+02;
+    pflash2(1).rhol : 4.792755650000e+01;
+    liqout.F : 1.594820480000e+02;
+    vapin.F : 1.094820480000e+02;
+    vapout.p : 2.284615380000e+00;
+    vapin.p : 2.292307690000e+00;
+    liqout.T : 1.191940710000e+02;
+    liqout.P : 2.284615380000e+00;
+    liqout.h : -2.769976186913e-01;
+    OUT_HS.Q : 0.000000000000e+00;
+    pflash2(1).h : -2.762505022067e-01;
+    Mc("METHANOL") : 2.368504734204e-01;
+    Mc("WATER") : 7.327464912166e+00;
+    pflash2(1).LFactor : 0.000000000000e+00;
+    pflash2(1).VFactor : 0.000000000000e+00;
+    pflash2(1).ZFactor : 1.0;
+    E : -2.090083454669e+00,free;
+
+    QENV :      0.000000000000e+00;
+    QR :      0.000000000000e+00 , fixed;
+    T :      1.191940710000e+02;
+    HT_WEIR :      5.000000000000e-02 , fixed;
+    STAGEAREA :      2.827433700000e+00 , fixed;
+    V :      1.915115092800e+00;
+    L_WEIR :      1.453320000000e+00 , fixed;
+    LEVEL :      5.491073335986e-02;
+    VL :      1.552564579934e-01;
+    VV :      1.759858634807e+00;
+    LEVEL_TRAY :      5.491073335986e-02;
+    P_DIFF :      7.692310000000e-03;
+    P_DIFFV :      2.938248131925e-03;
+    C1 :      1.000000000000e+00 , fixed;
+    FV_INP :      1.094820480000e+02 , initial;
+    Q :      0.000000000000e+00;
+    MV :      1.232527246063e-01;
+    ML :      7.441062662468e+00;
+    M :      7.564315387074e+00;
+    VF :      1.629396955301e-02;
+    LF :      9.837060304470e-01;
+    HT :      6.096000000000e-01 , fixed;
+    P :      2.284615380000e+00;
+    P_DIFFVP :      2.938248131925e-03;
+    C0 :      1.704104860098e-08 , fixed;
+    RHOVIN :      6.951748770000e-02;
+    DIAM :      2.000000000000e+00 , fixed;
+    QL_OUT :      3.327564759117e+00;
+    COF_WEEP_PT :      1.000000000000e-01 , fixed;
+    COF_WEEP_RATE :      9.209627369251e-01 , fixed;
+    FV_IN_NORM :      1.094820480000e+02 , fixed;
+    FL_WEEP :      0.000000000000e+00;
+    RATIO_FV_INX :      1.000000000000e+01;
+    RATIO_FV_IN :      1.000000000000e+00;
+    VL_HYD :      1.552564579934e-01;
+    RHOL :      4.792755650000e+01;
+    RHOV :      7.003558250000e-02;
+    MWL :      1.842050880000e+01;
+    RHOML :      8.828499762707e+02;
+    HL :     -2.769976186913e-01;
+    HV :     -2.311452877338e-01;
+    EFFO :      1.000000000000e+00 , fixed;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(39)
+    BLOCKID :"COLUMN";
+     BlockVersion : "20.0";
+    ValidPhases : "Vapor-Liquid";
+    Componentlist : "Type1";
+    stagenumber : 39;
+    nstage : 40;
+    stagetype : 0;
+    nhypass : 0;
+    heatopt : "Constant duty";
+    EqHeatCap : "No";
+    EnvHtTrans : "No";
+    efftype : "Vaporization";
+    y("METHANOL") : 4.162643890000e-02;
+    y("WATER") : 9.583735610000e-01;
+    x("METHANOL") : 5.623303700000e-03;
+    x("WATER") : 9.943766960000e-01;
+    pflash2(1).eff("METHANOL") : 1.000000000000e+00, FIXED;
+    pflash2(1).eff("WATER") : 1.000000000000e+00, FIXED;
+    vapout.T : 1.234489730000e+02;
+    liqout.T : 1.234489730000e+02;
+    vapout.V : 1.438486966496e+01;
+    vapin.T : 1.245325480000e+02;
+    vapin.V : 1.437593018917e+01;
+    vapout.h : -2.367264026653e-01;
+    pflash2(1).Mwl : 1.809415740000e+01;
+    pflash2(1).rhoml : 8.900277869760e+02;
+    pflash2(1).rhol : 4.918868380000e+01;
+    liqout.F : 1.603440500000e+02;
+    vapin.F : 1.103440500000e+02;
+    vapout.p : 2.292307690000e+00;
+    vapin.p : 2.300000000000e+00;
+    liqout.T : 1.234489730000e+02;
+    liqout.P : 2.292307690000e+00;
+    liqout.h : -2.777409059008e-01;
+    OUT_HS.Q : 0.000000000000e+00;
+    pflash2(1).h : -2.770933765057e-01;
+    Mc("METHANOL") : 4.798521428159e-02;
+    Mc("WATER") : 7.701922171616e+00;
+    pflash2(1).LFactor : 0.000000000000e+00;
+    pflash2(1).VFactor : 0.000000000000e+00;
+    pflash2(1).ZFactor : 1.0;
+    E : -2.147887009108e+00,free;
+
+    QENV :      0.000000000000e+00;
+    QR :      0.000000000000e+00 , fixed;
+    T :      1.234489730000e+02;
+    HT_WEIR :      5.000000000000e-02 , fixed;
+    STAGEAREA :      2.827433700000e+00 , fixed;
+    V :      1.915115092800e+00;
+    L_WEIR :      1.453320000000e+00 , fixed;
+    LEVEL :      5.484381009111e-02;
+    VL :      1.550672368880e-01;
+    VV :      1.760047855912e+00;
+    LEVEL_TRAY :      5.484381009111e-02;
+    P_DIFF :      7.692310000000e-03;
+    P_DIFFV :      2.905437505135e-03;
+    C1 :      1.000000000000e+00 , fixed;
+    FV_INP :      1.103440500000e+02 , initial;
+    Q :      0.000000000000e+00;
+    MV :      1.223541051748e-01;
+    ML :      7.627553283023e+00;
+    M :      7.749907388198e+00;
+    VF :      1.578781513713e-02;
+    LF :      9.842121848629e-01;
+    HT :      6.096000000000e-01 , fixed;
+    P :      2.292307690000e+00;
+    P_DIFFVP :      2.905437505135e-03;
+    C0 :      1.659882513146e-08 , fixed;
+    RHOVIN :      6.956071620000e-02;
+    DIAM :      2.000000000000e+00 , fixed;
+    QL_OUT :      3.259775168044e+00;
+    COF_WEEP_PT :      1.000000000000e-01 , fixed;
+    COF_WEEP_RATE :      9.375734843558e-01 , fixed;
+    FV_IN_NORM :      1.103440500000e+02 , fixed;
+    FL_WEEP :      0.000000000000e+00;
+    RATIO_FV_INX :      1.000000000000e+01;
+    RATIO_FV_IN :      1.000000000000e+00;
+    VL_HYD :      1.550672368880e-01;
+    RHOL :      4.918868380000e+01;
+    RHOV :      6.951748770000e-02;
+    MWL :      1.809415740000e+01;
+    RHOML :      8.900277869760e+02;
+    HL :     -2.777409059008e-01;
+    HV :     -2.367264026653e-01;
+    EFFO :      1.000000000000e+00 , fixed;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(40)
+    BLOCKID :"COLUMN";
+     BlockVersion : "20.0";
+    ValidPhases : "Vapor-Liquid";
+    Componentlist : "Type1";
+    stagenumber : 40;
+    nstage : 40;
+    stagetype : 3;
+    nhypass : 0;
+    heatopt : "Constant duty";
+    EqHeatCap : "No";
+    EnvHtTrans : "No";
+    efftype : "Vaporization";
+    y("METHANOL") : 7.718252890849e-03;
+    y("WATER") : 9.922817471092e-01;
+    x("METHANOL") : 1.000000000000e-03;
+    x("WATER") : 9.990000000000e-01;
+    pflash2(1).eff("METHANOL") : 1.000000000000e+00, FIXED;
+    pflash2(1).eff("WATER") : 1.000000000000e+00, FIXED;
+    vapout.T : 1.245325480000e+02;
+    liqout.T : 1.245325480000e+02;
+    vapout.V : 1.437593018917e+01;
+    liqin.T : 1.234489730000e+02;
+    vapin.P : 2.300000000000e+00;
+    vapout.h : -2.381210910594e-01;
+    pflash2(1).Mwl : 1.802930690000e+01;
+    pflash2(1).rhoml : 8.912826340556e+02;
+    pflash2(1).rhol : 4.943521340000e+01;
+    liqout.F : 0.000000000000e+00;
+    vapin.F : 0.0;
+    liqout.T : 1.245325480000e+02;
+    liqout.P : 2.300000000000e+00;
+    liqout.h : -2.778681046529e-01;
+    OUT_HS.Q : -4.365450928496e+00;
+    H_Type : "Elliptical";
+    Orientation : "Vertical";
+    pflash2(1).h : -2.778122548731e-01;
+    Mc("METHANOL") : 8.329787498106e-02;
+    Mc("WATER") : 8.243559638554e+01;
+    pflash2(1).LFactor : 0.000000000000e+00;
+    pflash2(1).VFactor : 0.000000000000e+00;
+    pflash2(1).ZFactor : 1.0;
+    E : -2.292552685245e+01,free;
+
+    QENV :      0.000000000000e+00;
+    QR :      4.365450928496e+00;
+    QRT :      4.365450928496e+00;
+    T :      1.245325480000e+02;
+    V :      3.333775205875e+00;
+    LEVEL :      1.896500000000e+00;
+    VL :      1.666887602938e+00;
+    VV :      1.666887602938e+00;
+    P_DIFF :      0.000000000000e+00;
+    FV_INP :      0.000000000000e+00 , fixed;
+    Q :      4.365450928496e+00;
+    MV :      1.159498954852e-01;
+    ML :      8.240294436503e+01;
+    M :      8.251889426052e+01;
+    VF :      1.405131473517e-03;
+    LF :      9.985948685265e-01;
+    HT :      3.251000000000e+00 , fixed;
+    P :      2.300000000000e+00 , initial;
+    DIAM :      1.084000000000e+00 , fixed;
+    RHOL :      4.943521340000e+01;
+    RHOV :      6.956071620000e-02;
+    MWL :      1.802930690000e+01;
+    RHOML :      8.912826340556e+02;
+    HL :     -2.778681046529e-01;
+    HV :     -2.381210910594e-01;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(1)
+    liqdraw.connection("distl").z("METHANOL") : 9.990000000000e-01;
+    liqdraw.connection("distl").z("WATER") : 1.000000000000e-03;
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(1)
+    liqdraw.connection("distl").F : 4.999999940000e+01;
+
+  ENDWITHIN;
+
+  WITHIN streams("1")
+    FR : 4.999999940000e+01,FREE;
+     FmR : 1.601406635783e+03,Free;
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(1)
+    FL_over("distl") : 0.0;
+    liqdraw.connection("distl").T : 6.000000000000e+01;
+    liqdraw.connection("distl").h : -2.349685615242e-01;
+    liqdraw.connection("distl").P : 2.000000000000e+00;
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN")
+    Reflux.FmR : 1.621848152949e+03,FIXED;
+     Reflux.FR : 5.063823570000e+01,Free;
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(1)
+    liqdraw.connection("Reflux").F : 5.063823570000e+01;
+Fl_over("Reflux") : 0.0;
+    liqdraw.connection("Reflux").z("METHANOL") : 9.990000000000e-01;
+    liqdraw.connection("Reflux").z("WATER") : 1.000000000000e-03;
+    liqdraw.connection("Reflux").T : 6.000000000000e+01;
+liqdraw.connection("Reflux").h : -2.349685615242e-01;
+    liqdraw.connection("Reflux").P : 2.000000000000e+00;
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(40)
+    liqdraw.connection("bot").z("METHANOL") : 1.000000000000e-03;
+    liqdraw.connection("bot").z("WATER") : 9.990000000000e-01;
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(40)
+    liqdraw.connection("bot").F : 5.000000000000e+01;
+
+  ENDWITHIN;
+
+  WITHIN streams("14")
+    FR : 5.000000000000e+01,FREE;
+     FmR : 9.014653450000e+02,Free;
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Stage(40)
+    FL_over("bot") : 0.0;
+    liqdraw.connection("bot").T : 1.245325480000e+02;
+    liqdraw.connection("bot").h : -2.778681046529e-01;
+    liqdraw.connection("bot").P : 2.300000000000e+00;
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN").Condenser(1)
+    HeatOpt : "Constant duty";
+    Componentlist : "Type1";
+    pflash2(1).vf : 0.000000000000e+00;
+    pflash2(1).lf : 1.000000000000e+00;
+    vapin.F : 1.006382360000e+02;
+    y("METHANOL") : 9.995469810000e-01;
+    x("METHANOL") : 9.990000000000e-01;
+    vapin.z("METHANOL") : 9.990000000000e-01;
+    pflash2(1).x("METHANOL") : 9.990000000000e-01;
+    pflash2(1).K("METHANOL") : 1.000547530000e+00;
+    pflash2(1).y("METHANOL") : 9.995469810000e-01;
+    pflash2(1).z("METHANOL") : 9.990000000000e-01;
+    y("WATER") : 4.530194750000e-04;
+    x("WATER") : 1.000000000000e-03;
+    vapin.z("WATER") : 1.000000000000e-03;
+    pflash2(1).x("WATER") : 1.000000000000e-03;
+    pflash2(1).K("WATER") : 4.530194720000e-01;
+    pflash2(1).y("WATER") : 4.530194750000e-04;
+    pflash2(1).z("WATER") : 1.000000000000e-03;
+    ValidPhases : "Vapor-Liquid";
+    pflash2(1).eff("METHANOL") : 1.000000000000e+00, FIXED;
+    pflash2(1).eff("WATER") : 1.000000000000e+00, FIXED;
+    pflash2(1).T : 8.290250030000e+01;
+    pflash2(1).P : 2.000000000000e+00;
+    liqout.P : 2.007692310000e+00;
+    liqout.T : 8.290250030000e+01;
+    liqout.h : -2.323370247660e-01;
+    pflash2(1).hl : -2.323370247660e-01;
+    pflash2(1).hv : -1.982933559619e-01;
+    pflash2(1).h : -2.323370247660e-01;
+    OUT_HS.Q : 3.424430754511e+00;
+    pflash2(1).LFactor : 0.0;
+    pflash2(1).VFactor : 0.0;
+    pflash2(1).ZFactor : 1.0;
+
+    QR :     -3.424430754511e+00 , fixed;
+    T :      8.290250030000e+01;
+    P_DIFF :      7.692310000000e-03;
+    Q :     -3.424430754511e+00;
+    VF :      0.000000000000e+00;
+    LF :      1.000000000000e+00;
+    P :      2.000000000000e+00;
+    HL :     -2.323370247660e-01;
+    HV :     -1.982933559619e-01;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("COLUMN_CondPC")
+    Action : "Reverse";
+    Algorithm   : "Ideal"; 
+    PVClipping  : "Yes"; 
+    SPClipping  : "Yes"; 
+    OPClipping  : "Yes"; 
+    PVTrack     : "Yes"; 
+
+    PV :      2.000000000000e+00;
+    OP :     -3.424430754511e+00;
+    SP :      2.000000000000e+00;
+    SPO :      2.000000000000e+00;
+    SPS :      5.000000000000e+01;
+    GAIN :      2.000000000000e+01;
+    INTEGRALTIME :      1.200000000000e+01;
+    OPS :      5.000000000000e+01;
+    OPMAN :     -3.424430754511e+00;
+    OPMIN :     -6.848861509022e+00;
+    OPMAX :      0.000000000000e+00;
+    PVMIN :      0.000000000000e+00;
+    PVMAX :      4.000000000000e+00;
+    SPREMOTE :      2.000000000000e+00;
+    PVS :      5.000000000000e+01;
+    PVSF :      5.000000000000e+01;
+    OPMANS :      5.000000000000e+01;
+    SPSF :      5.000000000000e+01;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("CV1")
+     VCHOKE : TRUE;
+     VALGEO : FALSE;
+     CAVIND : FALSE;
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("CV1")
+    COMPONENTLIST : "Type1";
+    VALIDPHASES : "Vapor-Liquid";
+    PRESMODE : "Simple";
+    CHAR_EQN : "USRTAB";
+
+      In_F.F : 1.000000000000e+02;
+      In_F.T : 2.000000000000e+01;
+      In_F.P : 6.000000000000e+00;
+      In_F.H : -2.631802035856e-01;
+      F : 1.000000000000e+02;
+      F_ : 1.000000000000e+02;
+      Out_P.F : 1.000000000000e+02;
+      Out_P.T : 2.000000610000e+01;
+      Out_P.P : 2.500000000000e+00;
+      Out_P.H : -2.631802035856e-01;
+      Out_P.Z("METHANOL") : 5.000000000000e-01;
+      In_F.Z("METHANOL") : 5.000000000000e-01;
+      Out_P.Z("WATER") : 5.000000000000e-01;
+      In_F.Z("WATER") : 5.000000000000e-01;
+      X("METHANOL") : 5.000000000000e-01;
+      X_O("METHANOL") : 5.000000000000e-01;
+        Y("METHANOL") : 0.000000000000e+00;
+         Y_O("METHANOL") : 0.000000000000e+00;
+      X("WATER") : 5.000000000000e-01;
+      X_O("WATER") : 5.000000000000e-01;
+        Y("WATER") : 0.000000000000e+00;
+         Y_O("WATER") : 0.000000000000e+00;
+       Out_P.V : 2.930160617926e-02 ;
+
+    FVOL :      2.930160617926e+00;
+    RHOS :      3.412782200000e+01;
+    C0 :      6.473602529611e+01;
+    C0MAX :      1.294720505922e+02;
+    LF :      1.000000000000e+00;
+    VF :      0.000000000000e+00;
+    HL :     -2.631802035856e-01;
+    HV :      0.000000000000e+00;
+    VF_O :      0.000000000000e+00;
+    LF_O :      1.000000000000e+00;
+    RHOV :      1.000000000000e-05;
+    RHOL :      3.412782200000e+01;
+    RHO :      3.412782200000e+01;
+    YFAC :      1.000000000000e+00;
+    MW :      2.502872000000e+01;
+    MWL :      2.502872000000e+01;
+    MWV :      2.502872000000e+01;
+    RHOV_O :      1.000000000000e-05;
+    RHOL_O :      3.412782200000e+01;
+    HV_O :      0.000000000000e+00;
+    POS :      5.000000000000e+01;
+    XPR :      5.833333333333e-01;
+    P_DROP :      3.500000000000e+00;
+    DPV_L :      6.000000000000e+00;
+    DPL_L :      6.000000000000e+00;
+    DP_CHOKE :      6.000000000000e+00;
+    PDROPC :      3.500000000000e+00;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("CV1").PFLASH2(1)
+      X("METHANOL") : 5.000000000000e-01;
+      Y("METHANOL") : 0.000000000000e+00;
+      X("WATER") : 5.000000000000e-01;
+      Y("WATER") : 0.000000000000e+00;
+
+    H :     -2.631802035856e-01;
+    P :      6.000000000000e+00;
+    T :      2.000000000000e+01;
+    LF :      1.000000000000e+00;
+    VF :      0.000000000000e+00;
+    LFACTOR :      0.000000000000e+00;
+    VFACTOR :      1.000000000000e-01;
+    ZFACTOR :      1.000000000000e+00;
+    HL :     -2.631802035856e-01;
+    HV :      0.000000000000e+00;
+    RHOV :      1.000000000000e-05;
+    RHOL :      3.412782200000e+01;
+    RHOML :      8.541757010478e+02;
+    MWL :      2.502872000000e+01;
+    MWV :      2.502872000000e+01;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("CV1").PFLASH2O(1)
+      X("METHANOL") : 5.000000000000e-01;
+      Y("METHANOL") : 0.000000000000e+00;
+      X("WATER") : 5.000000000000e-01;
+      Y("WATER") : 0.000000000000e+00;
+
+    P :      2.500000000000e+00;
+    T :      2.000000610000e+01;
+    VF :      0.000000000000e+00;
+    LFACTOR :      0.000000000000e+00;
+    VFACTOR :      1.000000000000e-01;
+    ZFACTOR :      1.000000000000e+00;
+    HL :     -2.631802035856e-01;
+    HV :      0.000000000000e+00;
+    RHOV :      1.000000000000e-05;
+    RHOL :      3.412782200000e+01;
+    RHOML :      8.541757010478e+02;
+    MWL :      2.502872000000e+01;
+    MWV :      2.502872000000e+01;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("CV1")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("CV2")
+     VCHOKE : TRUE;
+     VALGEO : FALSE;
+     CAVIND : FALSE;
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("CV2")
+    COMPONENTLIST : "Type1";
+    VALIDPHASES : "Liquid-Only";
+    PRESMODE : "Simple";
+    CHAR_EQN : "USRTAB";
+
+     In_F.F : 5.000000000000e+01;
+     In_F.T : 6.069099990000e+01;
+     In_F.P : 7.000000000000e+00;
+     In_F.H : -2.348933173740e-01;
+     F : 5.000000000000e+01;
+     F_ : 5.000000000000e+01;
+     Out_P.F : 5.000000000000e+01;
+     Out_P.T : 6.069100530000e+01;
+     Out_P.P : 1.013250000000e+00;
+     Out_P.H : -2.348933173740e-01;
+     Out_P.V : 4.275957723024e-02 ;
+     Out_P.Z("METHANOL") : 9.990000000000e-01;
+     In_F.Z("METHANOL") : 9.990000000000e-01;
+     Out_P.Z("WATER") : 1.000000006000e-03;
+     In_F.Z("WATER") : 1.000000006000e-03;
+
+    FVOL :      2.137978797519e+00;
+    RHOS :      2.338657430000e+01;
+    C0 :      3.381987447123e+01;
+    C0MAX :      6.763974894246e+01;
+    HL :     -2.348933173740e-01;
+    RHOL :      2.338657430000e+01;
+    RHO :      2.338657360000e+01;
+    MW :      3.202813310000e+01;
+    MWL :      3.202813310000e+01;
+    RHOL_O :      2.338657360000e+01;
+    POS :      5.000000000000e+01;
+    XPR :      8.552500000000e-01;
+    P_DROP :      5.986750000000e+00;
+    PDROPC :      5.986750000000e+00;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("CV2").PLIQ(1)
+      X("METHANOL") : 9.990000000000e-01;
+      X("WATER") : 1.000000006000e-03;
+
+    H :     -2.348933173740e-01;
+    P :      7.000000000000e+00;
+    T :      6.069099990000e+01;
+    RHOM :      7.490283144334e+02;
+    RHO :      2.338657430000e+01;
+    MW :      3.202813310000e+01;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("CV2").PLIQO(1)
+      X("METHANOL") : 9.990000000000e-01;
+      X("WATER") : 1.000000006000e-03;
+
+    H :     -2.348933173740e-01;
+    P :      1.013250000000e+00;
+    T :      6.069100530000e+01;
+    RHOM :      7.490282920137e+02;
+    RHO :      2.338657360000e+01;
+    MW :      3.202813310000e+01;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("CV2")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("CV3")
+     VCHOKE : TRUE;
+     VALGEO : FALSE;
+     CAVIND : FALSE;
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("CV3")
+    COMPONENTLIST : "Type1";
+    VALIDPHASES : "Liquid-Only";
+    PRESMODE : "Simple";
+    CHAR_EQN : "USRTAB";
+
+     In_F.F : 5.000000000000e+01;
+     In_F.T : 1.249290320000e+02;
+     In_F.P : 7.300000000000e+00;
+     In_F.H : -2.778338951474e-01;
+     F : 5.000000000000e+01;
+     F_ : 5.000000000000e+01;
+     Out_P.F : 5.000000000000e+01;
+     Out_P.T : 1.249290280000e+02;
+     Out_P.P : 1.013250000000e+00;
+     Out_P.H : -2.778338951474e-01;
+     Out_P.V : 2.023841783125e-02 ;
+     Out_P.Z("METHANOL") : 1.000000000000e-03;
+     In_F.Z("METHANOL") : 1.000000000000e-03;
+     Out_P.Z("WATER") : 9.990000000000e-01;
+     In_F.Z("WATER") : 9.990000000000e-01;
+
+    FVOL :      1.011920441010e+00;
+    RHOS :      4.941099910000e+01;
+    C0 :      1.703529459653e+01;
+    C0MAX :      3.407058919306e+01;
+    HL :     -2.778338951474e-01;
+    RHOL :      4.941099910000e+01;
+    RHO :      4.941097710000e+01;
+    MW :      1.802930690000e+01;
+    MWL :      1.802930690000e+01;
+    RHOL_O :      4.941097710000e+01;
+    POS :      5.000000000000e+01;
+    XPR :      8.611986301370e-01;
+    P_DROP :      6.286750000000e+00;
+    PDROPC :      6.286750000000e+00;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("CV3").PLIQ(1)
+      X("METHANOL") : 1.000000000000e-03;
+      X("WATER") : 9.990000000000e-01;
+
+    H :     -2.778338951474e-01;
+    P :      7.300000000000e+00;
+    T :      1.249290320000e+02;
+    RHOM :      8.908460670095e+02;
+    RHO :      4.941099910000e+01;
+    MW :      1.802930690000e+01;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("CV3").PLIQO(1)
+      X("METHANOL") : 1.000000000000e-03;
+      X("WATER") : 9.990000000000e-01;
+
+    H :     -2.778338951474e-01;
+    P :      1.013250000000e+00;
+    T :      1.249290280000e+02;
+    RHOM :      8.908456703648e+02;
+    RHO :      4.941097710000e+01;
+    MW :      1.802930690000e+01;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("CV3")
+
+  ENDWITHIN;
+
+  WITHIN BLOCKS("D-PUMP")
+    ComponentList : "Type1";
+    ValidPhases : "Liquid-Only";
+    UseCurves : True;
+    In_F.connection("1").F : 4.999999940000e+01;
+    In_F.connection("1").P : 2.000000000000e+00;
+    In_F.connection("1").T : 6.000000000000e+01;
+    In_F.connection("1").H : -2.349685617062e-01;
+    In_F.connection("1").z("METHANOL") : 9.989999999880e-01;
+    In_F.connection("1").z("WATER") : 1.000000000000e-03;
+    EffCalc : True;
+    ModelType : "Pump";
+    Out_P.F : 5.000000000000e+01;
+    Out_P.Z("METHANOL") : 9.990000000000e-01;
+    Out_P.Z("WATER") : 1.000000006000e-03;
+    Out_P.T : 6.069099990000e+01;
+    Out_P.h : -2.348933173740e-01;
+    Out_P.P : 7.000000000000e+00;
+
+    TIN :      6.000000000000e+01;
+    PIN :      2.000000000000e+00;
+    HIN :     -2.349685617062e-01;
+    MEFF :      1.000000000000e+00;
+    EFF :      2.956576360000e-01;
+    PRATIO :      3.500000000000e+00;
+    PDIFF :      5.000000000000e+00;
+    BPOWER :      1.045060860000e+00;
+    FPOWER :      3.089802230000e-01;
+    EPOWER :      1.045060860000e+00;
+    EPOWERR :      1.045060860000e+00;
+    EPOWERR2 :      1.045060860000e+00;
+    HEAD :      6.945948417489e-01;
+    H_DIFF :      2.090121745081e-02;
+    FM :      1.601406655000e+03;
+    FV_IN :      2.135461124476e+00;
+    F :      5.000000000000e+01;
+    RHO_IN :      2.341414640000e+01;
+    MW_IN :      3.202813380000e+01;
+    RHO_OUT :      2.338657430000e+01;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("D-PUMP").pliq_in(1)
+      x("METHANOL") : 9.989999999880e-01;
+      x("WATER") : 1.000000000000e-03;
+
+    T :      6.000000000000e+01;
+    P :      2.000000000000e+00;
+    H :     -2.349685617062e-01;
+    RHO :      2.341414640000e+01;
+    RHOM :      7.499114137120e+02;
+    MW :      3.202813380000e+01;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("D-PUMP").pliq_out(1)
+    x("METHANOL")  : 9.990000000000e-01;
+    x("WATER")  : 1.000000006000e-03;
+
+    T :      6.069099990000e+01;
+    P :      7.000000000000e+00;
+    H :     -2.348933173740e-01;
+    RHO :      2.338657430000e+01;
+    RHOM :      7.490283144334e+02;
+    MW :      3.202813310000e+01;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("D-PUMP").perf_curve(1)
+    BlockVersion : "20.0";
+     ExtrapolateAffL : "Yes";
+Fv_inRef : Fv_inU;
+
+    EFF :      2.956576360000e-01;
+    HEAD :      6.945948417489e-01;
+    FV_INU :      2.135461124476e+00;
+    HEADU :      6.945948417489e-01;
+    EFFU :      2.956576360000e-01;
+  ENDWITHIN;
+
+  WITHIN BLOCKS("D-PUMP")
+
+  ENDWITHIN;
+
+  WITHIN STREAMS("1")
+    Componentlist : "Type1";
+
+        ValidPhases : "Liquid-Only";
+    MWC("METHANOL") : 3.204216000000e+01;
+    MWC("WATER") : 1.801528000000e+01;
+    In_F.F : 4.999999940000e+01;
+    Out_P.F : 4.999999940000e+01;
+    Zn("METHANOL") : 9.989999999880e-01;
+    Zn("WATER") : 1.000000000000e-03;
+    In_F.Z("METHANOL") : 9.989999999880e-01;
+    In_F.Z("WATER") : 1.000000000000e-03;
+    Out_P.Z("METHANOL") : 9.989999999880e-01;
+    Out_P.Z("WATER") : 1.000000000000e-03;
+    Zmn("METHANOL") : 9.994375176246e-01;
+    Zmn("WATER") : 5.624829878080e-04;
+    Fcn("METHANOL") : 4.994999940000e+01;
+    Fcn("WATER") : 4.999999940000e-02;
+    Fmcn("METHANOL") : 1.600505872775e+03;
+    Fmcn("WATER") : 9.007639891908e-01;
+    In_F.T : 6.000000000000e+01;
+    Out_P.T : 6.000000000000e+01;
+    In_F.P : 2.000000000000e+00;
+    Out_P.P : 2.000000000000e+00;
+    In_F.h : -2.349685617062e-01;
+    Out_P.h : -2.349685617062e-01;
+
+    F :      4.999999940000e+01;
+    FR :      4.999999940000e+01;
+    FM :      1.601406635783e+03;
+    FMR :      1.601406635783e+03;
+    FV :      2.135461060634e+00;
+    T :      6.000000000000e+01;
+    P :      2.000000000000e+00;
+    H :     -2.349685617062e-01;
+    RHO :      2.341414710000e+01;
+    RHOM :      7.499114197418e+02;
+    MW :      3.202813310000e+01;
+  ENDWITHIN;
+
+  WITHIN STREAMS("11")
+    Componentlist : "Type1";
+
+    ValidPhases : "Liquid-Only";
+    MWC("METHANOL") : 3.204216000000e+01;
+    MWC("WATER") : 1.801528000000e+01;
+    In_F.F : 1.000000000000e+02;
+    Out_P.F : 1.000000000000e+02;
+    Zn("METHANOL") : 5.000000000000e-01;
+    Zn("WATER") : 5.000000000000e-01;
+    In_F.Z("METHANOL") : 5.000000000000e-01;
+    In_F.Z("WATER") : 5.000000000000e-01;
+    Out_P.Z("METHANOL") : 5.000000000000e-01;
+    Out_P.Z("WATER") : 5.000000000000e-01;
+    Zmn("METHANOL") : 6.401078441087e-01;
+    Zmn("WATER") : 3.598921558913e-01;
+    Fcn("METHANOL") : 5.000000000000e+01;
+    Fcn("WATER") : 5.000000000000e+01;
+    Fmcn("METHANOL") : 1.602108000000e+03;
+    Fmcn("WATER") : 9.007640000000e+02;
+    In_F.T : 2.000000610000e+01;
+    Out_P.T : 2.000000610000e+01;
+    In_F.P : 2.500000000000e+00;
+    Out_P.P : 2.500000000000e+00;
+    In_F.h : -2.631802035856e-01;
+    Out_P.h : -2.631802035856e-01;
+
+    F :      1.000000000000e+02;
+    FR :      1.000000000000e+02;
+    FM :      2.502872000000e+03;
+    FMR :      2.502872000000e+03;
+    FV :      2.930160617926e+00;
+    T :      2.000000610000e+01;
+    P :      2.500000000000e+00;
+    H :     -2.631802035856e-01;
+    RHO :      3.412782200000e+01;
+    RHOM :      8.541757010478e+02;
+    MW :      2.502872000000e+01;
+  ENDWITHIN;
+
+  WITHIN STREAMS("14")
+    Componentlist : "Type1";
+
+    ValidPhases : "Liquid-Only";
+    MWC("METHANOL") : 3.204216000000e+01;
+    MWC("WATER") : 1.801528000000e+01;
+    In_F.F : 5.000000000000e+01;
+    Out_P.F : 5.000000000000e+01;
+    Zn("METHANOL") : 1.000000000000e-03;
+    Zn("WATER") : 9.990000000000e-01;
+    In_F.Z("METHANOL") : 1.000000000000e-03;
+    In_F.Z("WATER") : 9.990000000000e-01;
+    Out_P.Z("METHANOL") : 1.000000000000e-03;
+    Out_P.Z("WATER") : 9.990000000000e-01;
+    Zmn("METHANOL") : 1.777226389108e-03;
+    Zmn("WATER") : 9.982227725016e-01;
+    Fcn("METHANOL") : 5.000000000000e-02;
+    Fcn("WATER") : 4.995000000000e+01;
+    Fmcn("METHANOL") : 1.602108000000e+00;
+    Fmcn("WATER") : 8.998632360000e+02;
+    In_F.T : 1.245325480000e+02;
+    Out_P.T : 1.245325480000e+02;
+    In_F.P : 2.300000000000e+00;
+    Out_P.P : 2.300000000000e+00;
+    In_F.h : -2.778681046529e-01;
+    Out_P.h : -2.778681046529e-01;
+
+    F :      5.000000000000e+01;
+    FR :      5.000000000000e+01;
+    FM :      9.014653450000e+02;
+    FMR :      9.014653450000e+02;
+    FV :      1.011424783290e+00;
+    T :      1.245325480000e+02;
+    P :      2.300000000000e+00;
+    H :     -2.778681046529e-01;
+    RHO :      4.943521340000e+01;
+    RHOM :      8.912826340556e+02;
+    MW :      1.802930690000e+01;
+  ENDWITHIN;
+
+  WITHIN STREAMS("2")
+    Componentlist : "Type1";
+
+    ValidPhases : "Liquid-Only";
+    MWC("METHANOL") : 3.204216000000e+01;
+    MWC("WATER") : 1.801528000000e+01;
+    In_F.F : 5.000000000000e+01;
+    Out_P.F : 5.000000000000e+01;
+    Zn("METHANOL") : 9.990000000000e-01;
+    Zn("WATER") : 1.000000006000e-03;
+    In_F.Z("METHANOL") : 9.990000000000e-01;
+    In_F.Z("WATER") : 1.000000006000e-03;
+    Out_P.Z("METHANOL") : 9.990000000000e-01;
+    Out_P.Z("WATER") : 1.000000006000e-03;
+    Zmn("METHANOL") : 9.994375176366e-01;
+    Zmn("WATER") : 5.624829911829e-04;
+    Fcn("METHANOL") : 4.995000000000e+01;
+    Fcn("WATER") : 5.000000030000e-02;
+    Fmcn("METHANOL") : 1.600505892000e+03;
+    Fmcn("WATER") : 9.007640054046e-01;
+    In_F.T : 6.069099990000e+01;
+    Out_P.T : 6.069099990000e+01;
+    In_F.P : 7.000000000000e+00;
+    Out_P.P : 7.000000000000e+00;
+    In_F.h : -2.348933173740e-01;
+    Out_P.h : -2.348933173740e-01;
+
+    F :      5.000000000000e+01;
+    FR :      5.000000000000e+01;
+    FM :      1.601406655000e+03;
+    FMR :      1.601406655000e+03;
+    FV :      2.137978797519e+00;
+    T :      6.069099990000e+01;
+    P :      7.000000000000e+00;
+    H :     -2.348933173740e-01;
+    RHO :      2.338657430000e+01;
+    RHOM :      7.490283144334e+02;
+    MW :      3.202813310000e+01;
+  ENDWITHIN;
+
+  WITHIN STREAMS("6")
+    Componentlist : "Type1";
+
+    ValidPhases : "Liquid-Only";
+    MWC("METHANOL") : 3.204216000000e+01;
+    MWC("WATER") : 1.801528000000e+01;
+    In_F.F : 5.000000000000e+01;
+    Out_P.F : 5.000000000000e+01;
+    Zn("METHANOL") : 1.000000000000e-03;
+    Zn("WATER") : 9.990000000000e-01;
+    In_F.Z("METHANOL") : 1.000000000000e-03;
+    In_F.Z("WATER") : 9.990000000000e-01;
+    Out_P.Z("METHANOL") : 1.000000000000e-03;
+    Out_P.Z("WATER") : 9.990000000000e-01;
+    Zmn("METHANOL") : 1.777226389108e-03;
+    Zmn("WATER") : 9.982227725016e-01;
+    Fcn("METHANOL") : 5.000000000000e-02;
+    Fcn("WATER") : 4.995000000000e+01;
+    Fmcn("METHANOL") : 1.602108000000e+00;
+    Fmcn("WATER") : 8.998632360000e+02;
+    In_F.T : 1.249290320000e+02;
+    Out_P.T : 1.249290320000e+02;
+    In_F.P : 7.300000000000e+00;
+    Out_P.P : 7.300000000000e+00;
+    In_F.h : -2.778338951474e-01;
+    Out_P.h : -2.778338951474e-01;
+
+    F :      5.000000000000e+01;
+    FR :      5.000000000000e+01;
+    FM :      9.014653450000e+02;
+    FMR :      9.014653450000e+02;
+    FV :      1.011920441010e+00;
+    T :      1.249290320000e+02;
+    P :      7.300000000000e+00;
+    H :     -2.778338951474e-01;
+    RHO :      4.941099910000e+01;
+    RHOM :      8.908460670095e+02;
+    MW :      1.802930690000e+01;
+  ENDWITHIN;
+
+  WITHIN STREAMS("B")
+    Componentlist : "Type1";
+
+    ValidPhases : "Liquid-Only";
+    MWC("METHANOL") : 3.204216000000e+01;
+    MWC("WATER") : 1.801528000000e+01;
+    In_F.F : 5.000000000000e+01;
+    Out_P.F : 5.000000000000e+01;
+    Zn("METHANOL") : 1.000000000000e-03;
+    Zn("WATER") : 9.990000000000e-01;
+    In_F.Z("METHANOL") : 1.000000000000e-03;
+    In_F.Z("WATER") : 9.990000000000e-01;
+    Out_P.Z("METHANOL") : 1.000000000000e-03;
+    Out_P.Z("WATER") : 9.990000000000e-01;
+    Zmn("METHANOL") : 1.777226389108e-03;
+    Zmn("WATER") : 9.982227725016e-01;
+    Fcn("METHANOL") : 5.000000000000e-02;
+    Fcn("WATER") : 4.995000000000e+01;
+    Fmcn("METHANOL") : 1.602108000000e+00;
+    Fmcn("WATER") : 8.998632360000e+02;
+    In_F.T : 1.249290280000e+02;
+    Out_P.T : 1.249290280000e+02;
+    In_F.P : 1.013250000000e+00;
+    Out_P.P : 1.013250000000e+00;
+    In_F.h : -2.778338951474e-01;
+    Out_P.h : -2.778338951474e-01;
+
+    F :      5.000000000000e+01;
+    FR :      5.000000000000e+01;
+    FM :      9.014653450000e+02;
+    FMR :      9.014653450000e+02;
+    FV :      1.011920891562e+00;
+    T :      1.249290280000e+02;
+    P :      1.013250000000e+00;
+    H :     -2.778338951474e-01;
+    RHO :      4.941097710000e+01;
+    RHOM :      8.908456703648e+02;
+    MW :      1.802930690000e+01;
+  ENDWITHIN;
+
+  WITHIN STREAMS("D")
+    Componentlist : "Type1";
+
+    ValidPhases : "Liquid-Only";
+    MWC("METHANOL") : 3.204216000000e+01;
+    MWC("WATER") : 1.801528000000e+01;
+    In_F.F : 5.000000000000e+01;
+    Out_P.F : 5.000000000000e+01;
+    Zn("METHANOL") : 9.990000000000e-01;
+    Zn("WATER") : 1.000000006000e-03;
+    In_F.Z("METHANOL") : 9.990000000000e-01;
+    In_F.Z("WATER") : 1.000000006000e-03;
+    Out_P.Z("METHANOL") : 9.990000000000e-01;
+    Out_P.Z("WATER") : 1.000000006000e-03;
+    Zmn("METHANOL") : 9.994375176366e-01;
+    Zmn("WATER") : 5.624829911829e-04;
+    Fcn("METHANOL") : 4.995000000000e+01;
+    Fcn("WATER") : 5.000000030000e-02;
+    Fmcn("METHANOL") : 1.600505892000e+03;
+    Fmcn("WATER") : 9.007640054046e-01;
+    In_F.T : 6.069100530000e+01;
+    Out_P.T : 6.069100530000e+01;
+    In_F.P : 1.013250000000e+00;
+    Out_P.P : 1.013250000000e+00;
+    In_F.h : -2.348933173740e-01;
+    Out_P.h : -2.348933173740e-01;
+
+    F :      5.000000000000e+01;
+    FR :      5.000000000000e+01;
+    FM :      1.601406655000e+03;
+    FMR :      1.601406655000e+03;
+    FV :      2.137978861512e+00;
+    T :      6.069100530000e+01;
+    P :      1.013250000000e+00;
+    H :     -2.348933173740e-01;
+    RHO :      2.338657360000e+01;
+    RHOM :      7.490282920137e+02;
+    MW :      3.202813310000e+01;
+  ENDWITHIN;
+
+  WITHIN STREAMS("F")
+    Componentlist : "Type1";
+
+
+    FlowBasis : "Mole";
+    CompBasis : "Mole-Frac"; 
+    ValidPhases : "Vapor-Liquid";
+    MWC("METHANOL") : 3.204216000000e+01;
+    MWC("WATER") : 1.801528000000e+01;
+    In_F.F : 1.000000000000e+02;
+    Out_P.F : 1.000000000000e+02;
+    TotFlowSpec : True;
+    ZR("METHANOL") : 5.000000000000e-01;
+    ZR("WATER") : 5.000000000000e-01;
+    Zn("METHANOL") : 5.000000000000e-01;
+    Zn("WATER") : 5.000000000000e-01;
+    In_F.Z("METHANOL") : 5.000000000000e-01;
+    Out_P.Z("METHANOL") : 5.000000000000e-01;
+    In_F.Z("WATER") : 5.000000000000e-01;
+    Out_P.Z("WATER") : 5.000000000000e-01;
+    Zmn("METHANOL") : 6.401078441087e-01;
+    Zmn("WATER") : 3.598921558913e-01;
+    Fcn("METHANOL") : 5.000000000000e+01;
+    Fcn("WATER") : 5.000000000000e+01;
+    Fmcn("METHANOL") : 1.602108000000e+03;
+    Fmcn("WATER") : 9.007640000000e+02;
+    FeedSpec : "TP";
+    In_F.T : 2.000000000000e+01;
+    Out_P.T : 2.000000000000e+01;
+    In_F.P : 6.000000000000e+00;
+    Out_P.P : 6.000000000000e+00;
+    In_F.h : -2.631802035856e-01;
+    Out_P.h : -2.631802035856e-01;
+    y("METHANOL") : 0.000000000000e+00;
+    y("WATER") : 0.000000000000e+00;
+    y("METHANOL") : 5.000000000000e-01;
+       y("WATER") : 5.000000000000e-01;
+       x("METHANOL") : 5.000000000000e-01;
+    x("WATER") : 5.000000000000e-01;
+
+    F :      1.000000000000e+02;
+    FM :      2.502872000000e+03;
+    FR :      1.000000000000e+02;
+    T :      2.000000000000e+01;
+    P :      6.000000000000e+00;
+    H :     -2.631802035856e-01;
+    RHO :      3.412782200000e+01;
+    MW :      2.502872000000e+01;
+    VF :      0.000000000000e+00;
+    VFR :      0.000000000000e+00;
+    LF :      1.000000000000e+00;
+    RHOV :      1.000000000000e+00;
+    RHOL :      3.412782200000e+01;
+    MWV :      1.000000000000e+00;
+    MWL :      2.502872000000e+01;
+  ENDWITHIN;
+
+  WITHIN STREAMS("F").pflash2(1)
+      Z("METHANOL") : 5.000000000000e-01;
+      Z("WATER") : 5.000000000000e-01;
+      y("METHANOL") : 5.000000000000e-01;
+      y("WATER") : 5.000000000000e-01;
+      x("METHANOL") : 5.000000000000e-01;
+      x("WATER") : 5.000000000000e-01;
+      k("METHANOL") : 1.000000000000e+00;
+      k("WATER") : 1.000000000000e+00;
+
+    T :      2.000000000000e+01;
+    P :      6.000000000000e+00;
+    H :     -2.631802035856e-01;
+    VF :      0.000000000000e+00;
+    VFR :      0.000000000000e+00;
+    LF :      1.000000000000e+00;
+    VFACTOR :      1.000000000000e-01;
+    LFACTOR :      0.000000000000e+00;
+    ZFACTOR :      1.000000000000e+00;
+    HV :     -2.631802035856e-01;
+    HL :     -2.631802035856e-01;
+    RHOV :      1.000000000000e+00;
+    RHOL :      3.412782200000e+01;
+    MWV :      1.000000000000e+00;
+    MWL :      2.502872000000e+01;
+  ENDWITHIN;
+
+  WITHIN STREAMS("F")
+
+  ENDWITHIN;
+
+//
+//*********** End of Blocks Operation at top level****************************************
+//
+
+//
+//*********** Global Reactions/Chemistry Structure declaration**********************************************
+//
+//
+//*********** End of Global Reactions/Chemistry Structure****************************************
+//
+
+//
+//*********** Global Reactions/Chemistry Structure declaration**********************************************
+//
+//
+//*********** End of Global Reactions/Chemistry Structure****************************************
+//
+
+//
+//*********** ACM Global Structures**********************************************
+//
+//
+//*********** End of ACM Global Structures****************************************
+//
+
+//
+//*********** Freeing Manipulated Controllers Variables at top level *********************
+//
+BLOCKS("COLUMN").Condenser(1).QR  :  free;
+// END of Free Manipulated Variables Section at top level
+
+END;  // END of FLOWSHEET Section
