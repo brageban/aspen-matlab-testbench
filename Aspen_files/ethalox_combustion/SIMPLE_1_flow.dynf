@@ -208,25 +208,19 @@ ColumnWidths : [ ]
 }
   </FORM>
   <FORM NAME="DynamicsOptions" CLSID="{6BA76840-806B-11D0-BE51-0000C09984EF}">
-    
-{ Version              : 1
-SizeX                  : 8035
-SizeY                  : 4020
-ShowAllVariables       : False
-ShowAllAttributes      : False
-ExpandAll              : True
+    { Version : 1
+SizeX : 8035
+SizeY : 4020
+ShowAllVariables : False
+ShowAllAttributes : False
+ExpandAll : True
 ShowRegistryAttributes : False
-VariablesPaths         : [ GlobalPropMode GlobalFlashBasis GlobalFlashSmoothTol 
-                           GlobalLLStabilityCheck GlobalPropDamping WaterID 
-                           GlobalPDriven GlobalRFlow GlobalRFlowCol GlobalLiqHead GlobalPDEReverse
-                           GlobalTimeScaler F_max P_max P_min T_max T_min TAmb PropFilter 
-                           GlobalPolMethod GlobalMax_Sites Distribution NptsMWD Upper GPC 
-                           DistType ]
-AttributesPaths        : [ Description Value Units ]
-ColumnWidths           : [ 1500 3620 1500 1100 ]
-}  </FORM>
+VariablesPaths : [ GlobalPropMode GlobalFlashBasis GlobalFlashSmoothTol GlobalLLStabilityCheck GlobalPropDamping WaterID GlobalPDriven GlobalRFlow GlobalRFlowCol GlobalLiqHead GlobalTimeScaler F_max P_max P_min T_max T_min TAmb PropFilter GlobalPolMethod GlobalMax_Sites Distribution NptsMWD Upper GPC DistType ]
+AttributesPaths : [ Description Value Units ]
+ColumnWidths : [ 1500 3620 1500 1100 ]
+}
+  </FORM>
   <FORM NAME="Solids" CLSID="{6BA76840-806B-11D0-BE51-0000C09984EF}">
-    
     { Version : 1
 SizeX : 6045
 SizeY : 5325
@@ -237,7 +231,8 @@ ShowRegistryAttributes : False
 VariablesPaths : [ GlobalStreamClass CISolids NCSolids NIntervalsCI NIntervalsNC CAUSR1Comps CAUSR2Comps CAUSR3Comps CAUSR4Comps CAUSR5Comps CAUSRAComps CAUSRBComps CAUSRCComps CAUSRDComps CAUSREComps PROXANALComps SULFANALComps ULTANALComps GENANALComps ]
 AttributesPaths : [ Description Value ]
 ColumnWidths : [ 1575 2955 1365 ]
-}  </FORM>
+}
+  </FORM>
 </FORMLIST>
 EndText;
 
@@ -248,19 +243,14 @@ StructureContainer Chemistry
 End
 StructureContainer Structures
 End
-  BLOCKS("CV1") as Valve;
-  BLOCKS("CV2") as Valve;
-  BLOCKS("PREBURN") as RGibbs2;
   PCPB as PIDIncr;
   FCOX as PIDIncr;
   FCFU as PIDIncr;
   Blocks("F/O_s") as Multiply;
-  B5 as Ratio;
-  STREAMS("FU-F") as MaterialStream;
-  STREAMS("FU-LP") as MaterialStream;
-  STREAMS("OX-F") as MaterialStream;
-  STREAMS("OX-LP") as MaterialStream;
-  STREAMS("PROD-PB") as MaterialStream;
+  OF_sensor as Ratio;
+  BLOCKS("CV1") as Valve;
+  BLOCKS("CV2") as Valve;
+  BLOCKS("PREBURN") as RGibbs2;
   S1 as ControlSignal;
   S2 as ControlSignal;
   S3 as ControlSignal;
@@ -272,14 +262,14 @@ End
   S9 as ControlSignal;
   S10 as ControlSignal;
   S11 as ControlSignal;
-  Connect BLOCKS("CV2").In_F with STREAMS("FU-F");
-  Connect BLOCKS("CV2").Out_P and BLOCKS("PREBURN").In_F with STREAMS("FU-LP");
-  Connect BLOCKS("CV1").In_F with STREAMS("OX-F");
-  Connect BLOCKS("CV1").Out_P and BLOCKS("PREBURN").In_F with STREAMS("OX-LP");
-  Connect BLOCKS("PREBURN").Out_P with STREAMS("PROD-PB");
-  Connect STREAMS("FU-F").F via STREAMS("FU-F").OutputSignal and B5.Input1 via B5.InputSignal with S1;
-  Connect STREAMS("OX-F").F via STREAMS("OX-F").OutputSignal and B5.Input2 via B5.InputSignal with S2;
-  Connect B5.Output_ via B5.OutputSignal with S3;
+  STREAMS("FU-F") as MaterialStream;
+  STREAMS("FU-LP") as MaterialStream;
+  STREAMS("OX-F") as MaterialStream;
+  STREAMS("OX-LP") as MaterialStream;
+  STREAMS("PROD-PB") as MaterialStream;
+  Connect STREAMS("FU-F").F via STREAMS("FU-F").OutputSignal and OF_sensor.Input1 via OF_sensor.InputSignal with S1;
+  Connect STREAMS("OX-F").F via STREAMS("OX-F").OutputSignal and OF_sensor.Input2 via OF_sensor.InputSignal with S2;
+  Connect OF_sensor.Output_ via OF_sensor.OutputSignal with S3;
   Connect BLOCKS("PREBURN").P via BLOCKS("PREBURN").OutputSignal and PCPB.PV via PCPB.InputSignal with S4;
   Connect PCPB.OP via PCPB.OutputSignal and FCOX.SPRemote via FCOX.InputSignal with S5;
   Connect FCOX.OP via FCOX.OutputSignal and BLOCKS("CV1").Pos via BLOCKS("CV1").InputSignal with S6;
@@ -288,6 +278,11 @@ End
   Connect Blocks("F/O_s").Output_ via Blocks("F/O_s").OutputSignal and FCFU.SPRemote via FCFU.InputSignal with S9;
   Connect FCFU.OP via FCFU.OutputSignal and BLOCKS("CV2").Pos via BLOCKS("CV2").InputSignal with S10;
   Connect STREAMS("FU-F").F via STREAMS("FU-F").OutputSignal and FCFU.PV via FCFU.InputSignal with S11;
+  Connect BLOCKS("CV2").In_F with STREAMS("FU-F");
+  Connect BLOCKS("CV2").Out_P and BLOCKS("PREBURN").In_F with STREAMS("FU-LP");
+  Connect BLOCKS("CV1").In_F with STREAMS("OX-F");
+  Connect BLOCKS("CV1").Out_P and BLOCKS("PREBURN").In_F with STREAMS("OX-LP");
+  Connect BLOCKS("PREBURN").Out_P with STREAMS("PROD-PB");
 
 CONSTRAINTS
   // Flowsheet variables and equations...
@@ -297,32 +292,6 @@ END
 //SYSTEM SECTION - WARNING: DO NOT EDIT
 SystemData : Text
 <FORMLIST DEFAULTFORM="AllVariables">
-  <FORM NAME="Configure" MODEL="BLOCKS("CV1")">
-    { Version : 1
-SizeX : 7395
-SizeY : 5355
-ShowAllVariables : False
-ShowAllAttributes : False
-ExpandAll : True
-ShowRegistryAttributes : False
-VariablesPaths : [ TearStream ComponentList ValidPhases PresFlowCalcBasis PDriven FeedFlash ValveAction checkValve presmode presspec Char_eqn vchoke cavind valgeo vdiam in_diam out_diam Val(1).CVMax C0 C0max xt fl pos posmin posmax F ]
-AttributesPaths : [ Description Value Units Spec ]
-ColumnWidths : [ 1200 2505 1725 870 1005 ]
-}
-  </FORM>
-  <FORM NAME="Configure" MODEL="BLOCKS("PREBURN")">
-    { Version : 1
-SizeX : 8445
-SizeY : 5955
-ShowAllVariables : False
-ShowAllAttributes : False
-ExpandAll : True
-ShowRegistryAttributes : False
-VariablesPaths : [ ComponentList Blockid Reinispec ValidPhases rtype vstype htype heatopt PDriven diam L Mprint Fl_outr Fv_outr P P_dropR Qr Fl_med T_med Tmed_in Mass_med UA Heatcp ]
-AttributesPaths : [ Description Value Units Spec ]
-ColumnWidths : [ 1365 2745 2040 1035 1155 ]
-}
-  </FORM>
   <FORM NAME="ResultsPlot" MODEL="PCPB">
     { Version : 2
 SizeX : 5130
@@ -420,8 +389,7 @@ LegendBox2:90 1.250000 5 }
 DisplayAs : Plot
 ColumnWidths : [ ]
 ProfileDimensions : [ ]
-}
-  </FORM>
+}  </FORM>
   <FORM NAME="ResultsPlot" MODEL="FCOX">
     { Version : 2
 SizeX : 5130
@@ -519,8 +487,7 @@ LegendBox2:90 1.250000 5 }
 DisplayAs : Plot
 ColumnWidths : [ ]
 ProfileDimensions : [ ]
-}
-  </FORM>
+}  </FORM>
   <FORM NAME="ResultsPlot" MODEL="FCFU">
     { Version : 2
 SizeX : 5130
@@ -576,7 +543,7 @@ Label:
 Legend:Set Point $UOM
 SubstValue:kmol/hr
 Axis:0
-ARange:0 0 0 5 0 5
+ARange:0 2.1 0 5 0 5
 ARange3:0 5 0 5 0.5 0.5 0
 AxisResetRange:1
 AxisScale:0 0
@@ -584,16 +551,16 @@ Multiplier:0
 MultiplierType:0
 AxisFlag:0
 Axis:1
-ARange:131.281 131.281 115 145 118.153 143.097
-ARange3:115 145 115 145 5 5 0
+ARange:4.92305 131.281 -50 200 -10.077 151.281
+ARange3:-50 200 -50 200 50 50 0
 AxisResetRange:1
 AxisScale:0 0
 Multiplier:0
 MultiplierType:0
 AxisFlag:0
 Axis:2
-ARange:50 50 45 55 45 54.5
-ARange3:45 55 45 55 2.5 2.5 0
+ARange:50 100 50 110 50 105
+ARange3:50 110 50 110 10 10 0
 AxisResetRange:1
 AxisScale:0 0
 Multiplier:0
@@ -620,6 +587,14 @@ ColumnWidths : [ ]
 ProfileDimensions : [ ]
 }
   </FORM>
+  <FORM NAME="Configure" MODEL="FCFU">
+    { Version : 1
+SizeX : 5385
+SizeY : 6045
+ControlProgId : AMPID40_0.ConfigureIncr
+IsDotNetControl : True
+ } 
+  </FORM>
   <FORM NAME="Results" MODEL="Blocks("F/O_s")">
     { Version : 1
 SizeX : 4230
@@ -638,11 +613,6 @@ EndText;
 
 //SYSTEM SECTION END
   ActiveTasks : [];
-  B5.Input1.Spec : Free;
-  B5.Input1 : 131.281224840001;
-  B5.Input2.Spec : Free;
-  B5.Input2 : 283.5106315199945;
-  B5.Output_ : 0.4630557384608782;
   BLOCKS("CV1").C0 : 86.8676699264;
   BLOCKS("CV1").C0max : 173.7353398528;
   BLOCKS("CV1").CAVIND : False;
@@ -682,10 +652,10 @@ EndText;
   BLOCKS("CV1").Mwl : 31.99880000000001;
   BLOCKS("CV1").Mwl_o : 31.99880000000001;
   BLOCKS("CV1").Mwv : 73.6359754258297;
-  BLOCKS("CV1").Mwv_o : 73.18130056777291;
+  BLOCKS("CV1").Mwv_o : 73.18130058482824;
   BLOCKS("CV1").Out_P.F : 283.5106315199945;
   BLOCKS("CV1").Out_P.h : -1.221563018785306e-002;
-  BLOCKS("CV1").Out_P.P : 60.;
+  BLOCKS("CV1").Out_P.P : 60.00000056266533;
   BLOCKS("CV1").Out_P.T : -173.15;
   BLOCKS("CV1").Out_P.V : 2.933890674389858e-002;
   BLOCKS("CV1").Out_P.z("CO") : 0.;
@@ -695,11 +665,12 @@ EndText;
   BLOCKS("CV1").Out_P.z("OXYGEN") : 1.;
   BLOCKS("CV1").Out_P_F : 283.5106315199945;
   BLOCKS("CV1").Out_P_h : -1.221563018785306e-002;
+  BLOCKS("CV1").Out_P_P : 60.00000056266533;
   BLOCKS("CV1").Out_P_V : 2.933890674389858e-002;
   BLOCKS("CV1").OutputD : 50.;
   BLOCKS("CV1").P : 80.;
-  BLOCKS("CV1").P_drop : 20.;
-  BLOCKS("CV1").P_o : 60.;
+  BLOCKS("CV1").P_drop : 19.99999943733467;
+  BLOCKS("CV1").P_o : 60.00000056266533;
   BLOCKS("CV1").Pdropc : 19.99999943733467;
   BLOCKS("CV1").pflash2(1).h : -1.221563018785306e-002;
   BLOCKS("CV1").pflash2(1).hl : -1.221563018785306e-002;
@@ -719,8 +690,8 @@ EndText;
   BLOCKS("CV1").pflash2(1).Rhov : 9.621942463531372;
   BLOCKS("CV1").pflash2(1).T : -173.15;
   BLOCKS("CV1").pflash2(1).vf : 0.;
-  BLOCKS("CV1").pflash2(1).VFactor : 0.9682793835016158;
-  BLOCKS("CV1").pflash2(1).vfR : -0.9682793835016158;
+  BLOCKS("CV1").pflash2(1).VFactor : 0.9682793835016159;
+  BLOCKS("CV1").pflash2(1).vfR : -0.9682793835016159;
   BLOCKS("CV1").pflash2(1).x("CO") : 0.;
   BLOCKS("CV1").pflash2(1).x("CO2") : 0.;
   BLOCKS("CV1").pflash2(1).x("ETHANOL") : 0.;
@@ -741,23 +712,23 @@ EndText;
   BLOCKS("CV1").pflash2o(1).h : -1.221563018785306e-002;
   BLOCKS("CV1").pflash2o(1).hl : -1.221563018785306e-002;
   BLOCKS("CV1").pflash2o(1).hv : -5.77615345763557e-003;
-  BLOCKS("CV1").pflash2o(1).K("CO") : 9.087973639321092e-002;
-  BLOCKS("CV1").pflash2o(1).K("CO2") : 1.471001507324485e-006;
-  BLOCKS("CV1").pflash2o(1).K("ETHANOL") : 1.000000000000004e-010;
-  BLOCKS("CV1").pflash2o(1).K("H2O") : 1.e-010;
-  BLOCKS("CV1").pflash2o(1).K("OXYGEN") : 4.229415533117883e-002;
+  BLOCKS("CV1").pflash2o(1).K("CO") : 9.087973554096292e-002;
+  BLOCKS("CV1").pflash2o(1).K("CO2") : 1.471001493529792e-006;
+  BLOCKS("CV1").pflash2o(1).K("ETHANOL") : 1.000000000000002e-010;
+  BLOCKS("CV1").pflash2o(1).K("H2O") : 9.999999999999985e-011;
+  BLOCKS("CV1").pflash2o(1).K("OXYGEN") : 4.229415493455446e-002;
   BLOCKS("CV1").pflash2o(1).lf : 1.;
   BLOCKS("CV1").pflash2o(1).LFactor : 0.;
   BLOCKS("CV1").pflash2o(1).MWl : 31.99880000000001;
-  BLOCKS("CV1").pflash2o(1).MWv : 73.18130056777291;
-  BLOCKS("CV1").pflash2o(1).P : 60.;
+  BLOCKS("CV1").pflash2o(1).MWv : 73.18130058482824;
+  BLOCKS("CV1").pflash2o(1).P : 60.00000056266533;
   BLOCKS("CV1").pflash2o(1).Rhol : 34.08443295890579;
   BLOCKS("CV1").pflash2o(1).Rhoml : 1090.660953365435;
-  BLOCKS("CV1").pflash2o(1).Rhov : 7.21645684764853;
+  BLOCKS("CV1").pflash2o(1).Rhov : 7.216456915322699;
   BLOCKS("CV1").pflash2o(1).T : -173.15;
   BLOCKS("CV1").pflash2o(1).vf : 0.;
-  BLOCKS("CV1").pflash2o(1).VFactor : 0.9577058446688211;
-  BLOCKS("CV1").pflash2o(1).vfR : -0.9577058446688211;
+  BLOCKS("CV1").pflash2o(1).VFactor : 0.9577058450654455;
+  BLOCKS("CV1").pflash2o(1).vfR : -0.9577058450654455;
   BLOCKS("CV1").pflash2o(1).x("CO") : 0.;
   BLOCKS("CV1").pflash2o(1).x("CO2") : 0.;
   BLOCKS("CV1").pflash2o(1).x("ETHANOL") : 0.;
@@ -767,7 +738,7 @@ EndText;
   BLOCKS("CV1").pflash2o(1).y("CO2") : 0.;
   BLOCKS("CV1").pflash2o(1).y("ETHANOL") : 0.;
   BLOCKS("CV1").pflash2o(1).y("H2O") : 0.;
-  BLOCKS("CV1").pflash2o(1).y("OXYGEN") : 4.229415533117883e-002;
+  BLOCKS("CV1").pflash2o(1).y("OXYGEN") : 4.229415493455446e-002;
   BLOCKS("CV1").pflash2o(1).z("CO") : 0.;
   BLOCKS("CV1").pflash2o(1).z("CO2") : 0.;
   BLOCKS("CV1").pflash2o(1).z("ETHANOL") : 0.;
@@ -776,7 +747,6 @@ EndText;
   BLOCKS("CV1").pflash2o(1).ZFactor : 1.;
   BLOCKS("CV1").Pos.Spec : Free;
   BLOCKS("CV1").Pos : 50.;
-  BLOCKS("CV1").PosA : 50.;
   BLOCKS("CV1").PresMode : "Simple";
   BLOCKS("CV1").Rho : 34.084432;
   BLOCKS("CV1").Rho_o : 34.08443295890579;
@@ -784,7 +754,7 @@ EndText;
   BLOCKS("CV1").Rhol_o : 34.08443295890579;
   BLOCKS("CV1").Rhos : 34.08443295890579;
   BLOCKS("CV1").Rhov : 9.621942463531372;
-  BLOCKS("CV1").Rhov_o : 7.21645684764853;
+  BLOCKS("CV1").Rhov_o : 7.216456915322699;
   BLOCKS("CV1").T : -173.15;
   BLOCKS("CV1").T_o : -173.15;
   BLOCKS("CV1").VALGEO : False;
@@ -812,7 +782,7 @@ EndText;
   BLOCKS("CV1").y_o("CO2") : 0.;
   BLOCKS("CV1").y_o("ETHANOL") : 0.;
   BLOCKS("CV1").y_o("H2O") : 0.;
-  BLOCKS("CV1").y_o("OXYGEN") : 4.229415533117883e-002;
+  BLOCKS("CV1").y_o("OXYGEN") : 4.229415493455446e-002;
   BLOCKS("CV1").Yfac : 1.;
   BLOCKS("CV1").z("CO") : 0.;
   BLOCKS("CV1").z("CO2") : 0.;
@@ -824,27 +794,28 @@ EndText;
   BLOCKS("CV1").z_o("ETHANOL") : 0.;
   BLOCKS("CV1").z_o("H2O") : 0.;
   BLOCKS("CV1").z_o("OXYGEN") : 1.;
-  BLOCKS("CV2").C0 : 67.68177402035001;
-  BLOCKS("CV2").C0max : 135.3635480407;
+  BLOCKS("CV2").C0 : 5.076138018311;
+  BLOCKS("CV2").C0max : 5.076138018311;
   BLOCKS("CV2").CAVIND : False;
   BLOCKS("CV2").Char_eqn : "NONE";
   BLOCKS("CV2").ComponentList : "Type1";
-  BLOCKS("CV2").Cv : 1.749607486095744;
-  BLOCKS("CV2").dOutputVL : 0.;
+  BLOCKS("CV2").Cv : 0.1312206898510343;
+  BLOCKS("CV2").dOutput : -1.348749028993955e-013;
+  BLOCKS("CV2").dOutputVL : -1.348749028993955e-013;
   BLOCKS("CV2").dp_choke : 80.;
   BLOCKS("CV2").dpl_l : 80.;
   BLOCKS("CV2").dpv_l : 80.;
   BLOCKS("CV2").dummyInletV : 5.769378432709179e-002;
-  BLOCKS("CV2").F : 131.281224840001;
-  BLOCKS("CV2").F_ : 131.281224840001;
-  BLOCKS("CV2").Fvol : 7.574110672115461;
+  BLOCKS("CV2").F : 4.923045935999534;
+  BLOCKS("CV2").F_ : 4.923045935999534;
+  BLOCKS("CV2").Fvol : 0.2840291504639229;
   BLOCKS("CV2").h : -0.2775127823159732;
   BLOCKS("CV2").h_o : -0.2775127823159732;
   BLOCKS("CV2").hl : -0.2775127823159732;
-  BLOCKS("CV2").hl_o : -0.2775127823159731;
+  BLOCKS("CV2").hl_o : -0.2775127823159732;
   BLOCKS("CV2").hv : -0.2349500003973844;
-  BLOCKS("CV2").hv_o : -0.2349500003973843;
-  BLOCKS("CV2").In_F.F : 131.281224840001;
+  BLOCKS("CV2").hv_o : -0.2349500003973844;
+  BLOCKS("CV2").In_F.F : 4.923045935999534;
   BLOCKS("CV2").In_F.h : -0.2775127823159732;
   BLOCKS("CV2").In_F.P : 80.;
   BLOCKS("CV2").In_F.T : 25.;
@@ -854,7 +825,7 @@ EndText;
   BLOCKS("CV2").In_F.z("ETHANOL") : 1.;
   BLOCKS("CV2").In_F.z("H2O") : 0.;
   BLOCKS("CV2").In_F.z("OXYGEN") : 0.;
-  BLOCKS("CV2").Kv : 1.513410475472818;
+  BLOCKS("CV2").Kv : 0.1135058967211447;
   BLOCKS("CV2").lf : 1.;
   BLOCKS("CV2").lf_o : 1.;
   BLOCKS("CV2").MaxVelDo : 180000.;
@@ -863,26 +834,28 @@ EndText;
   BLOCKS("CV2").Mwl : 46.06904000000001;
   BLOCKS("CV2").Mwl_o : 46.06904000000001;
   BLOCKS("CV2").Mwv : 74.97134370081187;
-  BLOCKS("CV2").Mwv_o : 74.9617916010825;
-  BLOCKS("CV2").Out_P.F : 131.281224840001;
+  BLOCKS("CV2").Mwv_o : 74.96943328088928;
+  BLOCKS("CV2").Out_P.F : 4.923045935999534;
   BLOCKS("CV2").Out_P.h : -0.2775127823159732;
-  BLOCKS("CV2").Out_P.P : 60.;
-  BLOCKS("CV2").Out_P.T : 25.00000000000119;
-  BLOCKS("CV2").Out_P.V : 5.769378432709185e-002;
+  BLOCKS("CV2").Out_P.P : 75.00000005710903;
+  BLOCKS("CV2").Out_P.T : 25.00000000000027;
+  BLOCKS("CV2").Out_P.V : 5.769378432709178e-002;
   BLOCKS("CV2").Out_P.z("CO") : 0.;
   BLOCKS("CV2").Out_P.z("CO2") : 0.;
   BLOCKS("CV2").Out_P.z("ETHANOL") : 1.;
   BLOCKS("CV2").Out_P.z("H2O") : 0.;
   BLOCKS("CV2").Out_P.z("OXYGEN") : 0.;
-  BLOCKS("CV2").Out_P_F : 131.281224840001;
+  BLOCKS("CV2").Out_P_F : 4.923045935999534;
   BLOCKS("CV2").Out_P_h : -0.2775127823159732;
-  BLOCKS("CV2").Out_P_T : 25.00000000000119;
-  BLOCKS("CV2").Out_P_V : 5.769378432709185e-002;
-  BLOCKS("CV2").OutputD : 50.;
+  BLOCKS("CV2").Out_P_P : 75.00000005710903;
+  BLOCKS("CV2").Out_P_T : 25.00000000000027;
+  BLOCKS("CV2").Out_P_V : 5.769378432709178e-002;
+  BLOCKS("CV2").OutputD.derivative : -1.386214279799343e-013;
+  BLOCKS("CV2").OutputD : 100.;
   BLOCKS("CV2").P : 80.;
-  BLOCKS("CV2").P_drop : 20.;
-  BLOCKS("CV2").P_o : 60.;
-  BLOCKS("CV2").Pdropc : 19.99999977155251;
+  BLOCKS("CV2").P_drop : 4.999999942890967;
+  BLOCKS("CV2").P_o : 75.00000005710903;
+  BLOCKS("CV2").Pdropc : 4.999999942890967;
   BLOCKS("CV2").pflash2(1).DSID : 3.;
   BLOCKS("CV2").pflash2(1).h : -0.2775127823159732;
   BLOCKS("CV2").pflash2(1).hl : -0.2775127823159732;
@@ -922,25 +895,25 @@ EndText;
   BLOCKS("CV2").pflash2(1).ZFactor : 1.;
   BLOCKS("CV2").pflash2o(1).DSID : 4.;
   BLOCKS("CV2").pflash2o(1).h : -0.2775127823159732;
-  BLOCKS("CV2").pflash2o(1).hl : -0.2775127823159731;
-  BLOCKS("CV2").pflash2o(1).hv : -0.2349500003973843;
-  BLOCKS("CV2").pflash2o(1).K("CO") : 15.25051156313662;
-  BLOCKS("CV2").pflash2o(1).K("CO2") : 1.072725920439171;
-  BLOCKS("CV2").pflash2o(1).K("ETHANOL") : 1.320675114738603e-003;
-  BLOCKS("CV2").pflash2o(1).K("H2O") : 1.405704870977603e-003;
-  BLOCKS("CV2").pflash2o(1).K("OXYGEN") : 13.14044755084052;
+  BLOCKS("CV2").pflash2o(1).hl : -0.2775127823159732;
+  BLOCKS("CV2").pflash2o(1).hv : -0.2349500003973844;
+  BLOCKS("CV2").pflash2o(1).K("CO") : 12.20040924121911;
+  BLOCKS("CV2").pflash2o(1).K("CO2") : 0.8581807356978567;
+  BLOCKS("CV2").pflash2o(1).K("ETHANOL") : 1.05654009098633e-003;
+  BLOCKS("CV2").pflash2o(1).K("H2O") : 1.124563895925727e-003;
+  BLOCKS("CV2").pflash2o(1).K("OXYGEN") : 10.51235803266768;
   BLOCKS("CV2").pflash2o(1).lf : 1.;
   BLOCKS("CV2").pflash2o(1).LFactor : 0.;
   BLOCKS("CV2").pflash2o(1).MWl : 46.06904000000001;
-  BLOCKS("CV2").pflash2o(1).MWv : 74.9617916010825;
-  BLOCKS("CV2").pflash2o(1).P : 60.;
-  BLOCKS("CV2").pflash2o(1).Rhol : 17.33288969797081;
-  BLOCKS("CV2").pflash2o(1).Rhoml : 798.509588811405;
-  BLOCKS("CV2").pflash2o(1).Rhov : 2.420411388536347;
-  BLOCKS("CV2").pflash2o(1).T : 25.00000000000119;
+  BLOCKS("CV2").pflash2o(1).MWv : 74.96943328088928;
+  BLOCKS("CV2").pflash2o(1).P : 75.00000005710903;
+  BLOCKS("CV2").pflash2o(1).Rhol : 17.33288969797083;
+  BLOCKS("CV2").pflash2o(1).Rhoml : 798.509588811406;
+  BLOCKS("CV2").pflash2o(1).Rhov : 3.025514237974232;
+  BLOCKS("CV2").pflash2o(1).T : 25.00000000000027;
   BLOCKS("CV2").pflash2o(1).vf : 0.;
-  BLOCKS("CV2").pflash2o(1).VFactor : 0.9986793248852613;
-  BLOCKS("CV2").pflash2o(1).vfR : -0.9986793248852613;
+  BLOCKS("CV2").pflash2o(1).VFactor : 0.9989434599090137;
+  BLOCKS("CV2").pflash2o(1).vfR : -0.9989434599090137;
   BLOCKS("CV2").pflash2o(1).x("CO") : 0.;
   BLOCKS("CV2").pflash2o(1).x("CO2") : 0.;
   BLOCKS("CV2").pflash2o(1).x("ETHANOL") : 1.;
@@ -948,7 +921,7 @@ EndText;
   BLOCKS("CV2").pflash2o(1).x("OXYGEN") : 0.;
   BLOCKS("CV2").pflash2o(1).y("CO") : 0.;
   BLOCKS("CV2").pflash2o(1).y("CO2") : 0.;
-  BLOCKS("CV2").pflash2o(1).y("ETHANOL") : 1.320675114738603e-003;
+  BLOCKS("CV2").pflash2o(1).y("ETHANOL") : 1.05654009098633e-003;
   BLOCKS("CV2").pflash2o(1).y("H2O") : 0.;
   BLOCKS("CV2").pflash2o(1).y("OXYGEN") : 0.;
   BLOCKS("CV2").pflash2o(1).z("CO") : 0.;
@@ -958,16 +931,18 @@ EndText;
   BLOCKS("CV2").pflash2o(1).z("OXYGEN") : 0.;
   BLOCKS("CV2").pflash2o(1).ZFactor : 1.;
   BLOCKS("CV2").Pos.Spec : Free;
-  BLOCKS("CV2").Pos : 50.;
+  BLOCKS("CV2").Pos : 100.;
+  BLOCKS("CV2").PosA : 100.;
+  BLOCKS("CV2").PosC : 100.;
   BLOCKS("CV2").PresMode : "Simple";
   BLOCKS("CV2").Rho : 17.3328895;
-  BLOCKS("CV2").Rho_o : 17.33288969797081;
+  BLOCKS("CV2").Rho_o : 17.33288969797083;
   BLOCKS("CV2").Rhol : 17.33288969797083;
-  BLOCKS("CV2").Rhol_o : 17.33288969797081;
+  BLOCKS("CV2").Rhol_o : 17.33288969797083;
   BLOCKS("CV2").Rhos : 17.33288969797083;
   BLOCKS("CV2").Rhov : 3.227215184715142;
-  BLOCKS("CV2").Rhov_o : 2.420411388536347;
-  BLOCKS("CV2").T_o : 25.00000000000119;
+  BLOCKS("CV2").Rhov_o : 3.025514237974232;
+  BLOCKS("CV2").T_o : 25.00000000000027;
   BLOCKS("CV2").VALGEO : False;
   BLOCKS("CV2").ValidPhases : "Vapor-Liquid";
   BLOCKS("CV2").VCHOKE : True;
@@ -991,7 +966,7 @@ EndText;
   BLOCKS("CV2").y("OXYGEN") : 0.;
   BLOCKS("CV2").y_o("CO") : 0.;
   BLOCKS("CV2").y_o("CO2") : 0.;
-  BLOCKS("CV2").y_o("ETHANOL") : 1.320675114738603e-003;
+  BLOCKS("CV2").y_o("ETHANOL") : 1.05654009098633e-003;
   BLOCKS("CV2").y_o("H2O") : 0.;
   BLOCKS("CV2").y_o("OXYGEN") : 0.;
   BLOCKS("CV2").Yfac : 1.;
@@ -1005,24 +980,25 @@ EndText;
   BLOCKS("CV2").z_o("ETHANOL") : 1.;
   BLOCKS("CV2").z_o("H2O") : 0.;
   BLOCKS("CV2").z_o("OXYGEN") : 0.;
-  Blocks("F/O_s").Input1.Spec : Free;
+  Blocks("F/O_s").Input1.spec : Free;
   Blocks("F/O_s").Input1 : 283.5106315199945;
-  Blocks("F/O_s").Input2 : 0.4630557384608782;
-  Blocks("F/O_s").Output_ : 131.281224840001;
+  Blocks("F/O_s").Input2.Spec : Fixed;
+  Blocks("F/O_s").Input2 : 2.85714e-002;
+  Blocks("F/O_s").Output_ : 4.923045935999534;
   BLOCKS("PREBURN").Blockid : "PREBURN";
   BLOCKS("PREBURN").ComponentList : "Type1";
-  BLOCKS("PREBURN").F_out : 657.5638471771254;
-  BLOCKS("PREBURN").Fin : 414.7918563599954;
-  BLOCKS("PREBURN").Fouts("PROD-PB") : 657.5638471771254;
-  BLOCKS("PREBURN").h_out : -6.067164302203842e-002;
+  BLOCKS("PREBURN").F_out : 293.3567233919936;
+  BLOCKS("PREBURN").Fin : 288.433677455994;
+  BLOCKS("PREBURN").Fouts("PROD-PB") : 293.3567233919936;
+  BLOCKS("PREBURN").h_out : -1.646278683610806e-002;
   BLOCKS("PREBURN").heatopt : "Constant duty";
-  BLOCKS("PREBURN").hin : -9.618192447236815e-002;
-  BLOCKS("PREBURN").houts("PROD-PB") : -6.06716430221018e-002;
-  BLOCKS("PREBURN").In_F.Connection("FU-LP").F : 131.281224840001;
+  BLOCKS("PREBURN").hin : -1.674377710237505e-002;
+  BLOCKS("PREBURN").houts("PROD-PB") : -1.646278683610806e-002;
+  BLOCKS("PREBURN").In_F.Connection("FU-LP").F : 4.923045935999534;
   BLOCKS("PREBURN").In_F.Connection("FU-LP").h : -0.2775127823159732;
-  BLOCKS("PREBURN").In_F.Connection("FU-LP").P : 60.;
-  BLOCKS("PREBURN").In_F.Connection("FU-LP").T : 25.00000000000119;
-  BLOCKS("PREBURN").In_F.Connection("FU-LP").V : 5.769378432709185e-002;
+  BLOCKS("PREBURN").In_F.Connection("FU-LP").P : 75.00000005710903;
+  BLOCKS("PREBURN").In_F.Connection("FU-LP").T : 25.00000000000027;
+  BLOCKS("PREBURN").In_F.Connection("FU-LP").V : 5.769378432709178e-002;
   BLOCKS("PREBURN").In_F.Connection("FU-LP").z("CO") : 0.;
   BLOCKS("PREBURN").In_F.Connection("FU-LP").z("CO2") : 0.;
   BLOCKS("PREBURN").In_F.Connection("FU-LP").z("ETHANOL") : 1.;
@@ -1030,7 +1006,7 @@ EndText;
   BLOCKS("PREBURN").In_F.Connection("FU-LP").z("OXYGEN") : 0.;
   BLOCKS("PREBURN").In_F.Connection("OX-LP").F : 283.5106315199945;
   BLOCKS("PREBURN").In_F.Connection("OX-LP").h : -1.221563018785306e-002;
-  BLOCKS("PREBURN").In_F.Connection("OX-LP").P : 60.;
+  BLOCKS("PREBURN").In_F.Connection("OX-LP").P : 60.00000056266533;
   BLOCKS("PREBURN").In_F.Connection("OX-LP").T : -173.15;
   BLOCKS("PREBURN").In_F.Connection("OX-LP").V : 2.933890674389858e-002;
   BLOCKS("PREBURN").In_F.Connection("OX-LP").z("CO") : 0.;
@@ -1038,7 +1014,6 @@ EndText;
   BLOCKS("PREBURN").In_F.Connection("OX-LP").z("ETHANOL") : 0.;
   BLOCKS("PREBURN").In_F.Connection("OX-LP").z("H2O") : 0.;
   BLOCKS("PREBURN").In_F.Connection("OX-LP").z("OXYGEN") : 1.;
-  BLOCKS("PREBURN").lfin : 1.;
   BLOCKS("PREBURN").Mprint.spec : Fixed;
   BLOCKS("PREBURN").Mprint : 1.;
   BLOCKS("PREBURN").MWc("CO") : 28.0104;
@@ -1046,92 +1021,56 @@ EndText;
   BLOCKS("PREBURN").MWc("ETHANOL") : 46.06904000000001;
   BLOCKS("PREBURN").MWc("H2O") : 18.01528;
   BLOCKS("PREBURN").MWc("OXYGEN") : 31.99880000000001;
-  BLOCKS("PREBURN").MWs("PROD-PB") : 22.99396485861265;
+  BLOCKS("PREBURN").MWs("PROD-PB") : 31.6979269761069;
   BLOCKS("PREBURN").Noutstrm : ["PROD-PB"];
   BLOCKS("PREBURN").Out_HS.Q : 0.;
-  BLOCKS("PREBURN").Out_P.Connection("PROD-PB").F : 657.5638471771254;
-  BLOCKS("PREBURN").Out_P.Connection("PROD-PB").h : -6.06716430221018e-002;
+  BLOCKS("PREBURN").Out_P.Connection("PROD-PB").F : 293.3567233919936;
+  BLOCKS("PREBURN").Out_P.Connection("PROD-PB").h : -1.646278683610806e-002;
   BLOCKS("PREBURN").Out_P.Connection("PROD-PB").P : 60.;
-  BLOCKS("PREBURN").Out_P.Connection("PROD-PB").T : 3296.367725824564;
-  BLOCKS("PREBURN").Out_P.Connection("PROD-PB").V : 4.946358043768051;
-  BLOCKS("PREBURN").Out_P.Connection("PROD-PB").z("CO") : 0.3391024809400686;
-  BLOCKS("PREBURN").Out_P.Connection("PROD-PB").z("CO2") : 6.019326928580343e-002;
-  BLOCKS("PREBURN").Out_P.Connection("PROD-PB").z("ETHANOL") : 2.41909161832431e-017;
-  BLOCKS("PREBURN").Out_P.Connection("PROD-PB").z("H2O") : 0.5989436253388111;
-  BLOCKS("PREBURN").Out_P.Connection("PROD-PB").z("OXYGEN") : 1.760624435316905e-003;
-  BLOCKS("PREBURN").P.spec : Free;
+  BLOCKS("PREBURN").Out_P.Connection("PROD-PB").T : 311.3566153752897;
+  BLOCKS("PREBURN").Out_P.Connection("PROD-PB").V : 0.8099634727777651;
+  BLOCKS("PREBURN").Out_P.Connection("PROD-PB").z("CO") : 6.405217975439403e-022;
+  BLOCKS("PREBURN").Out_P.Connection("PROD-PB").z("CO2") : 3.356354597280672e-002;
+  BLOCKS("PREBURN").Out_P.Connection("PROD-PB").z("ETHANOL") : 1.10502293051391e-038;
+  BLOCKS("PREBURN").Out_P.Connection("PROD-PB").z("H2O") : 5.034531895920986e-002;
+  BLOCKS("PREBURN").Out_P.Connection("PROD-PB").z("OXYGEN") : 0.9160911350679835;
+  BLOCKS("PREBURN").P.spec : Fixed;
   BLOCKS("PREBURN").P : 60.;
-  BLOCKS("PREBURN").P_drop : 0.;
-  BLOCKS("PREBURN").P_dropr.spec : Fixed;
-  BLOCKS("PREBURN").P_dropr : 0.;
-  BLOCKS("PREBURN").pflash2i(1).DSID : -5.;
-  BLOCKS("PREBURN").pflash2i(1).h : -9.618192447236815e-002;
-  BLOCKS("PREBURN").pflash2i(1).hl : -9.618192447236815e-002;
-  BLOCKS("PREBURN").pflash2i(1).hv : -4.015453335292622e-003;
-  BLOCKS("PREBURN").pflash2i(1).K("CO") : 1.602768094604831;
-  BLOCKS("PREBURN").pflash2i(1).K("CO2") : 3.21321513907189e-003;
-  BLOCKS("PREBURN").pflash2i(1).K("ETHANOL") : 1.10342434524666e-010;
-  BLOCKS("PREBURN").pflash2i(1).K("H2O") : 1.108328479696632e-010;
-  BLOCKS("PREBURN").pflash2i(1).K("OXYGEN") : 1.025106843852047;
-  BLOCKS("PREBURN").pflash2i(1).lf : 1.;
-  BLOCKS("PREBURN").pflash2i(1).MWl : 36.45201746960635;
-  BLOCKS("PREBURN").pflash2i(1).MWv : 44.87071424790589;
-  BLOCKS("PREBURN").pflash2i(1).P : 60.;
-  BLOCKS("PREBURN").pflash2i(1).Rhol : 26.1604144507397;
-  BLOCKS("PREBURN").pflash2i(1).Rhoml : 953.5998845705059;
-  BLOCKS("PREBURN").pflash2i(1).Rhov : 4.496272054116424;
-  BLOCKS("PREBURN").pflash2i(1).T : -112.6513336656349;
-  BLOCKS("PREBURN").pflash2i(1).vf : 0.;
-  BLOCKS("PREBURN").pflash2i(1).VFactor : 0.2993384893308678;
-  BLOCKS("PREBURN").pflash2i(1).vfR : -0.2993384893308678;
-  BLOCKS("PREBURN").pflash2i(1).x("CO") : 0.;
-  BLOCKS("PREBURN").pflash2i(1).x("CO2") : 0.;
-  BLOCKS("PREBURN").pflash2i(1).x("ETHANOL") : 0.3164990412108351;
-  BLOCKS("PREBURN").pflash2i(1).x("H2O") : 0.;
-  BLOCKS("PREBURN").pflash2i(1).x("OXYGEN") : 0.6835009587891649;
-  BLOCKS("PREBURN").pflash2i(1).y("CO") : 0.;
-  BLOCKS("PREBURN").pflash2i(1).y("CO2") : 0.;
-  BLOCKS("PREBURN").pflash2i(1).y("ETHANOL") : 3.492327473192614e-011;
-  BLOCKS("PREBURN").pflash2i(1).y("H2O") : 0.;
-  BLOCKS("PREBURN").pflash2i(1).y("OXYGEN") : 0.7006615106342089;
-  BLOCKS("PREBURN").pflash2i(1).z("CO") : 0.;
-  BLOCKS("PREBURN").pflash2i(1).z("CO2") : 0.;
-  BLOCKS("PREBURN").pflash2i(1).z("ETHANOL") : 0.3164990412108351;
-  BLOCKS("PREBURN").pflash2i(1).z("H2O") : 0.;
-  BLOCKS("PREBURN").pflash2i(1).z("OXYGEN") : 0.6835009587891649;
-  BLOCKS("PREBURN").Pin : 60.;
+  BLOCKS("PREBURN").P_drop : 5.62665334769008e-007;
+  BLOCKS("PREBURN").P_dropr.spec : Free;
+  BLOCKS("PREBURN").P_dropr : 5.62665334769008e-007;
+  BLOCKS("PREBURN").Pin : 60.00000056266533;
+  BLOCKS("PREBURN").pliqi(1).DSID : 5.;
+  BLOCKS("PREBURN").pliqi(1).h : -1.674377710237505e-002;
+  BLOCKS("PREBURN").pliqi(1).MW : 32.23895377975794;
+  BLOCKS("PREBURN").pliqi(1).P : 60.00000056266533;
+  BLOCKS("PREBURN").pliqi(1).Rho : 33.3505329913264;
+  BLOCKS("PREBURN").pliqi(1).Rhom : 1075.186291637664;
+  BLOCKS("PREBURN").pliqi(1).T : -167.7943609065053;
+  BLOCKS("PREBURN").pliqi(1).x("CO") : 0.;
+  BLOCKS("PREBURN").pliqi(1).x("CO2") : 0.;
+  BLOCKS("PREBURN").pliqi(1).x("ETHANOL") : 1.706820777456071e-002;
+  BLOCKS("PREBURN").pliqi(1).x("H2O") : 0.;
+  BLOCKS("PREBURN").pliqi(1).x("OXYGEN") : 0.9829317922254394;
   BLOCKS("PREBURN").Q : 0.;
   BLOCKS("PREBURN").Qr : 0.;
-  BLOCKS("PREBURN").Rhoin : 26.44064807570945;
-  BLOCKS("PREBURN").Rholin : 26.1604144507397;
-  BLOCKS("PREBURN").Rhos("PROD-PB") : 4.648665675866893;
-  BLOCKS("PREBURN").Rhovin : 4.496272054116424;
+  BLOCKS("PREBURN").Rhoin : 33.3505329913264;
+  BLOCKS("PREBURN").Rhos("PROD-PB") : 39.13500798671703;
   BLOCKS("PREBURN").rtype : "Instantaneous";
-  BLOCKS("PREBURN").StrFrac("PROD-PB") : 0.9999999999999999;
-  BLOCKS("PREBURN").T : 3296.367725824564;
-  BLOCKS("PREBURN").Tin : -112.6513336656349;
-  BLOCKS("PREBURN").ValidPhases : "Vapor-Liquid";
-  BLOCKS("PREBURN").vfin : 0.;
-  BLOCKS("PREBURN").xin("CO") : 0.;
-  BLOCKS("PREBURN").xin("CO2") : 0.;
-  BLOCKS("PREBURN").xin("ETHANOL") : 0.3164990412108351;
-  BLOCKS("PREBURN").xin("H2O") : 0.;
-  BLOCKS("PREBURN").xin("OXYGEN") : 0.6835009587891649;
-  BLOCKS("PREBURN").yin("CO") : 0.;
-  BLOCKS("PREBURN").yin("CO2") : 0.;
-  BLOCKS("PREBURN").yin("ETHANOL") : 3.492327473192614e-011;
-  BLOCKS("PREBURN").yin("H2O") : 0.;
-  BLOCKS("PREBURN").yin("OXYGEN") : 0.7006615106342089;
+  BLOCKS("PREBURN").StrFrac("PROD-PB") : 1.;
+  BLOCKS("PREBURN").T : 311.3566153752897;
+  BLOCKS("PREBURN").Tin : -167.7943609065053;
+  BLOCKS("PREBURN").ValidPhases : "Liquid-Only";
   BLOCKS("PREBURN").zin("CO") : 0.;
   BLOCKS("PREBURN").zin("CO2") : 0.;
-  BLOCKS("PREBURN").zin("ETHANOL") : 0.3164990412108351;
+  BLOCKS("PREBURN").zin("ETHANOL") : 1.706820777456071e-002;
   BLOCKS("PREBURN").zin("H2O") : 0.;
-  BLOCKS("PREBURN").zin("OXYGEN") : 0.6835009587891649;
-  BLOCKS("PREBURN").zouts("CO","PROD-PB") : 0.3391024809400686;
-  BLOCKS("PREBURN").zouts("CO2","PROD-PB") : 6.019326928580343e-002;
-  BLOCKS("PREBURN").zouts("ETHANOL","PROD-PB") : 2.41909161832431e-017;
-  BLOCKS("PREBURN").zouts("H2O","PROD-PB") : 0.5989436253388111;
-  BLOCKS("PREBURN").zouts("OXYGEN","PROD-PB") : 1.760624435316905e-003;
+  BLOCKS("PREBURN").zin("OXYGEN") : 0.9829317922254394;
+  BLOCKS("PREBURN").zouts("CO","PROD-PB") : 6.405217975439403e-022;
+  BLOCKS("PREBURN").zouts("CO2","PROD-PB") : 3.356354597280672e-002;
+  BLOCKS("PREBURN").zouts("ETHANOL","PROD-PB") : 1.10502293051391e-038;
+  BLOCKS("PREBURN").zouts("H2O","PROD-PB") : 5.034531895920986e-002;
+  BLOCKS("PREBURN").zouts("OXYGEN","PROD-PB") : 0.9160911350679835;
   ComponentList : "Type1";
   FCFU.Action : "Reverse";
   FCFU.Algorithm : "Ideal";
@@ -1139,9 +1078,10 @@ EndText;
   FCFU.Cascade : 1.;
   FCFU.DerivTime.units : "min";
   FCFU.DerivTime : 0.;
-  FCFU.dIntTerm : 0.;
+  FCFU.dIntTerm : 96.80743677945452;
   FCFU.dIntTermARW : 0.;
-  FCFU.dOP : 0.;
+  FCFU.dOP : -5.231200888698042e-013;
+  FCFU.dPropTerm : -5.231200888698042e-014;
   FCFU.Foxboro_D.units : "min";
   FCFU.Foxboro_I.units : "min";
   FCFU.Foxboro_Type : "PID";
@@ -1154,27 +1094,34 @@ EndText;
   FCFU.OP.record : True;
   FCFU.OP : 50.;
   FCFU.OPClipping : "Yes";
-  FCFU.OPMan.derivative : 0.;
+  FCFU.OPMan.derivative : -5.231200888698042e-013;
   FCFU.OPMan : 50.;
+  FCFU.OPMans : 101.;
+  FCFU.OPmax : 100.;
+  FCFU.OPmin : 0.;
+  FCFU.OPs : 100.;
   FCFU.PV.record : True;
-  FCFU.PV.Spec : Free;
-  FCFU.PV : 131.281224840001;
+  FCFU.PV.spec : Free;
+  FCFU.PV : 4.923045935999534;
   FCFU.PVClipping : "Yes";
   FCFU.PVFilter.units : "min";
-  FCFU.PVmax : 262.562449680002;
+  FCFU.PVmax : 9.846091871999068;
   FCFU.PVmin : 0.;
   FCFU.PVs : 50.;
   FCFU.PVsf : 50.;
   FCFU.PVsTear : 50.;
   FCFU.PVTrack : "Yes";
   FCFU.SolMode : 2.;
+  FCFU.SP.derivative : 0.;
   FCFU.SP.record : True;
-  FCFU.SP : 131.281224840001;
+  FCFU.SP : 4.923045935999534;
   FCFU.SPClipping : "Yes";
-  FCFU.SPo : 131.281224840001;
-  FCFU.SPRemote.Spec : Free;
-  FCFU.SPRemote : 131.281224840001;
-  FCFU.SPsf : 50.;
+  FCFU.SPo : 4.923045935999534;
+  FCFU.SPRemote.spec : Free;
+  FCFU.SPRemote : 4.923045935999534;
+  FCFU.SPs : 82.26914559315151;
+  FCFU.SPsf.derivative : -5.231200888698042e-014;
+  FCFU.SPsf : 82.26914559315151;
   FCFU.UsePVFilter : "Yes";
   FCFU.Yokogawa_TD.units : "min";
   FCFU.Yokogawa_TI.units : "min";
@@ -1204,7 +1151,7 @@ EndText;
   FCOX.OPMan : 50.;
   FCOX.OPs : 50.;
   FCOX.PV.record : True;
-  FCOX.PV.Spec : Free;
+  FCOX.PV.spec : Free;
   FCOX.PV : 283.5106315199945;
   FCOX.PVClipping : "Yes";
   FCOX.PVFilter.units : "min";
@@ -1220,7 +1167,7 @@ EndText;
   FCOX.SP : 283.5106315199945;
   FCOX.SPClipping : "Yes";
   FCOX.SPo : 283.5106315199945;
-  FCOX.SPRemote.Spec : Free;
+  FCOX.SPRemote.spec : Free;
   FCOX.SPRemote : 283.5106315199945;
   FCOX.SPs : 50.;
   FCOX.SPsf : 50.;
@@ -1228,6 +1175,11 @@ EndText;
   FCOX.Yokogawa_TD.units : "min";
   FCOX.Yokogawa_TI.units : "min";
   FCOX.Yokogawa_Type : "PID";
+  OF_sensor.Input1.spec : Free;
+  OF_sensor.Input1 : 4.923045935999534;
+  OF_sensor.Input2.spec : Free;
+  OF_sensor.Input2 : 283.5106315199945;
+  OF_sensor.Output_ : 1.736459020815358e-002;
   PCPB.Action : "Reverse";
   PCPB.Algorithm : "Ideal";
   PCPB.AutoMan : 0.;
@@ -1249,13 +1201,13 @@ EndText;
   PCPB.OP.record : True;
   PCPB.OP : 283.5106315199945;
   PCPB.OPClipping : "Yes";
-  PCPB.OPMan.derivative : -1.53409170790554e-092;
+  PCPB.OPMan.derivative : 0.;
   PCPB.OPMan : 283.5106315199945;
   PCPB.OPmax : 567.021263039989;
   PCPB.OPmin : 0.;
   PCPB.OPs : 50.;
   PCPB.PV.record : True;
-  PCPB.PV.Spec : Free;
+  PCPB.PV.spec : Free;
   PCPB.PV : 60.;
   PCPB.PVClipping : "Yes";
   PCPB.PVFilter.units : "min";
@@ -1289,26 +1241,26 @@ EndText;
   STREAMS("FU-F").Cm("OXYGEN") : 0.;
   STREAMS("FU-F").CompBasis : "Mole-Frac";
   STREAMS("FU-F").ComponentList : "Type1";
-  STREAMS("FU-F").F : 131.281224840001;
+  STREAMS("FU-F").F : 4.923045935999534;
   STREAMS("FU-F").Fcn("CO") : 0.;
   STREAMS("FU-F").Fcn("CO2") : 0.;
-  STREAMS("FU-F").Fcn("ETHANOL") : 131.281224840001;
+  STREAMS("FU-F").Fcn("ETHANOL") : 4.923045935999534;
   STREAMS("FU-F").Fcn("H2O") : 0.;
   STREAMS("FU-F").Fcn("OXYGEN") : 0.;
   STREAMS("FU-F").FeedSpec : "TP";
   STREAMS("FU-F").FlowBasis : "Mass";
-  STREAMS("FU-F").Fm : 6047.999998403;
+  STREAMS("FU-F").Fm : 226.8000001474;
   STREAMS("FU-F").Fmcn("CO") : 0.;
   STREAMS("FU-F").Fmcn("CO2") : 0.;
-  STREAMS("FU-F").Fmcn("ETHANOL") : 6047.999998403;
+  STREAMS("FU-F").Fmcn("ETHANOL") : 226.8000001474;
   STREAMS("FU-F").Fmcn("H2O") : 0.;
   STREAMS("FU-F").Fmcn("OXYGEN") : 0.;
-  STREAMS("FU-F").FmR : 6047.999998403;
-  STREAMS("FU-F").FR : 131.281224840001;
-  STREAMS("FU-F").Fv : 7.574110672115462;
-  STREAMS("FU-F").FvR : 7.574110672115462;
+  STREAMS("FU-F").FmR : 226.8000001474;
+  STREAMS("FU-F").FR : 4.923045935999534;
+  STREAMS("FU-F").Fv : 0.2840291504639229;
+  STREAMS("FU-F").FvR : 0.2840291504639229;
   STREAMS("FU-F").h : -0.2775127823159732;
-  STREAMS("FU-F").In_F.F : 131.281224840001;
+  STREAMS("FU-F").In_F.F : 4.923045935999534;
   STREAMS("FU-F").In_F.h : -0.2775127823159732;
   STREAMS("FU-F").In_F.P : 80.;
   STREAMS("FU-F").In_F.T : 25.;
@@ -1327,7 +1279,7 @@ EndText;
   STREAMS("FU-F").MWc("OXYGEN") : 31.99880000000001;
   STREAMS("FU-F").MWl : 46.06904000000001;
   STREAMS("FU-F").MWv : 74.97134370081187;
-  STREAMS("FU-F").Out_P.F : 131.281224840001;
+  STREAMS("FU-F").Out_P.F : 4.923045935999534;
   STREAMS("FU-F").Out_P.h : -0.2775127823159732;
   STREAMS("FU-F").Out_P.P : 80.;
   STREAMS("FU-F").Out_P.T : 25.;
@@ -1416,27 +1368,27 @@ EndText;
   STREAMS("FU-F").ZR("H2O") : 0.;
   STREAMS("FU-F").ZR("OXYGEN") : 0.;
   STREAMS("FU-LP").ComponentList : "Type1";
-  STREAMS("FU-LP").F : 131.281224840001;
+  STREAMS("FU-LP").F : 4.923045935999534;
   STREAMS("FU-LP").Fcn("CO") : 0.;
   STREAMS("FU-LP").Fcn("CO2") : 0.;
-  STREAMS("FU-LP").Fcn("ETHANOL") : 131.281224840001;
+  STREAMS("FU-LP").Fcn("ETHANOL") : 4.923045935999534;
   STREAMS("FU-LP").Fcn("H2O") : 0.;
   STREAMS("FU-LP").Fcn("OXYGEN") : 0.;
-  STREAMS("FU-LP").Fm : 6047.999998403;
+  STREAMS("FU-LP").Fm : 226.8000001474;
   STREAMS("FU-LP").Fmcn("CO") : 0.;
   STREAMS("FU-LP").Fmcn("CO2") : 0.;
-  STREAMS("FU-LP").Fmcn("ETHANOL") : 6047.999998403;
+  STREAMS("FU-LP").Fmcn("ETHANOL") : 226.8000001474;
   STREAMS("FU-LP").Fmcn("H2O") : 0.;
   STREAMS("FU-LP").Fmcn("OXYGEN") : 0.;
-  STREAMS("FU-LP").FmR : 6047.999998403;
-  STREAMS("FU-LP").FR : 131.281224840001;
-  STREAMS("FU-LP").Fv : 7.574110672115469;
+  STREAMS("FU-LP").FmR : 226.8000001474;
+  STREAMS("FU-LP").FR : 4.923045935999534;
+  STREAMS("FU-LP").Fv : 0.2840291504639229;
   STREAMS("FU-LP").h : -0.2775127823159732;
-  STREAMS("FU-LP").In_F.F : 131.281224840001;
+  STREAMS("FU-LP").In_F.F : 4.923045935999534;
   STREAMS("FU-LP").In_F.h : -0.2775127823159732;
-  STREAMS("FU-LP").In_F.P : 60.;
-  STREAMS("FU-LP").In_F.T : 25.00000000000119;
-  STREAMS("FU-LP").In_F.V : 5.769378432709185e-002;
+  STREAMS("FU-LP").In_F.P : 75.00000005710903;
+  STREAMS("FU-LP").In_F.T : 25.00000000000027;
+  STREAMS("FU-LP").In_F.V : 5.769378432709178e-002;
   STREAMS("FU-LP").In_F.z("CO") : 0.;
   STREAMS("FU-LP").In_F.z("CO2") : 0.;
   STREAMS("FU-LP").In_F.z("ETHANOL") : 1.;
@@ -1448,20 +1400,20 @@ EndText;
   STREAMS("FU-LP").MWc("ETHANOL") : 46.06904000000001;
   STREAMS("FU-LP").MWc("H2O") : 18.01528;
   STREAMS("FU-LP").MWc("OXYGEN") : 31.99880000000001;
-  STREAMS("FU-LP").Out_P.F : 131.281224840001;
+  STREAMS("FU-LP").Out_P.F : 4.923045935999534;
   STREAMS("FU-LP").Out_P.h : -0.2775127823159732;
-  STREAMS("FU-LP").Out_P.P : 60.;
-  STREAMS("FU-LP").Out_P.T : 25.00000000000119;
-  STREAMS("FU-LP").Out_P.V : 5.769378432709185e-002;
+  STREAMS("FU-LP").Out_P.P : 75.00000005710903;
+  STREAMS("FU-LP").Out_P.T : 25.00000000000027;
+  STREAMS("FU-LP").Out_P.V : 5.769378432709178e-002;
   STREAMS("FU-LP").Out_P.z("CO") : 0.;
   STREAMS("FU-LP").Out_P.z("CO2") : 0.;
   STREAMS("FU-LP").Out_P.z("ETHANOL") : 1.;
   STREAMS("FU-LP").Out_P.z("H2O") : 0.;
   STREAMS("FU-LP").Out_P.z("OXYGEN") : 0.;
-  STREAMS("FU-LP").P : 60.;
-  STREAMS("FU-LP").Rho : 17.33288969797081;
-  STREAMS("FU-LP").Rhom : 798.5095888114053;
-  STREAMS("FU-LP").T : 25.00000000000119;
+  STREAMS("FU-LP").P : 75.00000005710903;
+  STREAMS("FU-LP").Rho : 17.33288969797083;
+  STREAMS("FU-LP").Rhom : 798.5095888114062;
+  STREAMS("FU-LP").T : 25.00000000000027;
   STREAMS("FU-LP").ValidPhases : "Liquid-Only";
   STREAMS("FU-LP").Zmn("CO") : 0.;
   STREAMS("FU-LP").Zmn("CO2") : 0.;
@@ -1501,8 +1453,8 @@ EndText;
   STREAMS("OX-F").Fmcn("OXYGEN") : 9071.999995882001;
   STREAMS("OX-F").FmR : 9071.999995882001;
   STREAMS("OX-F").FR : 283.5106315199945;
-  STREAMS("OX-F").Fv : 8.317891979068913;
-  STREAMS("OX-F").FvR : 8.317891979068913;
+  STREAMS("OX-F").Fv : 8.317891979068911;
+  STREAMS("OX-F").FvR : 8.317891979068911;
   STREAMS("OX-F").h : -1.221563018785306e-002;
   STREAMS("OX-F").In_F.F : 283.5106315199945;
   STREAMS("OX-F").In_F.h : -1.221563018785306e-002;
@@ -1553,8 +1505,8 @@ EndText;
   STREAMS("OX-F").pflash2(1).Rhov : 9.621942463531372;
   STREAMS("OX-F").pflash2(1).T : -173.15;
   STREAMS("OX-F").pflash2(1).vf : 0.;
-  STREAMS("OX-F").pflash2(1).VFactor : 0.9682793835016158;
-  STREAMS("OX-F").pflash2(1).vfR : -0.9682793835016158;
+  STREAMS("OX-F").pflash2(1).VFactor : 0.9682793835016159;
+  STREAMS("OX-F").pflash2(1).vfR : -0.9682793835016159;
   STREAMS("OX-F").pflash2(1).x("CO") : 0.;
   STREAMS("OX-F").pflash2(1).x("CO2") : 0.;
   STREAMS("OX-F").pflash2(1).x("ETHANOL") : 0.;
@@ -1580,7 +1532,7 @@ EndText;
   STREAMS("OX-F").ValidPhases : "Vapor-Liquid";
   STREAMS("OX-F").vf : 0.;
   STREAMS("OX-F").vfmR : -2.228214710828609;
-  STREAMS("OX-F").vfR : -0.9682793835016158;
+  STREAMS("OX-F").vfR : -0.9682793835016159;
   STREAMS("OX-F").x("CO") : 0.;
   STREAMS("OX-F").x("CO2") : 0.;
   STREAMS("OX-F").x("ETHANOL") : 0.;
@@ -1626,11 +1578,11 @@ EndText;
   STREAMS("OX-LP").Fmcn("OXYGEN") : 9071.999995882001;
   STREAMS("OX-LP").FmR : 9071.999995882001;
   STREAMS("OX-LP").FR : 283.5106315199945;
-  STREAMS("OX-LP").Fv : 8.317891979068911;
+  STREAMS("OX-LP").Fv : 8.317891979068913;
   STREAMS("OX-LP").h : -1.221563018785306e-002;
   STREAMS("OX-LP").In_F.F : 283.5106315199945;
   STREAMS("OX-LP").In_F.h : -1.221563018785306e-002;
-  STREAMS("OX-LP").In_F.P : 60.;
+  STREAMS("OX-LP").In_F.P : 60.00000056266533;
   STREAMS("OX-LP").In_F.T : -173.15;
   STREAMS("OX-LP").In_F.V : 2.933890674389858e-002;
   STREAMS("OX-LP").In_F.z("CO") : 0.;
@@ -1646,7 +1598,7 @@ EndText;
   STREAMS("OX-LP").MWc("OXYGEN") : 31.99880000000001;
   STREAMS("OX-LP").Out_P.F : 283.5106315199945;
   STREAMS("OX-LP").Out_P.h : -1.221563018785306e-002;
-  STREAMS("OX-LP").Out_P.P : 60.;
+  STREAMS("OX-LP").Out_P.P : 60.00000056266533;
   STREAMS("OX-LP").Out_P.T : -173.15;
   STREAMS("OX-LP").Out_P.V : 2.933890674389858e-002;
   STREAMS("OX-LP").Out_P.z("CO") : 0.;
@@ -1654,7 +1606,7 @@ EndText;
   STREAMS("OX-LP").Out_P.z("ETHANOL") : 0.;
   STREAMS("OX-LP").Out_P.z("H2O") : 0.;
   STREAMS("OX-LP").Out_P.z("OXYGEN") : 1.;
-  STREAMS("OX-LP").P : 60.;
+  STREAMS("OX-LP").P : 60.00000056266533;
   STREAMS("OX-LP").Rho : 34.08443295890579;
   STREAMS("OX-LP").Rhom : 1090.660953365435;
   STREAMS("OX-LP").T : -173.15;
@@ -1670,66 +1622,66 @@ EndText;
   STREAMS("OX-LP").Zn("H2O") : 0.;
   STREAMS("OX-LP").Zn("OXYGEN") : 1.;
   STREAMS("PROD-PB").ComponentList : "Type1";
-  STREAMS("PROD-PB").F : 657.5638471771254;
-  STREAMS("PROD-PB").Fcn("CO") : 222.9815319542593;
-  STREAMS("PROD-PB").Fcn("CO2") : 39.5809177257416;
-  STREAMS("PROD-PB").Fcn("ETHANOL") : 1.590707191219272e-014;
-  STREAMS("PROD-PB").Fcn("H2O") : 393.8436745200034;
-  STREAMS("PROD-PB").Fcn("OXYGEN") : 1.157722977121038;
-  STREAMS("PROD-PB").Fm : 15119.99999428496;
-  STREAMS("PROD-PB").Fmcn("CO") : 6245.801902651586;
-  STREAMS("PROD-PB").Fmcn("CO2") : 1741.948272926343;
-  STREAMS("PROD-PB").Fmcn("ETHANOL") : 7.328235322056829e-013;
-  STREAMS("PROD-PB").Fmcn("H2O") : 7095.204072706729;
-  STREAMS("PROD-PB").Fmcn("OXYGEN") : 37.04574600030067;
-  STREAMS("PROD-PB").FmR : 15119.99999428496;
-  STREAMS("PROD-PB").FR : 657.5638471771254;
-  STREAMS("PROD-PB").Fv : 3252.54622477564;
-  STREAMS("PROD-PB").h : -6.06716430221018e-002;
-  STREAMS("PROD-PB").In_F.F : 657.5638471771254;
-  STREAMS("PROD-PB").In_F.h : -6.06716430221018e-002;
+  STREAMS("PROD-PB").F : 293.3567233919936;
+  STREAMS("PROD-PB").Fcn("CO") : 1.879013757886402e-019;
+  STREAMS("PROD-PB").Fcn("CO2") : 9.84609187199912;
+  STREAMS("PROD-PB").Fcn("ETHANOL") : 3.241659061685793e-036;
+  STREAMS("PROD-PB").Fcn("H2O") : 14.76913780799862;
+  STREAMS("PROD-PB").Fcn("OXYGEN") : 268.7414937119958;
+  STREAMS("PROD-PB").Fm : 9298.799996029402;
+  STREAMS("PROD-PB").Fmcn("CO") : 5.263192696390128e-018;
+  STREAMS("PROD-PB").Fmcn("CO2") : 433.324534068307;
+  STREAMS("PROD-PB").Fmcn("ETHANOL") : 1.493401209791653e-034;
+  STREAMS("PROD-PB").Fmcn("H2O") : 266.0701529696814;
+  STREAMS("PROD-PB").Fmcn("OXYGEN") : 8599.405308991414;
+  STREAMS("PROD-PB").FmR : 9298.799996029402;
+  STREAMS("PROD-PB").FR : 293.3567233919936;
+  STREAMS("PROD-PB").Fv : 237.6082304412854;
+  STREAMS("PROD-PB").h : -1.646278683610806e-002;
+  STREAMS("PROD-PB").In_F.F : 293.3567233919936;
+  STREAMS("PROD-PB").In_F.h : -1.646278683610806e-002;
   STREAMS("PROD-PB").In_F.P : 60.;
-  STREAMS("PROD-PB").In_F.T : 3296.367725824564;
-  STREAMS("PROD-PB").In_F.V : 4.946358043768051;
-  STREAMS("PROD-PB").In_F.z("CO") : 0.3391024809400686;
-  STREAMS("PROD-PB").In_F.z("CO2") : 6.019326928580343e-002;
-  STREAMS("PROD-PB").In_F.z("ETHANOL") : 2.41909161832431e-017;
-  STREAMS("PROD-PB").In_F.z("H2O") : 0.5989436253388111;
-  STREAMS("PROD-PB").In_F.z("OXYGEN") : 1.760624435316905e-003;
-  STREAMS("PROD-PB").MW : 22.99396485861265;
+  STREAMS("PROD-PB").In_F.T : 311.3566153752897;
+  STREAMS("PROD-PB").In_F.V : 0.8099634727777651;
+  STREAMS("PROD-PB").In_F.z("CO") : 6.405217975439403e-022;
+  STREAMS("PROD-PB").In_F.z("CO2") : 3.356354597280672e-002;
+  STREAMS("PROD-PB").In_F.z("ETHANOL") : 1.10502293051391e-038;
+  STREAMS("PROD-PB").In_F.z("H2O") : 5.034531895920986e-002;
+  STREAMS("PROD-PB").In_F.z("OXYGEN") : 0.9160911350679835;
+  STREAMS("PROD-PB").MW : 31.6979269761069;
   STREAMS("PROD-PB").MWc("CO") : 28.0104;
   STREAMS("PROD-PB").MWc("CO2") : 44.00980000000001;
   STREAMS("PROD-PB").MWc("ETHANOL") : 46.06904000000001;
   STREAMS("PROD-PB").MWc("H2O") : 18.01528;
   STREAMS("PROD-PB").MWc("OXYGEN") : 31.99880000000001;
-  STREAMS("PROD-PB").Out_P.F : 657.5638471771254;
-  STREAMS("PROD-PB").Out_P.h : -6.06716430221018e-002;
+  STREAMS("PROD-PB").Out_P.F : 293.3567233919936;
+  STREAMS("PROD-PB").Out_P.h : -1.646278683610806e-002;
   STREAMS("PROD-PB").Out_P.P : 60.;
-  STREAMS("PROD-PB").Out_P.T : 3296.367725824564;
-  STREAMS("PROD-PB").Out_P.V : 4.946358043768051;
-  STREAMS("PROD-PB").Out_P.z("CO") : 0.3391024809400686;
-  STREAMS("PROD-PB").Out_P.z("CO2") : 6.019326928580343e-002;
-  STREAMS("PROD-PB").Out_P.z("ETHANOL") : 2.41909161832431e-017;
-  STREAMS("PROD-PB").Out_P.z("H2O") : 0.5989436253388111;
-  STREAMS("PROD-PB").Out_P.z("OXYGEN") : 1.760624435316905e-003;
+  STREAMS("PROD-PB").Out_P.T : 311.3566153752897;
+  STREAMS("PROD-PB").Out_P.V : 0.8099634727777651;
+  STREAMS("PROD-PB").Out_P.z("CO") : 6.405217975439403e-022;
+  STREAMS("PROD-PB").Out_P.z("CO2") : 3.356354597280672e-002;
+  STREAMS("PROD-PB").Out_P.z("ETHANOL") : 1.10502293051391e-038;
+  STREAMS("PROD-PB").Out_P.z("H2O") : 5.034531895920986e-002;
+  STREAMS("PROD-PB").Out_P.z("OXYGEN") : 0.9160911350679835;
   STREAMS("PROD-PB").P : 60.;
-  STREAMS("PROD-PB").Rho : 0.2021689475673736;
-  STREAMS("PROD-PB").Rhom : 4.648665675866892;
-  STREAMS("PROD-PB").T : 3296.367725824564;
+  STREAMS("PROD-PB").Rho : 1.23462357699972;
+  STREAMS("PROD-PB").Rhom : 39.13500798671703;
+  STREAMS("PROD-PB").T : 311.3566153752897;
   STREAMS("PROD-PB").ValidPhases : "Vapor-Only";
-  STREAMS("PROD-PB").Zmn("CO") : 0.413082136574892;
-  STREAMS("PROD-PB").Zmn("CO2") : 0.1152082191524314;
-  STREAMS("PROD-PB").Zmn("ETHANOL") : 4.846716484673774e-017;
-  STREAMS("PROD-PB").Zmn("H2O") : 0.46925952879554;
-  STREAMS("PROD-PB").Zmn("OXYGEN") : 2.450115477136453e-003;
-  STREAMS("PROD-PB").Zn("CO") : 0.3391024809400686;
-  STREAMS("PROD-PB").Zn("CO2") : 6.019326928580343e-002;
-  STREAMS("PROD-PB").Zn("ETHANOL") : 2.41909161832431e-017;
-  STREAMS("PROD-PB").Zn("H2O") : 0.5989436253388111;
-  STREAMS("PROD-PB").Zn("OXYGEN") : 1.760624435316905e-003;
+  STREAMS("PROD-PB").Zmn("CO") : 5.660077320339739e-022;
+  STREAMS("PROD-PB").Zmn("CO2") : 4.660004885074816e-002;
+  STREAMS("PROD-PB").Zmn("ETHANOL") : 1.606014980889294e-038;
+  STREAMS("PROD-PB").Zmn("H2O") : 2.861338592972143e-002;
+  STREAMS("PROD-PB").Zmn("OXYGEN") : 0.9247865652195304;
+  STREAMS("PROD-PB").Zn("CO") : 6.405217975439403e-022;
+  STREAMS("PROD-PB").Zn("CO2") : 3.356354597280672e-002;
+  STREAMS("PROD-PB").Zn("ETHANOL") : 1.10502293051391e-038;
+  STREAMS("PROD-PB").Zn("H2O") : 5.034531895920986e-002;
+  STREAMS("PROD-PB").Zn("OXYGEN") : 0.9160911350679835;
   Graphics : TEXT CLSID {A0DFFFE6-908E-11CE-A964-0000C08C668E}
-# of PFS Objects = 26
-SIZE -7.9 -0.346818 -1.59396 2.57051
+# of PFS Objects = 25
+SIZE -6.45101 -0.346818 -1.9267 2.57051
 BLOCK
 ID: CV1
 Version: 1
@@ -1782,8 +1734,8 @@ Version: 1
 ICON: "Icon1"
 Flag 0
 Section 
-At -4.352036 1.360925
-Label At 0.007462 -0.201470
+At -4.353754 1.361095
+Label At 0.095257 -0.248726
 Scale 1.000000 Modifier 0
 BLOCK
 ID: F/O_s
@@ -1791,11 +1743,11 @@ Version: 1
 ICON: "Icon1"
 Flag 0
 Section 
-At -4.478887 2.077261
+At -4.988799 2.160193
 Label At 0.000000 0.350000
-Scale 0.666667 Modifier 0
+Scale 0.666667 Modifier 1
 BLOCK
-ID: B5
+ID: OF_sensor
 Version: 1
 ICON: "Icon1"
 Flag 0
@@ -1837,21 +1789,23 @@ ID: FU-LP
 Version: 2
 Flag 0
 TYPE 0 TERMINAL 0
-At -2.612440 1.000700
-Label At -0.037475 0.000000
+At -2.550000 0.098657
+Label At 0.000000 0.000000
 ROUTE 0 0
-r r -2.612440 1.000700 0
-x 0 -3.249950 1.000700 0
+r r -2.550000 0.098657 0
+y x -2.550000 0.400700 0
+x y -2.950000 0.400700 0
+y 0 -2.950000 1.000700 0
+x 0 -3.099950 1.000700 0
 t r -3.299950 1.000700 0
 $ C 1.000000 0.0
 $ $ 0.0 0.0
 ROUTE 1 0
-r r -2.612440 1.000700 0
-x x -2.049880 1.000700 0
-y y -2.049880 0.108163 0
-t u -2.049880 0.058163 0
-$ D 0.152691 0.261548
-$ C 0.000000 0.0
+r r -2.550000 0.098657 0
+y y -2.550000 -0.203385 0
+x x -2.402571 -0.203385 0
+t l -2.202571 -0.203385 0
+$ C 1.000000 0.0
 $ $ 0.0 0.0
 At 0.000000 0.000000
 Label At 0.000000 0.000000
@@ -1899,20 +1853,20 @@ ID: OX-LP
 Version: 2
 Flag 0
 TYPE 0 TERMINAL 0
-At -1.703746 0.975350
-Label At 0.000000 0.000000
+At -1.840034 1.087850
+Label At 0.000000 -0.005312
 ROUTE 0 0
-r r -1.703746 0.975350 0
-y x -1.703746 1.800700 0
-x 0 -2.449950 1.800700 0
+r r -1.840034 1.087850 0
+y x -1.840034 1.800700 0
+x 0 -2.299950 1.800700 0
 t r -2.499950 1.800700 0
 $ C 1.000000 0.0
 $ $ 0.0 0.0
 ROUTE 1 0
-r r -1.703746 0.975350 0
-y y -1.703746 0.064476 0
-t u -1.703746 0.014476 0
-$ D 0.498825 0.217861
+r r -1.840034 1.087850 0
+y y -1.840034 0.291005 0
+t u -1.840034 0.091005 0
+$ D 0.362537 0.294390
 $ C 0.000000 0.0
 $ $ 0.0 0.0
 At 0.000000 0.000000
@@ -1932,15 +1886,14 @@ ID: PROD-PB
 Version: 2
 Flag 0
 TYPE 0 TERMINAL 2
-At -1.922702 -1.512500
-Label At 0.000000 0.182142
+At -0.437642 -1.840590
+Label At -0.587417 0.000000
 ROUTE 0 0
-r u -1.922702 -1.512500 0
-y x -1.922702 -1.300000 0
-x y -1.925088 -1.300000 0
-y 0 -1.925088 -1.137694 0
-t d -1.925088 -1.087694 0
-$ D -0.320258 -0.884309
+r l -0.437642 -1.840590 0
+x y -1.919414 -1.840590 0
+y 0 -1.919414 -1.289120 0
+t d -1.919414 -1.089120 0
+$ D -0.314584 -0.885735
 $ C 0.000000 0.0
 $ $ 0.0 0.0
 ROUTE 1 0
@@ -1962,20 +1915,20 @@ ID: S1
 Version: 2
 Flag 1
 TYPE 0 TERMINAL 0
-At -4.053563 -0.107467
-Label At 0.000000 0.022277
+At -4.056104 -0.132467
+Label At 0.000000 -0.447819
 ROUTE 0 0
-r r -4.053563 -0.107467 0
-y 0 -4.053563 0.835600 0
-t d -4.053563 0.949350 0
-$ D 0.002541 -0.050250
+r r -4.056104 -0.132467 0
+y 0 -4.056104 0.787323 0
+t d -4.056104 0.954078 0
+$ D 0.000000 -0.045521
 $ C 0.000000 0.0
 $ $ 0.0 0.0
 ROUTE 1 0
-r r -4.053563 -0.107467 0
-y y -4.053563 -1.014934 0
+r r -4.056104 -0.132467 0
+y y -4.056104 -1.014934 0
 x x -3.456399 -1.014934 0
-t l -3.356400 -1.014934 0
+t l -3.356399 -1.014934 0
 $ C 2.000000 0.0
 $ $ 0.0 0.0
 At 0.000000 0.000000
@@ -1995,18 +1948,18 @@ ID: S2
 Version: 2
 Flag 1
 TYPE 0 TERMINAL 0
-At -3.550000 0.317533
-Label At 0.000000 -0.194207
+At -3.550000 0.292533
+Label At 0.000000 -0.616858
 ROUTE 0 0
-r r -3.550000 0.317533 0
-y x -3.550000 1.550000 0
-x 0 -3.115573 1.550000 0
-t d -3.115573 1.746472 0
-$ D 0.000000 -0.053128
+r r -3.550000 0.292533 0
+y x -3.550000 1.500000 0
+x x -3.115573 1.500000 0
+t d -3.115573 1.749874 0
+$ D 0.000000 -0.049726
 $ C 0.000000 0.0
 $ $ 0.0 0.0
 ROUTE 1 0
-r r -3.550000 0.317533 0
+r r -3.550000 0.292533 0
 y x -3.550000 -0.914934 0
 x x -3.506399 -0.914934 0
 t l -3.306399 -0.914934 0
@@ -2029,11 +1982,11 @@ ID: S3
 Version: 2
 Flag 1
 TYPE 0 TERMINAL 2
-At -3.210375 -0.049362
-Label At 0.410375 -0.865573
+At -3.254613 0.036261
+Label At 0.454613 -0.866172
 ROUTE 0 0
-r r -3.210375 -0.049362 0
-x y -2.800000 -0.049362 0
+r r -3.254613 0.036261 0
+x y -2.800000 0.036261 0
 y 0 -2.800000 -0.914934 0
 x 0 -2.839733 -0.914934 0
 t r -3.039733 -0.914934 0
@@ -2059,7 +2012,7 @@ Version: 2
 Flag 1
 TYPE 0 TERMINAL 0
 At -1.437500 -0.952861
-Label At -0.157790 0.000000
+Label At 0.112500 0.000000
 ROUTE 0 0
 r r -1.437500 -0.952861 0
 x 0 -1.595290 -0.952861 0
@@ -2126,19 +2079,20 @@ ID: S6
 Version: 2
 Flag 1
 TYPE 0 TERMINAL 0
-At -2.372748 2.150000
-Label At 0.000000 0.000000
+At -2.410248 2.075000
+Label At 0.185248 0.140761
 ROUTE 0 0
-r r -2.372748 2.150000 0
-x y -2.150001 2.150000 0
-y x -2.150001 2.420505 0
-x 0 -2.201501 2.420505 0
+r r -2.410248 2.075000 0
+x y -2.225000 2.075000 0
+y 0 -2.225000 2.420505 0
+x 0 -2.351501 2.420505 0
 t r -2.401501 2.420505 0
 $ C 1.000000 0.0
 $ $ 0.0 0.0
 ROUTE 1 0
-r r -2.372748 2.150000 0
-x 0 -2.595496 2.150000 0
+r r -2.410248 2.075000 0
+x y -2.595496 2.075000 0
+y y -2.595496 2.024006 0
 t u -2.595496 1.974006 0
 $ C 1.000000 0.0
 $ $ 0.0 0.0
@@ -2159,20 +2113,21 @@ ID: S7
 Version: 2
 Flag 1
 TYPE 0 TERMINAL 0
-At -2.775001 1.947753
-Label At 0.000000 0.000000
+At -3.215573 1.997753
+Label At 0.000000 0.224587
 ROUTE 0 0
-r r -2.775001 1.947753 0
-y x -2.775001 1.475000 0
-x y -3.113372 1.475000 0
-y 0 -3.113372 1.534016 0
-t d -3.113372 1.746472 0
-$ D 0.002201 -0.053128
+r r -3.215573 1.997753 0
+y x -3.215573 1.575000 0
+x 0 -3.115573 1.575000 0
+y 0 -3.115573 1.625749 0
+t d -3.115573 1.749874 0
+$ D 0.000000 -0.049726
 $ C 0.000000 0.0
 $ $ 0.0 0.0
 ROUTE 1 0
-r r -2.775001 1.947753 0
-y 0 -2.775001 2.420505 0
+r r -3.215573 1.997753 0
+y y -3.215573 2.420505 0
+x x -2.651501 2.420505 0
 t l -2.601501 2.420505 0
 $ C 1.000000 0.0
 $ $ 0.0 0.0
@@ -2193,23 +2148,23 @@ ID: S8
 Version: 2
 Flag 1
 TYPE 0 TERMINAL 0
-At -3.994186 1.525000
+At -3.857787 1.550000
 Label At 0.000000 0.000000
 ROUTE 0 0
-r r -3.994186 1.525000 0
-x y -3.113372 1.525000 0
-y 0 -3.113372 1.534016 0
-t d -3.113372 1.746472 0
-$ D 0.002201 -0.053128
+r r -3.857787 1.550000 0
+x y -3.115573 1.550000 0
+y 0 -3.115573 1.552706 0
+t d -3.115573 1.749874 0
+$ D 0.000000 -0.049726
 $ C 0.000000 0.0
 $ $ 0.0 0.0
 ROUTE 1 0
-r r -3.994186 1.525000 0
-x x -4.875000 1.525000 0
-y 0 -4.875000 2.077261 0
-x x -4.812220 2.077261 0
-t l -4.612220 2.077261 0
-$ C 1.000000 0.0
+r r -3.857787 1.550000 0
+x x -4.600000 1.550000 0
+y x -4.600000 2.060193 0
+x x -4.705465 2.060193 0
+t r -4.805465 2.060193 0
+$ C 2.000000 0.0
 $ $ 0.0 0.0
 At 0.000000 0.000000
 Label At 0.000000 0.000000
@@ -2228,22 +2183,20 @@ ID: S9
 Version: 2
 Flag 1
 TYPE 0 TERMINAL 0
-At -4.400001 1.727261
-Label At 0.000000 0.000000
+At -5.300000 1.760644
+Label At 0.127868 0.399549
 ROUTE 0 0
-r r -4.400001 1.727261 0
-x y -4.100000 1.727261 0
-y x -4.100000 2.077261 0
-x 0 -4.145554 2.077261 0
-t r -4.345554 2.077261 0
+r r -5.300000 1.760644 0
+y 0 -5.300000 2.160193 0
+x 0 -5.172132 2.160193 0
+t l -5.122132 2.160193 0
 $ C 1.000000 0.0
 $ $ 0.0 0.0
 ROUTE 1 0
-r r -4.400001 1.727261 0
-x x -4.700000 1.727261 0
-y 0 -4.700000 1.360925 0
-x x -4.502036 1.360925 0
-t l -4.452036 1.360925 0
+r r -5.300000 1.760644 0
+y y -5.300000 1.361095 0
+x x -4.503754 1.361095 0
+t l -4.453753 1.361095 0
 $ C 1.000000 0.0
 $ $ 0.0 0.0
 At 0.000000 0.000000
@@ -2263,18 +2216,19 @@ ID: S10
 Version: 2
 Flag 1
 TYPE 0 TERMINAL 0
-At -3.735248 1.360925
-Label At 0.000000 0.000000
+At -3.772748 1.360925
+Label At -0.026877 0.000000
 ROUTE 0 0
-r r -3.735248 1.360925 0
-x x -4.202036 1.360925 0
-t r -4.252036 1.360925 0
+r r -3.772748 1.360925 0
+x x -4.203753 1.360925 0
+y 0 -4.203753 1.361095 0
+t r -4.253754 1.361095 0
 $ C 1.000000 0.0
 $ $ 0.0 0.0
 ROUTE 1 0
-r r -3.735248 1.360925 0
+r r -3.772748 1.360925 0
 x x -3.395496 1.360925 0
-y 0 -3.395496 1.350000 0
+y y -3.395496 1.224006 0
 t u -3.395496 1.174006 0
 $ C 1.000000 0.0
 $ $ 0.0 0.0
@@ -2295,22 +2249,23 @@ ID: S11
 Version: 2
 Flag 1
 TYPE 0 TERMINAL 0
-At -4.401782 0.750000
-Label At 0.000000 0.000000
+At -4.220805 0.850000
+Label At -0.166419 0.188296
 ROUTE 0 0
-r r -4.401782 0.750000 0
-x 0 -4.053563 0.750000 0
-t d -4.053563 0.949350 0
-$ D 0.002541 -0.050250
+r r -4.220805 0.850000 0
+x y -4.056104 0.850000 0
+y 0 -4.056104 0.903608 0
+t d -4.056104 0.954078 0
+$ D 0.000000 -0.045521
 $ C 0.000000 0.0
 $ $ 0.0 0.0
 ROUTE 1 0
-r r -4.401782 0.750000 0
-x x -4.750000 0.750000 0
-y x -4.750000 1.260925 0
-x x -4.552036 1.260925 0
-t l -4.502036 1.260925 0
-$ C 2.000000 0.0
+r r -4.220805 0.850000 0
+x x -4.387223 0.850000 0
+y y -4.387223 1.226592 0
+t d -4.387223 1.276592 0
+$ D 0.066530 -0.084503
+$ C 0.000000 0.0
 $ $ 0.0 0.0
 At 0.000000 0.000000
 Label At 0.000000 0.000000
@@ -2326,28 +2281,11 @@ ROUTE 1 2
 $ $ 0.0 0.0
 LEGEND
 Version: 2
-Dim: -7.6 -1.1 -6.86957 -1.2486
-Size: 0.0058612
+Dim: -6 -4.0875 -5.25471 -4.23451
+Size: 0.00530531
 Font: 0.91659 0 =Tahoma
-DISPLAY
-Version: 2
-Type: T 255 0 0 1 1 0
-Dim: -7.9 0.877033 -6.29001 -0.0770334
-Tag
-Tag
-Base: -7.9 0.4
-Text: 0 0 0 0.745365 0
-Variables to optimize:
- - FU-SPLIT fraction
- - TURBINE pressure ratio
- - PREBURN solver
- - - Temperature varies on fuel intake
- - - Pressure varies on fuel intake
- - PUMP (ox and fuel)
- - - efficiencies (non-linear)
-Font: Tahoma
 # of PFS Objects = 0
-VIEWPORT -10.726239 4.137754 2.906989 -3.639967
+VIEWPORT -11.456615 1.997640 3.728753 -2.197273
 LAYOUT
 TableFormat 1
 Pages 1 1 1 1
@@ -2363,7 +2301,7 @@ BOTTOMMARGIN 10mm
 VISIBILITY 0.030000
 PFDFLAG 255 255
 PFDMODE 0
-SCALE 0.005861
+SCALE 0.005305
 
 ENDTEXT;
 END
@@ -2488,7 +2426,7 @@ Options
   RelPerturb: 1.e-005;
   RelTearTol: 1.e-005;
   RelTol: 1.e-005;
-  RunMode: "Dynamic";
+  RunMode: "Initialization";
   SaveFreeVariableValues: True;
   Scaling: False;
   SensErrorCheck: True;
